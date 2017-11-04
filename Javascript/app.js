@@ -50,7 +50,6 @@ function checkUserCode(str, question, passFunc, failFunc) {
 
 		/* (Stack Overflow comment) we are creating a new javascript file using blob. We just use the string passed to the function, and assign it to the Blob(content,type). */
 		var workerData = new Blob([functionString], { type: "text/javascript" });
-		console.log("workerData: ", workerData);
 
 		initWorker(workerData, test);
 	});
@@ -59,7 +58,6 @@ function checkUserCode(str, question, passFunc, failFunc) {
 	function initWorker(data, test) {
 		/* (Stack Overflow comment) create the new web worker as we dont have an external file, we have to create a url for our blob using createObjectURL. link will look like blob:d3958f5c-0777-0845-9dcf-2cb28783acaf */
 		myWorker = new Worker(window.URL.createObjectURL(data));
-		console.log("myWorker: ", myWorker);
 
 		/* listen for messages sent back by the worker */
 		myWorker.onmessage = function (e) {
@@ -82,10 +80,6 @@ function checkUserCode(str, question, passFunc, failFunc) {
 	}
 
 	function handleWorkerReturn(e, test) {
-		console.log(e);
-		console.log(e.data);
-		console.log("test: ", test, "    test.passVal: ", test.passVal);
-
 		/* if the return matches the expected pass value, 
 			increment the current test counter
 			if the counter equals the number of tests, then run pass function */
@@ -127,11 +121,10 @@ function checkUserCode(str, question, passFunc, failFunc) {
 
 		return list;
 	}
-
 }
 
 /* TEST VALUES */
-testString = "return num1 + num2;";
+testString = "return 1 + 2;";
 
 testQuestion = {
 	question: "Actual question",
