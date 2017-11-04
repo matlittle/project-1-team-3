@@ -64,16 +64,14 @@ function checkUserCode(str, question, passFunc, failFunc) {
 		/* listen for messages sent back by the worker */
 		myWorker.onmessage = function (e) {
 			clearTimeout(timeoutError);     // clear the error timeout so it doesn't fire
-			//stopWorker(myWorker);     // delete the actual worker once we have the return
 			handleWorkerReturn(e, test);      // pass return to handler function
-			
 		};
 
 		var timeoutError = setTimeout(function() {
 			/* if the worker is running for longer than 5 seconds, throw timeout */
 			console.log("Timeout error thrown");
-			//stopWorker(myWorker);
 			failFunc();
+			stopWorker(myWorker);
 		}, 5 * 1000);
 	}
 
@@ -95,9 +93,11 @@ function checkUserCode(str, question, passFunc, failFunc) {
 			currTest += 1;
 			if(currTest === question.tests.length) {
 				passFunc();
+				stopWorker(myWorker);
 			}
 		} else {
 			failFunc();
+			stopWorker(myWorker);
 		}
 	}
 
