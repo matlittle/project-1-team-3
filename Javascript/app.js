@@ -83,10 +83,10 @@ function checkUserCode(str, question, passFunc, failFunc) {
 		console.log(e);
 		console.log(e.data);
 
-		/* if the return matches the expected passing value, 
+		/* if the return matches the expected pass value, 
 			increment the current test counter
 			if the counter equals the number of tests, then run pass function */
-		if(e.data = test.return) {
+		if(e.data = test.passVal) {
 			currTest += 1;
 			if(currTest === question.tests.length) {
 				passFunc();
@@ -126,9 +126,7 @@ function checkUserCode(str, question, passFunc, failFunc) {
 }
 
 /* TEST VALUES */
-testString = "var myTest = 1;" +
-			"while(myTest < 10){ myTest += 1 }" +
-			"postMessage(myTest);";
+testString = "return num1 + num2;";
 
 testQuestion = {
 	question: "Actual question",
