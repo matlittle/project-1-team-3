@@ -30,7 +30,7 @@ $(document).ready(function()
 /*Input Evaluation Function*/
 
 testString = "var myTest = 1;" +
-            "while(true){ myTest += 1 }" +
+            "while(myTest < 10){ myTest += 1 }" +
             "postMessage(myTest);";
 
 
@@ -39,7 +39,9 @@ checkUserCode(testString);
 /**/
 function checkUserCode(str, question) {
     var myWorker = null,
-    window.URL = window.URL || (window.webkitURL);      // initialize variables
+        URL = window.URL || (window.webkitURL);      // initialize variables
+
+    window.URL = URL;
 
     /* (Stack Overflow comment) we are creating a new javascript file using blob. We just use the string passed to the function, and assign it to the Blob(content,type). */
     var workerData = new Blob([testString], { type: "text/javascript" });
@@ -70,8 +72,8 @@ function checkUserCode(str, question) {
     }
 
     function deleteWorker(w){
-        window.w.terminate();
-        delete window.w;
+        w.terminate();
+        delete w;
     }
 
     function handleWorkerReturn(e) {
