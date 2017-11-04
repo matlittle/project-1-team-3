@@ -46,8 +46,11 @@ function checkUserCode(str, question, passFunc, failFunc) {
 	question.tests.forEach(function(test) {
 		var functionString = buildFunctionString(test);
 
+		console.log(functionString);
+
 		/* (Stack Overflow comment) we are creating a new javascript file using blob. We just use the string passed to the function, and assign it to the Blob(content,type). */
 		var workerData = new Blob([functionString], { type: "text/javascript" });
+		console.log("workerData: ", workerData);
 
 		initWorker(workerData, test);
 	});
@@ -56,11 +59,12 @@ function checkUserCode(str, question, passFunc, failFunc) {
 	function initWorker(data, test) {
 		/* (Stack Overflow comment) create the new web worker as we dont have an external file, we have to create a url for our blob using createObjectURL. link will look like blob:d3958f5c-0777-0845-9dcf-2cb28783acaf */
 		myWorker = new Worker(window.URL.createObjectURL(data));
+		console.log("myWorker: ", myWorker);
 
 		/* listen for messages sent back by the worker */
 		myWorker.onmessage = function (e) {
 			clearTimeout(timeoutError);     // clear the error timeout so it doesn't fire
-			stopWorker(myWorker);     // delete the actual worker once we have the return
+			//stopWorker(myWorker);     // delete the actual worker once we have the return
 			handleWorkerReturn(e, test);      // pass return to handler function
 			
 		};
@@ -68,7 +72,7 @@ function checkUserCode(str, question, passFunc, failFunc) {
 		var timeoutError = setTimeout(function() {
 			/* if the worker is running for longer than 5 seconds, throw timeout */
 			console.log("Timeout error thrown");
-			stopWorker(myWorker);
+			//stopWorker(myWorker);
 			failFunc();
 		}, 5 * 1000);
 	}
@@ -82,11 +86,12 @@ function checkUserCode(str, question, passFunc, failFunc) {
 	function handleWorkerReturn(e, test) {
 		console.log(e);
 		console.log(e.data);
+		console.log("test: ", test, "    test.passVal: ", test.passVal);
 
 		/* if the return matches the expected pass value, 
 			increment the current test counter
 			if the counter equals the number of tests, then run pass function */
-		if(e.data = test.passVal) {
+		if(e.data === test.passVal) {
 			currTest += 1;
 			if(currTest === question.tests.length) {
 				passFunc();
@@ -102,7 +107,7 @@ function checkUserCode(str, question, passFunc, failFunc) {
 		var params = buildArgList(test.params);
 
 		var fullStr = `function ${f.name}(${args}) { `;
-		fullStr += `${str} }`;
+		fullStr += `${str} } `;
 
 		fullStr += `postMessage( ${f.name}(${params}) );`;
 
@@ -132,7 +137,7 @@ testQuestion = {
 	question: "Actual question",
 	asked: "false",
 	function: {
-		name: "myFunc,
+		name: "myFunc",
 		args: ["num1", "num2"],
 	},
 	tests: [{
