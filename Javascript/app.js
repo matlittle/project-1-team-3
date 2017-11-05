@@ -35,9 +35,10 @@ function checkUserCode(str, question, passFunc, failFunc) {
 		alert('No webworker supported');
 		return false;
 	}
-
-	var myWorker = null,
-		URL = window.URL || (window.webkitURL);      // initialize variables
+	/* Initialize Variables */
+	var myWorker = null, 
+		URL = window.URL || (window.webkitURL),
+		timeoutError = null;
 
 	window.URL = URL;
 
@@ -65,11 +66,12 @@ function checkUserCode(str, question, passFunc, failFunc) {
 			handleWorkerReturn(e, test);      // pass return to handler function
 		};
 
-		var timeoutError = setTimeout(function() {
+		timeoutError = setTimeout(function() {
 			/* if the worker is running for longer than 5 seconds, throw timeout */
 			console.log("Timeout error thrown");
-			failFunc();
+			clearTimeout(timeoutError);
 			stopWorker(myWorker);
+			failFunc();
 		}, 5 * 1000);
 	}
 
@@ -86,12 +88,14 @@ function checkUserCode(str, question, passFunc, failFunc) {
 		if(e.data === test.passVal) {
 			currTest += 1;
 			if(currTest === question.tests.length) {
-				passFunc();
+				clearTimeout(timeoutError);
 				stopWorker(myWorker);
+				passFunc();
 			}
 		} else {
-			failFunc();
+			clearTimeout(timeoutError);
 			stopWorker(myWorker);
+			failFunc();
 		}
 	}
 
@@ -143,7 +147,11 @@ testQuestion = {
 	}]
 }
 
-checkUserCode(testString, testQuestion, passedTests, failedTests); 
+//checkUserCode(testString, testQuestion, passedTests, failedTests); 
+
+$("#code-btn").click(function() {
+	checkUserCode( $("code-text").text(), testQuestion, passedTests, failedTests );
+});
 
 function passedTests() {
 	console.log("passed");
