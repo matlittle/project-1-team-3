@@ -36,13 +36,10 @@ function checkUserCode(str, question, passFunc, failFunc) {
 		return false;
 	}
 	/* Initialize Variables */
-	var myWorker = null, 
-		URL = window.URL || (window.webkitURL),
-		timeoutError = null;
+	var myWorker = null, currTest = 0, failed = false, 
+		URL = window.URL || (window.webkitURL);
 
 	window.URL = URL;
-
-	var currTest = 0;
 
 	question.tests.forEach(function(test) {
 		var functionString = buildFunctionString(test);
@@ -62,39 +59,46 @@ function checkUserCode(str, question, passFunc, failFunc) {
 
 		/* listen for messages sent back by the worker */
 		myWorker.onmessage = function (e) {
+			console.log("cleared timeout");
 			clearTimeout(timeoutError);     // clear the error timeout so it doesn't fire
-			handleWorkerReturn(e, test);      // pass return to handler function
+			handleWorkerReturn(e, test, myWorker, timeoutError);      // pass return to handler function
 		};
 
-		timeoutError = setTimeout(function() {
+		var timeoutError = setTimeout(function() {
 			/* if the worker is running for longer than 5 seconds, throw timeout */
-			console.log("Timeout error thrown");
 			clearTimeout(timeoutError);
 			stopWorker(myWorker);
-			failFunc();
+			console.log("Timeout error thrown");
+			
+			/* check if already failed */
+			if(!failed) {
+				failFunc();
+			}
+
 		}, 5 * 1000);
 	}
 
 	function stopWorker(w){
 		/* stop and delete the worker when it's done */
+		w.onmessage = null;
 		w.terminate();
 		delete w;
 	}
 
-	function handleWorkerReturn(e, test) {
+	function handleWorkerReturn(e, test, worker, time) {
 		/* if the return matches the expected pass value, 
 			increment the current test counter
 			if the counter equals the number of tests, then run pass function */
 		if(e.data === test.passVal) {
+			console.log("currTest: ", currTest);
 			currTest += 1;
 			if(currTest === question.tests.length) {
-				clearTimeout(timeoutError);
-				stopWorker(myWorker);
+				stopWorker(worker);
 				passFunc();
 			}
 		} else {
-			clearTimeout(timeoutError);
-			stopWorker(myWorker);
+			stopWorker(worker);
+			failed = true;
 			failFunc();
 		}
 	}
@@ -150,7 +154,8 @@ testQuestion = {
 //checkUserCode(testString, testQuestion, passedTests, failedTests); 
 
 $("#code-btn").click(function() {
-	checkUserCode( $("code-text").text(), testQuestion, passedTests, failedTests );
+	// console.log( $("#code-text").val() );
+	checkUserCode( $("#code-text").val() , testQuestion, passedTests, failedTests );
 });
 
 function passedTests() {
