@@ -59,7 +59,6 @@ function checkUserCode(str, question, passFunc, failFunc) {
 
 		/* listen for messages sent back by the worker */
 		myWorker.onmessage = function (e) {
-			console.log("cleared timeout");
 			clearTimeout(timeoutError);     // clear the error timeout so it doesn't fire
 			handleWorkerReturn(e, test, myWorker, timeoutError);      // pass return to handler function
 		};
@@ -68,10 +67,10 @@ function checkUserCode(str, question, passFunc, failFunc) {
 			/* if the worker is running for longer than 5 seconds, throw timeout */
 			clearTimeout(timeoutError);
 			stopWorker(myWorker);
-			console.log("Timeout error thrown");
-			
+
 			/* check if already failed */
 			if(!failed) {
+				console.log("Timeout error thrown");
 				failFunc();
 			}
 
@@ -90,7 +89,6 @@ function checkUserCode(str, question, passFunc, failFunc) {
 			increment the current test counter
 			if the counter equals the number of tests, then run pass function */
 		if(e.data === test.passVal) {
-			console.log("currTest: ", currTest);
 			currTest += 1;
 			if(currTest === question.tests.length) {
 				stopWorker(worker);
