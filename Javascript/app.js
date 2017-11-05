@@ -27,11 +27,16 @@ $(document).ready(function()
 
 
 
-/*Input Evaluation Function*/
-
+/*
+INPUT EVALUATION FUNCTION 
+ 	This function takes the user input string from the text area, 
+	the current question object,  
+	the function to run if they pass, 
+	and the function to run if they failed 
+*/
 function checkUserCode(str, question, passFunc, failFunc) {
 
-	if (typeof (Worker) === undefined) {        // check if browser supports web workers 
+	if (typeof (Worker) === undefined) {		// check if browser supports web workers 
 		alert('No webworker supported');
 		return false;
 	}
@@ -59,21 +64,21 @@ function checkUserCode(str, question, passFunc, failFunc) {
 
 		/* listen for messages sent back by the worker */
 		myWorker.onmessage = function (e) {
-			clearTimeout(timeoutError);     // clear the error timeout so it doesn't fire
-			handleWorkerReturn(e, test, myWorker, timeoutError);      // pass return to handler function
+			clearTimeout(timeoutError);		// clear the error timeout so it doesn't fire
+			handleWorkerReturn(e, test, myWorker, timeoutError);		// pass return to handler function
 		};
 
+		/* if the worker is running for longer than 5 seconds, throw timeout */
 		var timeoutError = setTimeout(function() {
-			/* if the worker is running for longer than 5 seconds, throw timeout */
 			clearTimeout(timeoutError);
 			stopWorker(myWorker);
 
 			/* check if already failed */
 			if(!failed) {
 				console.log("Timeout error thrown");
+				failed = true;
 				failFunc();
 			}
-
 		}, 5 * 1000);
 	}
 
@@ -129,37 +134,5 @@ function checkUserCode(str, question, passFunc, failFunc) {
 	}
 }
 
-/* TEST VALUES */
-testString = "return 1 + 2;";
 
-testQuestion = {
-	question: "Actual question",
-	asked: "false",
-	function: {
-		name: "myFunc",
-		args: ["num1", "num2"],
-	},
-	tests: [{
-		params: ["1", "2"],
-		passVal: 3
-	},
-	{
-		params: ["3", "4"],
-		passVal: 7
-	}]
-}
 
-//checkUserCode(testString, testQuestion, passedTests, failedTests); 
-
-$("#code-btn").click(function() {
-	// console.log( $("#code-text").val() );
-	checkUserCode( $("#code-text").val() , testQuestion, passedTests, failedTests );
-});
-
-function passedTests() {
-	console.log("passed");
-}
-
-function failedTests() {
-	console.log("failed");
-}
