@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<link href="https://fonts.googleapis.com/css?family=Julius+Sans+One" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
+	
+</head>
+
+<body>
+
+	<div id="body-background">
+
+		<div id="login-modal" class="modal">
+			<h1 class="modal-text">login here</h1>
+			<label for="user-name-input">User Name</label>
+            <input class="form-control" id="user-name-input" type="text">
+            <label for="password-input">Password</label>
+            <input class="form-control" id="password-input" type="text">
+            <button class="btn btn-primary" id="add-train-btn" type="submit" style="background-color: #ee7600; color: navy">Login</button>
+            <button class="btn btn-primary" id="add-newuser-btn" type="submit" style="background-color: #ee7600; color: navy">New User</button>
+            <!-- button for new user login -->
+		</div>
+
+		<!-- need to have a new user login modal -->
+
+		<div id="new-user-modal" class="modal" style="background-color: orange">
+			<h1 class="modal-text">login here</h1>
+			<label for="user-name-input">User Name</label>
+            <input class="form-control" id="user-name-input" type="text">
+            <label for="password-input">Password</label>
+            <input class="form-control" id="new-password-input" type="text">
+            <label for="password-input">Password Again</label>
+            <input class="form-control" id="new-password-input-verify" type="text">
+            <button class="btn btn-primary" id="submit-newuser-btn" type="submit" style="background-color: #ee7600; color: navy">Submit</button>
+		</div>
+
+	</div>
+
+</body>
+
+<link rel="stylesheet" type="text/css" href="style.css">
+<script src="app.js"></script>
+
+</html>
