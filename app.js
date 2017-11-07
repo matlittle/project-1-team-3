@@ -1,11 +1,6 @@
 $("#new-user-modal").hide();
 
-$("#add-newuser-btn").click(function(){
-  $("#login-modal").hide();
-  $("#new-user-modal").show();
-});
-
-var userName = "";
+var email = "";
 var password = "";
 var passwordAgain = "";
 
@@ -22,22 +17,88 @@ firebase.initializeApp(config);
 
 var database = firebase.database();
 
-//modal login
 
-$("#login-modal").click(function(){
+$("#add-newuser-btn").on("click", function(event){
+
   $("#login-modal").hide();
+  $("#new-user-modal").show();
+
 });
 
-//get user details
-var user = firebase.auth().currentUser;
-var name, email, photoUrl, uid, emailVerified;
+//create a new user with email and password
+$("#submit-newuser-btn").on("click", function(event){
+  event.preventDefault();
 
-if (user != null) {
-  name = user.displayName;
-  email = user.email;
-  photoUrl = user.photoURL;
-  emailVerified = user.emailVerified;
-  uid = user.uid;  // The user's ID, unique to the Firebase project. Do NOT use
-                   // this value to authenticate with your backend server, if
-                   // you have one. Use User.getToken() instead.
-}
+  email = $('#new-user-name-input').val();//.trim();
+    //$('#user-name-input').val("");
+
+  password = $('#new-password-input').val();//.trim();
+    //$('#password-input').val("");
+
+  passwordAgain = $('#new-password-input-verify').val();//.trim();
+    //$('#password-again-input').val("");
+
+  if (password === passwordAgain){
+    //create new account with email and password
+    //check if account already made
+    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      if (errorCode == 'auth/email-already-in-use') {
+        alert('Account already in use');
+        $('#user-name-input').val("");
+        $('#password-input').val("");
+        $('#password-again-input').val("");
+      } else {
+        alert(errorMessage);
+      }
+      console.log(error);
+    });
+
+  } else {
+    alert('passwords do not match')
+    $('#password-input').val("");
+    $('#password-again-input').val("");
+  }
+});
+
+//modal login
+$("#login-btn").on("click", function(event){
+
+  event.preventDefault();
+
+  email = $('#user-name-input').val();//.trim();
+    //$('#user-name-input').val("");
+
+  password = $('#password-input').val();//.trim();
+    //$('#password-input').val("");
+
+  //sign in existing user
+  firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+
+  });
+
+});
+
+// close sign in modal here?
+//$("#login-modal").hide();
+
+//Set an authentication state observer and get user data
+//currently signed in user
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    // user is signed in
+    // show an html element with user name of currently signed in
+    // close sign in modal here
+    var email = user.email;
+  } else {
+    // user is signed out
+    // re-open up sign-in modal
+    // change html element to show user signed out
+  }
+});
+
