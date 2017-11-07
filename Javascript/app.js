@@ -135,7 +135,7 @@ function checkUserCode(str, question, passFunc, failFunc) {
 		var args = buildArgList(f.args);
 		var params = buildArgList(test.params);
 
-		var fullStr = `function ${f.name}(${args}) { ${str} }  `+
+		var fullStr = `function ${f.name}(${args}) { \n ${str} \n }  `+
 					`postMessage( ${f.name}(${params}) ); `;
 
 		return fullStr;
