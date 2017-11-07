@@ -1,4 +1,5 @@
 $("#new-user-modal").hide();
+$("#sign-out").hide();
 
 var email = "";
 var password = "";
@@ -84,14 +85,28 @@ $("#login-btn").on("click", function(event){
 
 });
 
-// close sign in modal here?
-//$("#login-modal").hide();
+//need to add sign out event
+$("#sign-out").on("click", function(event){
+  event.preventDefault();
+
+// firebase.auth().signOut().then(function() {
+//   // Sign-out successful.
+// }).catch(function(error) {
+//   // An error happened.
+// });
+
+});
+
 
 //Set an authentication state observer and get user data
 //currently signed in user
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
+    //close sign in modal here?
+    //$("#login-modal").hide();
+
     // user is signed in
+    $("#sign-out").show();
     // show an html element with user name of currently signed in
     // close sign in modal here
     var email = user.email;
@@ -99,6 +114,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     // user is signed out
     // re-open up sign-in modal
     // change html element to show user signed out
+    $("#sign-out").hide();
   }
 });
 
