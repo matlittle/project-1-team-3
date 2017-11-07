@@ -69,31 +69,43 @@ $("#login-btn").on("click", function(event){
 
   event.preventDefault();
 
+  // $("#sign-out").show();
+
   email = $('#user-name-input').val();//.trim();
-    //$('#user-name-input').val("");
+    $('#user-name-input').val("");
 
   password = $('#password-input').val();//.trim();
-    //$('#password-input').val("");
+    $('#password-input').val("");
 
   //sign in existing user
   firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
     // Handle Errors here.
     var errorCode = error.code;
     var errorMessage = error.message;
+    if(errorCode == 'auth/wrong-password'){
+      alert("wrong password");
+      $('#password-input').val("");
+    }
 
   });
 
+  if(firebase.User != null){
+    console.log(firebase.User);
+    
+    $("#login-modal").hide();
+  }
+
 });
 
-//need to add sign out event
+//add sign out event
 $("#sign-out").on("click", function(event){
   event.preventDefault();
 
-// firebase.auth().signOut().then(function() {
-//   // Sign-out successful.
-// }).catch(function(error) {
-//   // An error happened.
-// });
+  firebase.auth().signOut().then(function() {
+    // Sign-out successful.
+  }).catch(function(error) {
+    // An error happened.
+  });
 
 });
 
@@ -113,6 +125,7 @@ firebase.auth().onAuthStateChanged(function(user) {
   } else {
     // user is signed out
     // re-open up sign-in modal
+    $("#login-modal").show();
     // change html element to show user signed out
     $("#sign-out").hide();
   }
