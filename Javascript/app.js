@@ -80,7 +80,7 @@ function checkUserCode(str, question, passFunc, failFunc) {
 		/* listen for messages sent back by the worker */
 		myWorker.onmessage = function (e) {
 			clearTimeout(timeoutError);		// clear the error timeout so it doesn't fire
-			handleWorkerReturn(e, test, myWorker, timeoutError);		// pass return to handler function
+			handleWorkerReturn(e, test, myWorker);		// pass return to handler function
 		};
 
 		myWorker.onerror = function (e) {
@@ -97,9 +97,11 @@ function checkUserCode(str, question, passFunc, failFunc) {
 
 			/* check if already failed */
 			if(!failed) {
-				console.log("Timeout error thrown");
 				failed = true;
-				failFunc();
+				var e = {
+					message: "TIMEOUT ERROR: Function provided likely has an infinite loop"
+				}
+				failFunc(e);
 			}
 		}, 5 * 1000);
 	}
@@ -111,11 +113,10 @@ function checkUserCode(str, question, passFunc, failFunc) {
 		delete w;
 	}
 
-	function handleWorkerReturn(e, test, worker, time) {
+	function handleWorkerReturn(e, test, worker) {
 		/* if the return matches the expected pass value, 
 			increment the current test counter
 			if the counter equals the number of tests, then run pass function */
-		console.log("e.data: ", e.data, "   test.passVal: ", test.passVal);
 		if(e.data === test.passVal) {
 			currTest += 1;
 			if(currTest === question.tests.length) {
