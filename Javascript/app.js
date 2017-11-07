@@ -83,6 +83,13 @@ function checkUserCode(str, question, passFunc, failFunc) {
 			handleWorkerReturn(e, test, myWorker, timeoutError);		// pass return to handler function
 		};
 
+		myWorker.onerror = function (e) {
+			stopWorker(myWorker);
+			clearTimeout(timeoutError);
+			failed = true;
+			failFunc(e);
+		}
+
 		/* if the worker is running for longer than 5 seconds, throw timeout */
 		var timeoutError = setTimeout(function() {
 			clearTimeout(timeoutError);
@@ -108,6 +115,7 @@ function checkUserCode(str, question, passFunc, failFunc) {
 		/* if the return matches the expected pass value, 
 			increment the current test counter
 			if the counter equals the number of tests, then run pass function */
+		console.log("e.data: ", e.data, "   test.passVal: ", test.passVal);
 		if(e.data === test.passVal) {
 			currTest += 1;
 			if(currTest === question.tests.length) {
@@ -126,10 +134,8 @@ function checkUserCode(str, question, passFunc, failFunc) {
 		var args = buildArgList(f.args);
 		var params = buildArgList(test.params);
 
-		var fullStr = `function ${f.name}(${args}) { ` +
-			`try { ${str} `+
-			`} catch(err) { return err; } } ` +
-			`postMessage( ${f.name}(${params}) );`;
+		var fullStr = `function ${f.name}(${args}) { ${str} }  `+
+					`postMessage( ${f.name}(${params}) ); `;
 
 		return fullStr;
 	}
@@ -160,11 +166,11 @@ var question1 = {
         args: ["num1", "num2"],
     },
     tests: [{
-        params: ["1", "2"],
+        params: [1, 2],
         passVal: 3
     },
     {
-        params: ["3", "4"],
+        params: [3, 4],
         passVal: 7
     }]
 }
@@ -182,6 +188,7 @@ function testPassed() {
 
 function testFailed(e) {
 	$("#test-return").empty();
+	$("#test-return").append(e.message, "<br>");
 	$("#test-return").append("failed");
 	console.log(e);
 } 
