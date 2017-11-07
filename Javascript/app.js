@@ -102,7 +102,7 @@ function checkUserCode(str, question, passFunc, failFunc) {
 		} else {
 			stopWorker(worker);
 			failed = true;
-			failFunc();
+			failFunc(e);
 		}
 	}
 
@@ -111,10 +111,10 @@ function checkUserCode(str, question, passFunc, failFunc) {
 		var args = buildArgList(f.args);
 		var params = buildArgList(test.params);
 
-		var fullStr = `function ${f.name}(${args}) { `;
-		fullStr += `${str} } `;
-
-		fullStr += `postMessage( ${f.name}(${params}) );`;
+		var fullStr = `function ${f.name}(${args}) { ` +
+			`try { ${str} `+
+			`} catch(err) { return err; } } ` +
+			`postMessage( ${f.name}(${params}) );`;
 
 		return fullStr;
 	}
@@ -168,5 +168,6 @@ function testPassed() {
 function testFailed(e) {
 	$("#test-return").empty();
 	$("#test-return").append("failed");
-}
+	console.log(e);
+} 
 
