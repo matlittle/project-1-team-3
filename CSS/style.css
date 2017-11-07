@@ -1,0 +1,87 @@
+body
+{
+	background-color: black;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+
+@font-face        								/* Linking the fonts for the page */					
+{
+	font-family: computerFont;
+	src: url("images/computer_7.ttf");
+}
+
+#userInputTable									/*Adjust the positon of the table first page */
+{
+	top: 30%;
+	left: 38%;
+	position: fixed;
+}
+
+#readyUp										/* Adjust the button on first page to go to second page */
+{
+	background-color: black;
+	border-color: #4bfe31;
+	left: 48%;
+	top: 62%;
+	position: fixed;
+
+}
+
+.firstPageLayout								/* Adjust the font First Page here */
+{
+	
+	background-color: black;
+	color: #4bfe31;
+	font-family: computerFont;
+	font-size: 20px;
+	background-image: url("images/computermonitor1.png");
+	background-position: center;
+	background-repeat: no-repeat;
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+
+input                   						/* Adjust the background of the First Page Table */
+{
+	background-color: grey;
+	border-color: #4bfe31;
+	margin: 5px;	
+}
+
+#secondPageRow
+{
+	color: #4bfe31;
+	font-family: computerFont;
+	font-size: 20px;
+	background-image: url("images/computermonitor1.png");
+	background-position: center;
+	background-repeat: no-repeat;
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+
+#waiting
+{
+	color: #4bfe31;
+	font-family: computerFont;
+	font-size: 20px;
+	position: fixed;
+	top: 40%;
+	left: 46%;
+}
+
+.row											/* gets rid of the horizontal scroll bar on second page*/
+{
+	margin: 0 auto;
+}
+
+
