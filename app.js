@@ -89,12 +89,6 @@ $("#login-btn").on("click", function(event){
 
   });
 
-  if(firebase.User != null){
-    console.log(firebase.User);
-    
-    $("#login-modal").hide();
-  }
-
 });
 
 //add sign out event
@@ -114,11 +108,11 @@ $("#sign-out").on("click", function(event){
 //currently signed in user
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
-    //close sign in modal here?
-    //$("#login-modal").hide();
-
+    
     // user is signed in
     $("#sign-out").show();
+    $("#new-user-modal").hide();
+    $("#login-modal").hide();
     // show an html element with user name of currently signed in
     // close sign in modal here
     var email = user.email;
