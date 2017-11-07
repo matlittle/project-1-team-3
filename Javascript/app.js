@@ -1,3 +1,18 @@
+// Initialize Firebase database
+var config = {
+	apiKey: "AIzaSyDZRnbOrhklh9e8ofblm1DlOqMi4D0lz08",
+	authDomain: "dual-user-input.firebaseapp.com",
+	databaseURL: "https://dual-user-input.firebaseio.com",
+	projectId: "dual-user-input",
+	storageBucket: "",
+	messagingSenderId: "990369680846"
+};
+firebase.initializeApp(config);
+
+var db = firebase.database();
+var currPlayer = "";
+var otherPlayer = "";
+
 $(document).ready(function()
 {
 
