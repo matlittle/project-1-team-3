@@ -4,6 +4,11 @@ $("#sign-out").hide();
 var email = "";
 var password = "";
 var passwordAgain = "";
+var chosenName = "";
+
+//capture user id from firebase
+var userID = "";
+// user.uid
 
 // Initialize Firebase
 var config = {
@@ -30,7 +35,10 @@ $("#add-newuser-btn").on("click", function(event){
 $("#submit-newuser-btn").on("click", function(event){
   event.preventDefault();
 
-  email = $('#new-user-name-input').val();//.trim();
+  email = $('#new-user-name-input').val().trim();
+    //$('#user-name-input').val("");
+
+  chosenName = $('#user-handle-input').val().trim();
     //$('#user-name-input').val("");
 
   password = $('#new-password-input').val();//.trim();
@@ -46,6 +54,7 @@ $("#submit-newuser-btn").on("click", function(event){
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
+      //call create user profile here
       if (errorCode == 'auth/email-already-in-use') {
         alert('Account already in use');
         $('#user-name-input').val("");
@@ -115,7 +124,20 @@ firebase.auth().onAuthStateChanged(function(user) {
     $("#login-modal").hide();
     // show an html element with user name of currently signed in
     // close sign in modal here
-    var email = user.email;
+
+    //capture unique user id at
+    userID = user.uid;
+
+    if (userID in database.ref('users')){ //return the user profile associated with the id
+
+      console.log("user has profile")
+
+    } else { //if the user id signed in does not have a profile, push one
+
+      userProfile();
+
+    }
+    
   } else {
     // user is signed out
     // re-open up sign-in modal
@@ -124,4 +146,24 @@ firebase.auth().onAuthStateChanged(function(user) {
     $("#sign-out").hide();
   }
 });
+
+
+//pushes userprofile to database
+function userProfile(){ 
+  //https://stackoverflow.com/questions/42885707/using-push-method-to-create-new-child-location-without-unique-key
+  database.ref('users').child(userID).set({
+
+    username: chosenName,
+    score: "", //latestScore
+    stats: "" //currentStats
+
+  });
+
+}
+
+//need to get out username and return to terry
+
+//github authentication
+
+//on disconnect even 
 

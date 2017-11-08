@@ -23,15 +23,20 @@
             <input class="form-control" id="password-input" type="password">
             <button class="btn btn-primary" id="login-btn" type="submit" style="background-color: #ee7600; color: navy">Login</button>
             <button class="btn btn-primary" id="add-newuser-btn" type="submit" style="background-color: #ee7600; color: navy">New User</button>
-            <!-- button for new user login -->
+            <!-- button for github login -->
+            <button class="btn btn-primary" id="github-sign-in" type="submit" style="background-color: #ee7600; color: navy">Sign in with GitHub</button>
 		</div>
 
 		<!-- need to have a new user login modal -->
 
 		<div id="new-user-modal" class="modal" style="background-color: orange">
 			<h1 class="modal-text">login here</h1>
-			<label for="user-name-input">E-mail</label>
+			<label for="new-user-name-input">E-mail</label>
             <input class="form-control" id="new-user-name-input" type="text">
+ <!--            handle input -->
+            <label for="user-handle-input">Handle</label>
+            <input class="form-control" id="user-handle-input" type="text">
+<!-- 			end handle input -->
             <label for="password-input">Password</label>
             <input class="form-control" id="new-password-input" type="password">
             <label for="password-again-input">Password Again</label>
