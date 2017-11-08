@@ -137,6 +137,10 @@ firebase.auth().onAuthStateChanged(function(user) {
       userProfile();
 
     }
+
+    //need to verify unique user name here
+
+    //issue #37 can be handled here
     
   } else {
     // user is signed out
@@ -156,6 +160,26 @@ function userProfile(){
     username: chosenName,
     score: "", //latestScore
     stats: "" //currentStats
+    avatar: ""
+
+  });
+
+}
+
+function setPlayer(){
+
+  //userID
+  return firebase.database().ref('/current/' + player1).once('value').then(function(snapshot) {
+  //var username = (snapshot.val().username);
+  // ...
+  });
+
+  database.ref('current').child('player1').set({
+
+    state: "none",
+    uid: "clientID", 
+    code: "",
+    avatar: `https://robohash.org/${username}.png?size=200x200`
 
   });
 
