@@ -98,10 +98,10 @@ function checkUserCode(str, question, passFunc, failFunc) {
 			/* check if already failed */
 			if(!failed) {
 				failed = true;
-				var e = {
+				var obj = {
 					message: "TIMEOUT ERROR: Function provided likely has an infinite loop"
 				}
-				failFunc(e);
+				failFunc(obj);
 			}
 		}, 5 * 1000);
 	}
@@ -126,7 +126,12 @@ function checkUserCode(str, question, passFunc, failFunc) {
 		} else {
 			stopWorker(worker);
 			failed = true;
-			failFunc(e);
+
+			var obj = {
+				message: `Expected result: ${test.passVal}.  Result received: ${e.data}`
+			}
+			
+			failFunc(obj);
 		}
 	}
 
