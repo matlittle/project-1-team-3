@@ -35,7 +35,10 @@ $("#add-newuser-btn").on("click", function(event){
 $("#submit-newuser-btn").on("click", function(event){
   event.preventDefault();
 
-  email = $('#new-user-name-input').val();//.trim();
+  email = $('#new-user-name-input').val().trim();
+    //$('#user-name-input').val("");
+
+  chosenName = $('#user-handle-input').val().trim();
     //$('#user-name-input').val("");
 
   password = $('#new-password-input').val();//.trim();
@@ -51,6 +54,7 @@ $("#submit-newuser-btn").on("click", function(event){
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
+      //call create user profile here
       if (errorCode == 'auth/email-already-in-use') {
         alert('Account already in use');
         $('#user-name-input').val("");
@@ -124,7 +128,11 @@ firebase.auth().onAuthStateChanged(function(user) {
     //capture unique user id at
     userID = user.uid;
 
-    console.log(userID);
+    if (true){ //if the user id signed in does not have a profile, push one
+
+    } else { //return the user profile associated with the id
+
+    }
     
   } else {
     // user is signed out
@@ -139,11 +147,13 @@ firebase.auth().onAuthStateChanged(function(user) {
 function userProfile(){
   // add to user object 
   database.ref('users').push({
-    uid: {  
+    
+    [userID]: {  
       username: chosenName,
       score: "", //latestScore
       stats: "" //currentStats
     }
+  
   });
 }
 
