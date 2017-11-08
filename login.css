@@ -1,0 +1,16 @@
+.modal-text{
+	margin-top: 15%;
+}
+
+/*modal css from w3schools*/
+.modal {
+    position: fixed;
+	z-index: 1;
+	width:60%;
+	height: 60%;
+	margin-top: 2%;
+	margin-right: 20%;
+	margin-left: 20%;
+	border: 1px solid black;
+	border-radius: 25px;
+}
