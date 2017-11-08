@@ -149,5 +149,40 @@ function checkUserCode(str, question, passFunc, failFunc) {
 	}
 }
 
+// function to capture tabs in text area---tab key is "9"
+function captureTabPress(event){
+	var key = event.keyCode;
+	if(key===9){
+		event.preventDefault();
+
+// current position of cursor
+		var curPos = this.selectionStart;	
+//from beginning to cursor position
+		var startStr = $(this).val().substring(0, curPos);
+		var endStr = $(this).val().substring(curPos);
+//string interpolation
+		var newStr = `${startStr}\t${endStr}`;
+		$(this).val(newStr);
+//moving cursor to post tab
+		this.selectionStart = curPos + 1;
+		this.selectionEnd = curPos + 1;
+	} 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
