@@ -45,7 +45,8 @@ INPUT EVALUATION FUNCTION
  	This function takes the user input string from the text area, 
 	the current question object,  
 	the function to run if they pass, 
-	and the function to run if they failed 
+	and the function to run if they failed.
+	Fail function will be passed an object with a message property with the failure message
 */
 function checkUserCode(str, question, passFunc, failFunc) {
 
@@ -78,8 +79,15 @@ function checkUserCode(str, question, passFunc, failFunc) {
 		/* listen for messages sent back by the worker */
 		myWorker.onmessage = function (e) {
 			clearTimeout(timeoutError);		// clear the error timeout so it doesn't fire
-			handleWorkerReturn(e, test, myWorker, timeoutError);		// pass return to handler function
+			handleWorkerReturn(e, test, myWorker);		// pass return to handler function
 		};
+
+		myWorker.onerror = function (e) {
+			stopWorker(myWorker);
+			clearTimeout(timeoutError);
+			failed = true;
+			failFunc(e);
+		}
 
 		/* if the worker is running for longer than 5 seconds, throw timeout */
 		var timeoutError = setTimeout(function() {
@@ -88,9 +96,11 @@ function checkUserCode(str, question, passFunc, failFunc) {
 
 			/* check if already failed */
 			if(!failed) {
-				console.log("Timeout error thrown");
 				failed = true;
-				failFunc();
+				var obj = {
+					message: "TIMEOUT ERROR: Function provided likely has an infinite loop"
+				}
+				failFunc(obj);
 			}
 		}, 5 * 1000);
 	}
@@ -102,7 +112,7 @@ function checkUserCode(str, question, passFunc, failFunc) {
 		delete w;
 	}
 
-	function handleWorkerReturn(e, test, worker, time) {
+	function handleWorkerReturn(e, test, worker) {
 		/* if the return matches the expected pass value, 
 			increment the current test counter
 			if the counter equals the number of tests, then run pass function */
@@ -115,7 +125,12 @@ function checkUserCode(str, question, passFunc, failFunc) {
 		} else {
 			stopWorker(worker);
 			failed = true;
-			failFunc();
+
+			var obj = {
+				message: `Expected result: ${test.passVal}.  Result received: ${e.data}`
+			}
+
+			failFunc(obj);
 		}
 	}
 
@@ -124,10 +139,8 @@ function checkUserCode(str, question, passFunc, failFunc) {
 		var args = buildArgList(f.args);
 		var params = buildArgList(test.params);
 
-		var fullStr = `function ${f.name}(${args}) { `;
-		fullStr += `${str} } `;
-
-		fullStr += `postMessage( ${f.name}(${params}) );`;
+		var fullStr = `function ${f.name}(${args}) { \n ${str} \n }  `+
+					`postMessage( ${f.name}(${params}) ); `;
 
 		return fullStr;
 	}
@@ -166,7 +179,6 @@ function captureTabPress(event){
 		this.selectionEnd = curPos + 1;
 	} 
 }
-
 
 
 
