@@ -38,6 +38,53 @@ $(document).ready(function(){
 
 
 
+/* 
+Pseudocode for remaining functions we're goind to need 
+I'm going to list out the remaining functions that we need, and provide the issue number in github that they correspond to. When working on a function, add it to the bottom of the document, and move the comment with it. Make sure to semantically name the function you're writing, and keep it self contained as much as possile. When you start working on it, close, then reopen the github issue to move it to the "Working" panel. Then when you're finished, close it, and submit a PR, with a link to the github issue in the comments. 
+*/
+
+
+/* Issue #26 and #27  (These issues will really be just one function I believe) */
+/* Write a function which we will fire when the page loads. This function will grab the "current" object from our Firebase database. If the player1.state is "inactive", the current player is player one. Otherwise, if player2.state is "inactive", the current player is player2. If both states are not "inactive", then the game is full. 
+You'll call on another function (Issue #34), which will change the state in Firebase to "joining". Pass that function the string "player1", or "player2", depending on which spot the user is taking. 
+For this function, you'll be setting the global variables currPlayer, and otherPlayer to "player1" or "player2". I would recommend writing the function so that if the player successfully joins, we set those variables, and return true. If the game is full, return false. */
+
+
+/* Issue #34 */
+/* Write a function that takes a string, "player1", or "player2". With that given string, set the current.player1/2.state to "joining" */
+
+
+/* Issue #35 */
+/* Write a function that takes a string, "player1", or "player2". With that given string, set the onDisconnect method in firebase to revert the current.player1/2 object to it's base form. Look at issue in github for specifics. */
+
+
+/* Issue #37 */
+/* This function will take the current player string, a username string, and the avatar URL. It will be called when the user successfully logs in. With those pieces or information, you'll set the current.player1/2 object with the corresponding information. See Github issue and pinned Firebase database layout for details. */
+
+
+/* Issue #25 */
+/* Write a function that will take a string, which is the username. With that string, create and return a robohash url. See https://robohash.org/ and Github issue for details. */
+
+
+/* Issue #30 */
+/* This function will be fired when both the current.player1/2.state values are "active". This will likely use a Firebase .on("value", function that will listen for changes to the "current" object. If both player states are "active", and the currPlayer is player1, get a random number using the function written for Issue #38, then check if that question has been asked in this "cycle" already using the function written for Issue #39. This will return false if it has been asked, or the question object if it has not.  
+If it hasn't been asked, call the function for Issue #40 and pass it the question object, and number, to set the current question and mark it as asked. */
+
+
+/* Issue #38 */
+/* Write a function that generates a random number 1-20, and formats it in our database question format (_01, _02, etc.), then returns that formatted number. */
+
+
+/* Issue #39 */
+/* Write a function that will be passed a string which is a question number ("_01", "_02"). Use that string to read the question from Firebase. 
+If the question's asked property is false, return the question object. Otherwise, return false. */
+
+
+/* Issue #40 */
+/* Write a function that will be passed a question object and the question number. Set the currQuestion variable as that object, and set the question."number".asked property to true in Firebase. */
+
+
+
 
 
 /*
