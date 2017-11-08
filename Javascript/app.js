@@ -13,8 +13,7 @@ var db = firebase.database();
 var currPlayer = "";
 var otherPlayer = "";
 
-$(document).ready(function()
-{
+$(document).ready(function(){
 
 	$(".secondPageLayout").fadeOut();
 	$(".thirdPageLayout").fadeOut();
@@ -28,8 +27,7 @@ $(document).ready(function()
 	});
 
 
-	$("").click(function()
-	{
+	$("").click(function(){
 		$("").fadeOut();
 		// fades in the question page on button click
 		$(".").fadeOut();
