@@ -130,7 +130,7 @@ function checkUserCode(str, question, passFunc, failFunc) {
 			var obj = {
 				message: `Expected result: ${test.passVal}.  Result received: ${e.data}`
 			}
-			
+
 			failFunc(obj);
 		}
 	}
@@ -161,41 +161,4 @@ function checkUserCode(str, question, passFunc, failFunc) {
 	}
 }
 
-
-/* MY TEST CASES*/
-
-var question1 = {
-    question: "Actual question",
-    asked: "false",
-    function: {
-        name: "myFunc",
-        args: ["num1", "num2"],
-    },
-    tests: [{
-        params: [1, 2],
-        passVal: 3
-    },
-    {
-        params: [3, 4],
-        passVal: 7
-    }]
-}
-
-
-$("#my-btn").click( function() {
-	var str = $("#test-textarea").val();
-	checkUserCode(str, question1, testPassed, testFailed);
-});
-
-function testPassed() {
-	$("#test-return").empty();
-	$("#test-return").append("passed");
-}
-
-function testFailed(e) {
-	$("#test-return").empty();
-	$("#test-return").append(e.message, "<br>");
-	$("#test-return").append("failed");
-	console.log(e);
-} 
 
