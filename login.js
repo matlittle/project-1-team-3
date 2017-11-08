@@ -4,6 +4,11 @@ $("#sign-out").hide();
 var email = "";
 var password = "";
 var passwordAgain = "";
+var chosenName = "";
+
+//capture user id from firebase
+var userID = "";
+// user.uid
 
 // Initialize Firebase
 var config = {
@@ -53,18 +58,6 @@ $("#submit-newuser-btn").on("click", function(event){
         $('#password-again-input').val("");
       } else {
         alert(errorMessage);
-
-// add to user object 
-
-// users = {
-//   uid: {
-//     username: chosenName,
-//     score: latestScore,
-//     stats: currentStats
-//   }
-
-// }
-
       }
       console.log(error);
     });
@@ -115,6 +108,7 @@ $("#sign-out").on("click", function(event){
 
 });
 
+
 //Set an authentication state observer and get user data
 //currently signed in user
 firebase.auth().onAuthStateChanged(function(user) {
@@ -126,7 +120,12 @@ firebase.auth().onAuthStateChanged(function(user) {
     $("#login-modal").hide();
     // show an html element with user name of currently signed in
     // close sign in modal here
-    var email = user.email;
+
+    //capture unique user id at
+    userID = user.uid;
+
+    console.log(userID);
+    
   } else {
     // user is signed out
     // re-open up sign-in modal
@@ -136,6 +135,17 @@ firebase.auth().onAuthStateChanged(function(user) {
   }
 });
 
+
+function userProfile(){
+  // add to user object 
+  database.ref('users').push({
+    uid: {  
+      username: chosenName,
+      score: "", //latestScore
+      stats: "" //currentStats
+    }
+  });
+}
 
 //need to get out username and return to terry
 
