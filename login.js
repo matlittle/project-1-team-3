@@ -53,6 +53,18 @@ $("#submit-newuser-btn").on("click", function(event){
         $('#password-again-input').val("");
       } else {
         alert(errorMessage);
+
+// add to user object 
+
+// users = {
+//   uid: {
+//     username: chosenName,
+//     score: latestScore,
+//     stats: currentStats
+//   }
+
+// }
+
       }
       console.log(error);
     });
@@ -103,7 +115,6 @@ $("#sign-out").on("click", function(event){
 
 });
 
-
 //Set an authentication state observer and get user data
 //currently signed in user
 firebase.auth().onAuthStateChanged(function(user) {
@@ -124,4 +135,11 @@ firebase.auth().onAuthStateChanged(function(user) {
     $("#sign-out").hide();
   }
 });
+
+
+//need to get out username and return to terry
+
+//github authentication
+
+//on disconnect even 
 
