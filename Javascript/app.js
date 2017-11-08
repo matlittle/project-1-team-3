@@ -47,7 +47,8 @@ INPUT EVALUATION FUNCTION
  	This function takes the user input string from the text area, 
 	the current question object,  
 	the function to run if they pass, 
-	and the function to run if they failed 
+	and the function to run if they failed.
+	Fail function will be passed an object with a message property with the failure message
 */
 function checkUserCode(str, question, passFunc, failFunc) {
 
