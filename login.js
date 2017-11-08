@@ -4,10 +4,10 @@ $("#sign-out").hide();
 var email = "";
 var password = "";
 var passwordAgain = "";
-var chosenName = "placeholder";
+var chosenName = "";
 
 //capture user id from firebase
-var userID = "11111";
+var userID = "";
 // user.uid
 
 // Initialize Firebase
@@ -128,9 +128,13 @@ firebase.auth().onAuthStateChanged(function(user) {
     //capture unique user id at
     userID = user.uid;
 
-    if (true){ //if the user id signed in does not have a profile, push one
+    if (userID in database.ref('users')){ //return the user profile associated with the id
 
-    } else { //return the user profile associated with the id
+      console.log("user has profile")
+
+    } else { //if the user id signed in does not have a profile, push one
+
+      userProfile();
 
     }
     
@@ -144,8 +148,8 @@ firebase.auth().onAuthStateChanged(function(user) {
 });
 
 
-function userProfile(){
-  // add to user object 
+//pushes userprofile to database
+function userProfile(){ 
   //https://stackoverflow.com/questions/42885707/using-push-method-to-create-new-child-location-without-unique-key
   database.ref('users').child(userID).set({
 
@@ -154,7 +158,7 @@ function userProfile(){
     stats: "" //currentStats
 
   });
-  
+
 }
 
 //need to get out username and return to terry
