@@ -138,9 +138,10 @@ firebase.auth().onAuthStateChanged(function(user) {
 
     }
 
-    //need to verify unique user name here
+    //still need login with unique username
 
-    //issue #37 can be handled here
+    setPlayerStatus();
+
     
   } else {
     // user is signed out
@@ -159,27 +160,60 @@ function userProfile(){
 
     username: chosenName,
     score: "", //latestScore
-    stats: "" //currentStats
+    stats: "", //currentStats
     avatar: ""
 
   });
 
 }
 
-function setPlayer(){
+function setPlayerStatus(){
 
-  //userID
-  return firebase.database().ref('/current/' + player1).once('value').then(function(snapshot) {
-  //var username = (snapshot.val().username);
-  // ...
-  });
+  var player1state = "";
+  var player2state = "";
+  var localUsername = "";
 
-  database.ref('current').child('player1').set({
+  database.ref().once('value').then(function(snapshot) {
+    // var username = (snapshot.val());
+    player1state = (snapshot.child('current').child('player1').child('state').val());
+    player2state = (snapshot.child('current').child('player2').child('state').val());
+    localUsername = (snapshot.child('users').child(userID).child('username').val());
+    console.log(player1state);
+    console.log(player2state);
+    console.log(localUsername);
 
-    state: "none",
-    uid: "clientID", 
-    code: "",
-    avatar: `https://robohash.org/${username}.png?size=200x200`
+    if (player1state === 'none'){// || player1state === "joining"
+
+      alert('player1 catch')
+
+      database.ref('current').child('player1').set({
+
+        state: "active",
+        uid: userID, 
+        code: "",
+        avatar: `https://robohash.org/${localUsername}.png?size=200x200`
+
+      });
+
+    } else if (player2state === "none"){// || player2state === "joining"
+
+
+      alert('player2 catch')
+
+      database.ref('current').child('player2').set({
+
+        state: "active",
+        uid: userID, 
+        code: "",
+        avatar: `https://robohash.org/${localUsername}.png?size=200x200`
+
+      });
+
+    } else {
+
+      alert("game is full please try again later");
+
+    }
 
   });
 
