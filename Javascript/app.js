@@ -52,10 +52,16 @@ For this function, you'll be setting the global variables currPlayer, and otherP
 
 /* Issue #34 */
 /* Write a function that takes a string, "player1", or "player2". With that given string, set the current.player1/2.state to "joining" */
+function setPlayerState(current) {
+	if (current === "player1" || current === "player2") {
+		db.ref(`current.${current}.state`).set("joining")
+	} return	
+}
 
 
 /* Issue #35 */
 /* Write a function that takes a string, "player1", or "player2". With that given string, set the onDisconnect method in firebase to revert the current.player1/2 object to it's base form. Look at issue in github for specifics. */
+
 
 
 /* Issue #37 */
