@@ -87,6 +87,25 @@ If it hasn't been asked, call the function for Issue #40 and pass it the questio
 /* Issue #46 */
 /* Write a function that will read the current questions object from Firebase. From those questions, filter out the ones that have already been asked. From the unasked questions, choose a random one, and return that question object. */
 
+function getRandomQuestion() {
+	db.ref("questions").once("value", function(snapshot) {
+		var qObj = snapshot.val();
+		var qKeys = Object.getOwnPropertyNames(qObj);
+		var unaskedQuestions = jQuery.grep(qKeys, function(question){
+			return !qObj[question].asked;
+		})
+
+		if (unaskedQuestions.length === 0){
+			resetQuestions();
+			return getRandomQuestion();
+		}
+
+		var randomNum = Math.floor(Math.random()*unaskedQuestions.length);
+		var chosenQuestion = qObj[unaskedQuestions[randomNum]]
+
+		return chosenQuestion;
+	})
+}
 
 /* Issue #40 */
 /* Write a function that will be passed a question object and the question number. Set the currQuestion variable as that object, and set the question."number".asked property to true in Firebase. */
@@ -221,15 +240,15 @@ function captureTabPress(event){
 	if(key===9){
 		event.preventDefault();
 
-// current position of cursor
+		// current position of cursor
 		var curPos = this.selectionStart;	
-//from beginning to cursor position
+		//from beginning to cursor position
 		var startStr = $(this).val().substring(0, curPos);
 		var endStr = $(this).val().substring(curPos);
-//string interpolation
+		//string interpolation
 		var newStr = `${startStr}\t${endStr}`;
 		$(this).val(newStr);
-//moving cursor to post tab
+		//moving cursor to post tab
 		this.selectionStart = curPos + 1;
 		this.selectionEnd = curPos + 1;
 	} 
