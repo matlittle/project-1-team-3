@@ -104,7 +104,7 @@ $("#sign-out").on("click", function(event){
   event.preventDefault();
 
   firebase.auth().signOut().then(function() {
-    //clear out player state
+    
   }).catch(function(error) {
     // An error happened.
   });
@@ -147,6 +147,9 @@ firebase.auth().onAuthStateChanged(function(user) {
     setPlayerStatus();
   
   } else {
+
+    clearPlayer();
+
     // user is signed out
     // re-open up sign-in modal
     $("#login-modal").show();
@@ -231,6 +234,24 @@ function setPlayerStatus(){
     }
 
   });
+
+}
+
+function clearPlayer(){
+
+  if (currPlayer !== ""){
+
+    database.ref('current').child(currPlayer).set({
+
+      state: "inactive",
+      uid: "", 
+      code: "",
+      avatar: "",
+      username: ""
+
+    });
+
+  }
 
 }
 
