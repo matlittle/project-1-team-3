@@ -107,6 +107,19 @@ function getRandomQuestion() {
 	})
 }
 
+function resetQuestions() {
+	db.ref("questions").once("value", function(snapshot) {
+		var qKeys = Object.getOwnPropertyNames(snapshot.val());
+		qKeys.forEach(function(key){
+			db.ref(`questions/${key}/asked`).setWithPriority(false, 2);
+		})
+	})
+}
+
+
+
+
+
 /* Issue #40 */
 /* Write a function that will be passed a question object and the question number. Set the currQuestion variable as that object, and set the question."number".asked property to true in Firebase. */
 
