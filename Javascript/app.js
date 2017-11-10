@@ -84,13 +84,8 @@ function loadDisconnect(player) {
 If it hasn't been asked, call the function for Issue #40 and pass it the question object, and number, to set the current question and mark it as asked. */
 
 
-/* Issue #38 */
-/* Write a function that generates a random number 1-20, and formats it in our database question format (_01, _02, etc.), then returns that formatted number. */
-
-
-/* Issue #39 */
-/* Write a function that will be passed a string which is a question number ("_01", "_02"). Use that string to read the question from Firebase. 
-If the question's asked property is false, return the question object. Otherwise, return false. */
+/* Issue #46 */
+/* Write a function that will read the current questions object from Firebase. From those questions, filter out the ones that have already been asked. From the unasked questions, choose a random one, and return that question object. */
 
 
 /* Issue #40 */
