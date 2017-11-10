@@ -6,6 +6,8 @@ var password = "";
 var passwordAgain = "";
 var chosenName = "";
 
+var currPlayer = "";
+
 //capture user id from firebase
 var userID = "";
 // user.uid
@@ -33,19 +35,16 @@ $("#add-newuser-btn").on("click", function(event){
 
 //create a new user with email and password
 $("#submit-newuser-btn").on("click", function(event){
+  
   event.preventDefault();
 
   email = $('#new-user-name-input').val().trim();
-    //$('#user-name-input').val("");
 
   chosenName = $('#user-handle-input').val().trim();
-    //$('#user-name-input').val("");
 
   password = $('#new-password-input').val();//.trim();
-    //$('#password-input').val("");
 
   passwordAgain = $('#new-password-input-verify').val();//.trim();
-    //$('#password-again-input').val("");
 
   if (password === passwordAgain){
     //create new account with email and password
@@ -105,7 +104,7 @@ $("#sign-out").on("click", function(event){
   event.preventDefault();
 
   firebase.auth().signOut().then(function() {
-    // Sign-out successful.
+    //clear out player state
   }).catch(function(error) {
     // An error happened.
   });
@@ -116,6 +115,7 @@ $("#sign-out").on("click", function(event){
 //Set an authentication state observer and get user data
 //currently signed in user
 firebase.auth().onAuthStateChanged(function(user) {
+  
   if (user) {
     
     // user is signed in
@@ -128,21 +128,24 @@ firebase.auth().onAuthStateChanged(function(user) {
     //capture unique user id at
     userID = user.uid;
 
-    if (userID in database.ref('users')){ //return the user profile associated with the id
+    database.ref().once('value').then(function(snapshot) {
 
-      console.log("user has profile")
+      if (snapshot.child('users').child(userID).exists()){ //return the user profile associated with the id
 
-    } else { //if the user id signed in does not have a profile, push one
+        //console.log("user has profile")
 
-      userProfile();
+      } else { //if the user id signed in does not have a profile, push one
 
-    }
+        //console.log("user does not have profile")
+        userProfile();
+
+      }
+
+    });
 
     //still need login with unique username
-
     setPlayerStatus();
-
-    
+  
   } else {
     // user is signed out
     // re-open up sign-in modal
@@ -161,7 +164,7 @@ function userProfile(){
     username: chosenName,
     score: "", //latestScore
     stats: "", //currentStats
-    avatar: ""
+    avatar: "",
 
   });
 
@@ -172,46 +175,58 @@ function setPlayerStatus(){
   var player1state = "";
   var player2state = "";
   var localUsername = "";
+  var playerAssigned1 = "";
+  var playerAssigned2 = "";
 
   database.ref().once('value').then(function(snapshot) {
-    // var username = (snapshot.val());
+
     player1state = (snapshot.child('current').child('player1').child('state').val());
     player2state = (snapshot.child('current').child('player2').child('state').val());
+
+    playerAssigned1 = (snapshot.child('current').child('player1').child('uid').val());
+    playerAssigned2 = (snapshot.child('current').child('player2').child('uid').val());
+
     localUsername = (snapshot.child('users').child(userID).child('username').val());
-    console.log(player1state);
-    console.log(player2state);
-    console.log(localUsername);
 
-    if (player1state === 'none'){// || player1state === "joining"
+    if (playerAssigned1 === userID || playerAssigned2 === userID){//if a player is not already assigned
 
-      alert('player1 catch')
-
-      database.ref('current').child('player1').set({
-
-        state: "active",
-        uid: userID, 
-        code: "",
-        avatar: `https://robohash.org/${localUsername}.png?size=200x200`
-
-      });
-
-    } else if (player2state === "none"){// || player2state === "joining"
-
-
-      alert('player2 catch')
-
-      database.ref('current').child('player2').set({
-
-        state: "active",
-        uid: userID, 
-        code: "",
-        avatar: `https://robohash.org/${localUsername}.png?size=200x200`
-
-      });
+      alert("player already assigned");
 
     } else {
 
-      alert("game is full please try again later");
+      if (player1state === 'inactive'){
+
+        currPlayer = "player1";
+
+        alert('player1 catch')
+
+        database.ref('current').child('player1').set({
+
+          state: "active",
+          uid: userID, 
+          code: "",
+          avatar: `https://robohash.org/${localUsername}.png?size=200x200`,
+          username: localUsername
+
+        });
+
+      } else if (player2state === "inactive"){
+
+        currPlayer = "player2";
+
+        alert('player2 catch')
+
+        database.ref('current').child('player2').set({
+
+          state: "active",
+          uid: userID, 
+          code: "",
+          avatar: `https://robohash.org/${localUsername}.png?size=200x200`,
+          username: localUsername
+
+        });
+
+      }
 
     }
 
@@ -219,9 +234,33 @@ function setPlayerStatus(){
 
 }
 
-//need to get out username and return to terry
+//pushes userprofile to database
+function userProfile(){ 
+  //https://stackoverflow.com/questions/42885707/using-push-method-to-create-new-child-location-without-unique-key
+  database.ref('users').child(userID).set({
 
-//github authentication
+    username: chosenName,
+    score: "", //latestScore
+    stats: "" //currentStats
 
-//on disconnect even 
+  });
+
+}
+
+function fullGame(){
+
+  var player1state = "";
+  var player2state = "";
+
+  database.ref('current').once('value').then(function(snapshot) {
+    
+    player1state = (snapshot.child('player1').child('state').val());
+    player2state = (snapshot.child('player2').child('state').val());
+    if (player1state === 'inactive' || player2state === 'inactive'){
+      console.log("spots open");
+    } else {
+      alert("game is full - try again later")
+    }
+  });
+}
 
