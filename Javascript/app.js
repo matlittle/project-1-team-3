@@ -103,6 +103,8 @@ function getRandomQuestion() {
 		var randomNum = Math.floor(Math.random()*unaskedQuestions.length);
 		var chosenQuestion = qObj[unaskedQuestions[randomNum]]
 
+		db.ref(`questions/${unaskedQuestions[randomNum]}/asked`).set(true);
+
 		return chosenQuestion;
 	})
 }
