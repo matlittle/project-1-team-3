@@ -1,0 +1,17 @@
+{
+  "current" : {
+    "player1" : {
+      "state" : "inactive"
+    },
+    "player2" : {
+      "state" : "inactive"
+    }
+  },
+  "users" : {
+    "YPVj0A307FWu4y23Amgoj67Vey02" : {
+      "score" : "",
+      "stats" : "",
+      "username" : ""
+    }
+  }
+}
