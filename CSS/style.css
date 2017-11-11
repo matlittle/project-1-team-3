@@ -1,24 +1,23 @@
-body{
-
+body {
 	background-color: black;
-
 }
 
-@font-face{       								/* Linking the fonts for the page */					
-
+/* Linking the fonts for the page */
+@font-face {
 	font-family: computerFont;
 	src: url("images/computer_7.ttf");
 }
 
-#login-modal{								/*first page user log in */
-
+/*first page user log in */
+#login-modal {
 	text-align: center;
 	width: 75%;
 	margin: 0 auto;
 	margin-top: 270px;
 }
 
-#new-user-modal{								/*first page new user log in */
+/*first page new user log in */
+#new-user-modal {
 	text-align: center;
 	width: 75%;
 	font-size: 15px;
@@ -26,44 +25,29 @@ body{
 	margin-top: 240px;
 }
 
-.form-control{							/* width of the input for our user input */
-
+/* width of the input for our user input */
+.form-control {
 	width: 400px;
 	margin: 0 auto;
 	background-color: grey;
 	color: #4bfe31;
 }
 
-.btn{
-
-	background-color: black;
-	border-color: #4bfe31;
-	color: #4bfe31;
-}
-#readyUp										/* Adjust the button on first page to go to second page */
-{
+.btn {
 	background-color: black;
 	border-color: #4bfe31;
 	color: #4bfe31;
 }
 
-#layoutFirstPage{								/* Adjust the First page div id here with comp image and colors */
-
+/* Adjust the button on first page to go to second page */
+#ready-up {
+	background-color: black;
+	border-color: #4bfe31;
 	color: #4bfe31;
-	font-family: computerFont;
-	font-size: 20px;
-	background-image: url("images/computermonitor1.png");
-	background-position: center;
-	background-repeat: no-repeat;
-	width: 75%;
-	margin: 0 auto;
-	height: 800px;
-	margin-top: 50px;
-	
 }
 
-#secondPageLayout{								/*Adust the second page Waiting on Player 2 Page */
-
+/* Adjust the First page div id here with comp image and colors */
+#layout-first-page {
 	color: #4bfe31;
 	font-family: computerFont;
 	font-size: 20px;
@@ -76,15 +60,30 @@ body{
 	margin-top: 50px;
 }
 
-h3{ 											/* Adjust the Waiting section on Page 2 */
+/*Adust the second page Waiting on Player 2 Page */
+#second-page-layout {
+	color: #4bfe31;
+	font-family: computerFont;
+	font-size: 20px;
+	background-image: url("images/computermonitor1.png");
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 75%;
+	margin: 0 auto;
+	height: 800px;
+	margin-top: 50px;
+}
+
+/* Adjust the Waiting section on Page 2 */
+h3 { 
 	text-align: center;
 	width: 75%;
 	margin: 0 auto;
 	margin-top: 270px;
 }
 
-.thirdPageLayout{						/* Adjusting the 3rd page main container class */
-
+/* Adjusting the 3rd page main container class */
+.third-page-layout {
 	margin-left: 5%;
 	margin-right: 5%;
 	margin-top: 2%;
@@ -95,7 +94,8 @@ h3{ 											/* Adjust the Waiting section on Page 2 */
 	height: 800px;
 }
 
-#page3HeaderSection{						/*Adjusts the header on the 3rd page, The questions go in the section tag, not here */
+/*Adjusts the header on the 3rd page, The questions go in the section tag, not here */
+#page-3-header-section {
 	border-style: solid;
 	border-color: #4bfe31;
 	border-width: 5px;
@@ -105,18 +105,15 @@ h3{ 											/* Adjust the Waiting section on Page 2 */
 	font-size: 20px;
 	height: 100px;
 	margin-bottom: 10px;
-
 }
 
-.coderSpot
-{
+.coder-spot {
 	width: 100%;
 	height: 80%;
 	margin: 0 auto;
-
 }
 
-.codingArea{
+.coding-area {
 	display: table-cell;
 	height: 700px;
 	background-image: url("images/computermonitor1.png");
@@ -125,15 +122,12 @@ h3{ 											/* Adjust the Waiting section on Page 2 */
 	margin: 0 auto;
 }
 
-.symbolArea{
+.symbol-area {
 	display: table-cell;
 	width: 10%;
 }
 
-
-#userCodeOne
-{
-
+#user-code-one {
 	border-style: solid;
 	border-color: #4bfe31;
 	border-width: 5px;
@@ -143,7 +137,7 @@ h3{ 											/* Adjust the Waiting section on Page 2 */
 	margin-top: 150px;
 }
 
-#userCodeTwo{
+#user-code-two {
 	border-style: solid;
 	border-color: #4bfe31;
 	border-width: 5px;
@@ -153,24 +147,23 @@ h3{ 											/* Adjust the Waiting section on Page 2 */
 	margin-top: 150px;
 }
 
-#versusSymbolArea{
+#versus-symbol-area{
 	margin: 0 auto;
 }
 
-footer{
+footer {
 	position: fixed;
 	width: 100%;
 	left: 0px;
 	bottom: 0px;
 }
 
-
-h4{
+h4 {
 	text-align: center;
 	font-size: 20px;
 }
 
-#fourthPageLayout{
+#fourth-page-layout {
 	color: #4bfe31;
 	font-family: computerFont;
 	font-size: 30px;
@@ -183,7 +176,7 @@ h4{
 	margin-top: 50px;
 }
 
-.displayFinalPage{
+.display-final-page {
 	font-size: 30px;
 	text-align: center;
 	width: 75%;
@@ -191,39 +184,35 @@ h4{
 	margin-top: 350px;
 }
 
-#userGameDisplay{
+#user-game-display {
 	font-size: 30px;
 	background-color: black;
 	width: 360px;
 	margin: 0 auto;
-
 }
 
-
-#winnerDisplayedHere{
+#winner-displayed-here {
 	margin: 0 auto;
 	font-size: 30px;
-
 }
 
-#loserDisplayedHere{
+#loser-displayed-here {
 	margin: 0 auto;
 	font-size: 30px;
-
 }
 
-#finalButton{
+#final-button {
 	margin: 0 auto;
 	color: black;
 }
 
-#playAgain{
+#play-again {
 	background-color: black;
 	border-color: #4bfe31;
 	color: #4bfe31;
 }
 
-h5{
+h5 {
 	font-size: 30px;
 }
 
