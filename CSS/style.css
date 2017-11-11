@@ -40,14 +40,14 @@ body{
 	border-color: #4bfe31;
 	color: #4bfe31;
 }
-#readyUp										/* Adjust the button on first page to go to second page */
+#ready-up										/* Adjust the button on first page to go to second page */
 {
 	background-color: black;
 	border-color: #4bfe31;
 	color: #4bfe31;
 }
 
-#layoutFirstPage{								/* Adjust the First page div id here with comp image and colors */
+#layout-first-page{								/* Adjust the First page div id here with comp image and colors */
 
 	color: #4bfe31;
 	font-family: computerFont;
@@ -62,7 +62,7 @@ body{
 	
 }
 
-#secondPageLayout{								/*Adust the second page Waiting on Player 2 Page */
+#second-page-layout{								/*Adust the second page Waiting on Player 2 Page */
 
 	color: #4bfe31;
 	font-family: computerFont;
@@ -83,7 +83,7 @@ h3{ 											/* Adjust the Waiting section on Page 2 */
 	margin-top: 270px;
 }
 
-.thirdPageLayout{						/* Adjusting the 3rd page main container class */
+.third-page-layout{						/* Adjusting the 3rd page main container class */
 
 	margin-left: 5%;
 	margin-right: 5%;
@@ -95,7 +95,7 @@ h3{ 											/* Adjust the Waiting section on Page 2 */
 	height: 800px;
 }
 
-#page3HeaderSection{						/*Adjusts the header on the 3rd page, The questions go in the section tag, not here */
+#page-3-header-section{						/*Adjusts the header on the 3rd page, The questions go in the section tag, not here */
 	border-style: solid;
 	border-color: #4bfe31;
 	border-width: 5px;
@@ -108,7 +108,7 @@ h3{ 											/* Adjust the Waiting section on Page 2 */
 
 }
 
-.coderSpot
+.coder-spot
 {
 	width: 100%;
 	height: 80%;
@@ -116,7 +116,7 @@ h3{ 											/* Adjust the Waiting section on Page 2 */
 
 }
 
-.codingArea{
+.coding-area{
 	display: table-cell;
 	height: 700px;
 	background-image: url("images/computermonitor1.png");
@@ -125,13 +125,13 @@ h3{ 											/* Adjust the Waiting section on Page 2 */
 	margin: 0 auto;
 }
 
-.symbolArea{
+.symbol-area{
 	display: table-cell;
 	width: 10%;
 }
 
 
-#userCodeOne
+#user-code-one
 {
 
 	border-style: solid;
@@ -143,7 +143,7 @@ h3{ 											/* Adjust the Waiting section on Page 2 */
 	margin-top: 150px;
 }
 
-#userCodeTwo{
+#user-code-two{
 	border-style: solid;
 	border-color: #4bfe31;
 	border-width: 5px;
@@ -153,7 +153,7 @@ h3{ 											/* Adjust the Waiting section on Page 2 */
 	margin-top: 150px;
 }
 
-#versusSymbolArea{
+#versus-symbol-area{
 	margin: 0 auto;
 }
 
@@ -170,7 +170,7 @@ h4{
 	font-size: 20px;
 }
 
-#fourthPageLayout{
+#fourth-page-layout{
 	color: #4bfe31;
 	font-family: computerFont;
 	font-size: 30px;
@@ -183,7 +183,7 @@ h4{
 	margin-top: 50px;
 }
 
-.displayFinalPage{
+.display-final-page{
 	font-size: 30px;
 	text-align: center;
 	width: 75%;
@@ -191,7 +191,7 @@ h4{
 	margin-top: 350px;
 }
 
-#userGameDisplay{
+#user-game-display{
 	font-size: 30px;
 	background-color: black;
 	width: 360px;
@@ -200,24 +200,24 @@ h4{
 }
 
 
-#winnerDisplayedHere{
+#winner-displayed-here{
 	margin: 0 auto;
 	font-size: 30px;
 
 }
 
-#loserDisplayedHere{
+#loser-displayed-here{
 	margin: 0 auto;
 	font-size: 30px;
 
 }
 
-#finalButton{
+#final-button{
 	margin: 0 auto;
 	color: black;
 }
 
-#playAgain{
+#play-again{
 	background-color: black;
 	border-color: #4bfe31;
 	color: #4bfe31;
