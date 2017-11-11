@@ -29,6 +29,8 @@ var db = firebase.database();
 var currPlayer = "";
 var otherPlayer = "";
 
+var currQuestion = "";
+
 var timernumber = 1; 			//remove later
 var newtimer = 3;				// remove later						
 
@@ -380,9 +382,6 @@ function resetQuestions() {
 }
 
 
-
-
-
 /* Issue #40 */
 /* Write a function that will be passed a question number. Set the Firebase current question to that question number.  */
 function setCurrentFBQuestion(qNum) {
@@ -390,6 +389,15 @@ function setCurrentFBQuestion(qNum) {
 }
 
 
+/* Issue #59 */
+/* Function that will listen for changes to current question, and grab that question from Firebase when it does change. */
+db.ref("current/question").on("value", function(snapshot) {
+	var qNum = snapshot.val();
+
+	db.ref(`questions/${qNum}`).once("value", function(snapshot) {
+		currQuestion = snapshot.val();
+	});
+});
 
 
 /*
