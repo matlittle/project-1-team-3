@@ -287,11 +287,6 @@ function setPlayerStatus() {
 
 
 
-/* 
-Pseudocode for remaining functions we're goind to need 
-I'm going to list out the remaining functions that we need, and provide the issue number in github that they correspond to. When working on a function, add it to the bottom of the document, and move the comment with it. Make sure to semantically name the function you're writing, and keep it self contained as much as possile. When you start working on it, close, then reopen the github issue to move it to the "Working" panel. Then when you're finished, close it, and submit a PR, with a link to the github issue in the comments. 
-*/
-
 
 /* Issue #34 */
 /* Write a function that takes a string, "player1", or "player2". With that given string, set the current.player1/2.state to "joining" */
