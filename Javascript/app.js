@@ -32,7 +32,7 @@ var otherPlayer = "";
 var timernumber = 1; 			//remove later
 var newtimer = 3;				// remove later						
 
-
+/*
 // TAKE THIS OUT WHEN WE ARE PUTTING IT ALL TOGETHER!!!!
 $(document).ready(function(){
 	$("#ready-up").click(function(){			// this will fade out the initial start page
@@ -80,7 +80,7 @@ function fourthPageDecrement() {
 	}
 }
 // End of my benefit js stuff
-
+*/
 
 $("#add-newuser-btn").on("click", function(event){
 
