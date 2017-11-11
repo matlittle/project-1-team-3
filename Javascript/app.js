@@ -328,13 +328,23 @@ function loadDisconnect(player) {
 
 
 /* Issue #30 */
-/* This function will be fired when both the current.player1/2.state values are "active". This will likely use a Firebase .on("value", function that will listen for changes to the "current" object. If both player states are "active", and the currPlayer is player1, get a random number using the function written for Issue #38, then check if that question has been asked in this "cycle" already using the function written for Issue #39. This will return false if it has been asked, or the question object if it has not.  
-If it hasn't been asked, call the function for Issue #40 and pass it the question object, and number, to set the current question and mark it as asked. */
+/* This function will be fired when both the current.player1/2.state values are "active". This will likely use a Firebase .on("value", function that will listen for changes to the "current" object. If both player states are "active", and the currPlayer is player1, get a random question using the function written for Issue #46.
+*/
+db.ref("current").on("value", function(snapshot) {
+	var currObj =snapshot.val();
+
+	if (currPlayer === "player1" &&
+	currObj.player1.state === "active" &&
+	currObj.player2.state === "active") {
+		var newQuestion = getRandomQuestion();
+		setNewQuestion(newQuestion);
+	}
+});
+
 
 
 /* Issue #46 */
 /* Write a function that will read the current questions object from Firebase. From those questions, filter out the ones that have already been asked. From the unasked questions, choose a random one, and return that question object. */
-
 function getRandomQuestion() {
 	db.ref("questions").once("value", function(snapshot) {
 		var qObj = snapshot.val();
