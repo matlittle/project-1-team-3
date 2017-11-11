@@ -293,12 +293,6 @@ I'm going to list out the remaining functions that we need, and provide the issu
 */
 
 
-/* Issue #26 and #27  (These issues will really be just one function I believe) */
-/* Write a function which we will fire when the page loads. This function will grab the "current" object from our Firebase database. If the player1.state is "inactive", the current player is player one. Otherwise, if player2.state is "inactive", the current player is player2. If both states are not "inactive", then the game is full. 
-You'll call on another function (Issue #34), which will change the state in Firebase to "joining". Pass that function the string "player1", or "player2", depending on which spot the user is taking. 
-For this function, you'll be setting the global variables currPlayer, and otherPlayer to "player1" or "player2". I would recommend writing the function so that if the player successfully joins, we set those variables, and return true. If the game is full, return false. */
-
-
 /* Issue #34 */
 /* Write a function that takes a string, "player1", or "player2". With that given string, set the current.player1/2.state to "joining" */
 function setPlayerState(current) {
@@ -318,14 +312,6 @@ function loadDisconnect(player) {
 		code: ""
 	});
 }
-
-
-/* Issue #37 */
-/* This function will take the current player string, a username string, and the avatar URL. It will be called when the user successfully logs in. With those pieces or information, you'll set the current.player1/2 object with the corresponding information. See Github issue and pinned Firebase database layout for details. */
-
-
-/* Issue #25 */
-/* Write a function that will take a string, which is the username. With that string, create and return a robohash url. See https://robohash.org/ and Github issue for details. */
 
 
 /* Issue #30 */
