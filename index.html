@@ -9,89 +9,112 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>	
 </head>
 <body>
-
-
-
+	
 	<!-- This is the first page divs classes -->
-	<div class="firstPageLayout" id="layoutFirstPage">
-		<div class="row" id="headerFirstPage">
-			<div class="firstPageUserInput">
-				<form class="userInputForm" method="post" action="" name="aform" target="_top">
-					<input type="hidden" name="action" value="login">
-					<input type="hidden" name="hide" value="">
-					<table id="userInputTable">
-						<tr><td>Username:</td><td><input type="text" name="login"></td></tr>				
-						<tr><td>Password:</td><td><input type="password" name="password"></td></tr>					
-						<tr><td>&nbsp;</td><td><input type='checkbox' name='remember' value='1'> Remember me</td></tr>
-						<tr><td>&nbsp;</td><td><input type="submit" value="Enter"></td></tr>
-						<tr><td colspan=2>&nbsp;</td></tr>
-						<tr><td colspan=2>Lost your username or password? Find it <a href="">here</a>!</td></tr>
-						<tr><td colspan=2>Not a member yet? <a href="">Join now</a>.</td></tr>
-					</table>
-				</form>
+
+	<div class="row" id="layoutFirstPage">
+		<section class ="logInSection col-s-10 col-m-10 col-l-10 col-xl-10">
+			<h1 id="sign-out">sign out</h1>
+			<div id="login-modal" class="modal">
+				<h1 class="modal-text">login here</h1>
+				<label for="user-name-input">E-mail</label>
+	            <input class="form-control" id="user-name-input" type="text">
+	            <label for="password-input">Password</label>
+	            <input class="form-control" id="password-input" type="password">
+	            <button class="btn btn-primary" id="login-btn" type="submit">Login</button>
+	            <button class="btn btn-primary" id="add-newuser-btn" type="submit">New User</button>
+	            <!-- button for github login -->
+	            <button class="btn btn-primary" id="github-sign-in" type="submit">Sign in with GitHub</button>
+	            <br>
+	            <br>
+	            <button class="btn btn-primary" id="readyUp" type="submit"> Im Ready! </button>
 			</div>
-		</div>
+		</section>
 
-
-		<div class="row" id="firstPageSecondRow">	
-			<div class="readyUpSection">
-				<button id="readyUp"> Im Ready! </button>
+		<!-- need to have a new user login modal -->
+		
+		<section class="newUserSection col-s-10 col-m-10 col-l-10 col-xl-10">
+			<div id="new-user-modal" class="modal">
+				<h1 class="modal-text">login here</h1>
+				<label for="new-user-name-input">E-mail</label>
+	            <input class="form-control" id="new-user-name-input" type="text">
+	 			<!--            handle input -->
+	            <label for="user-handle-input">Handle</label>
+	            <input class="form-control" id="user-handle-input" type="text">
+				<!-- 			end handle input -->
+	            <label for="password-input">Password</label>
+	            <input class="form-control" id="new-password-input" type="password">
+	            <label for="password-again-input">Password Again</label>
+	            <input class="form-control" id="new-password-input-verify" type="password">
+	            <button class="btn btn-primary" id="submit-newuser-btn" type="submit">Submit</button>
 			</div>
-		</div>
-
+		</section>
 	</div>
 
 
 	<!--This is the second pages screen and div classes -->
-	<div class="secondPageLayout">
-		<div class="row" id="secondPageRow">
-			<div id="waiting"> 
-				Waiting on Player 2 
-			</div>
-		</div>
+	
+	<div class="row" id ="secondPageLayout">
+		<secton class ="secondPageConnectionScreen col-s-10 col-m-10 col-l-10 col-xl-10">
+				<h3> Waiting on Player 2 </h3>
+		</secton>
 	</div>
 
-		<!-- This is the 3rd page which contains the coding content and versus screen-->
+	<!-- This is the 3rd page which contains the coding content and versus screen-->
+	
 	<div class="thirdPageLayout">
-		<div class="row">
+		<div id="page3HeaderSection">
 			<div class="headerForQuestion">
-				Question insertion
+				<h2> Question insertion </h2>
 			</div>
 		</div>
 
-		<div class="row">
-			
-			<div class="userCodeOne">
-			</div>
-			
-			<div class="versusSymbolArea">
-			</div>
+		<div class="coderSpot">			
+				<div class="codingArea">
+					<div id="userCodeOne">
+						<h4> User 1 Coding is in here under userCodeOne <br> div class tag </h4>
+					</div>
+				</div>
+				
+				<div class="symbolArea">
+					<div id="versusSymbolArea">
+						<h4> This will have some kind <br> of symbol or animation </h4>
+					</div>
+				</div>
 
-			<div class="userCode2">
-			</div>	
+				<div class="codingArea">
+					<div id="userCodeTwo">
+						<h4> User 2 Coding is in here under userCode2 <br> div class tag </h4>
+					</div>
+				</div>	
 		</div>
 		
-		<div class="row">
-			<div class="leaderboard">
+		<footer>
+			<div class="row" id="leaderboardSection">
+				<div class="leaderboard">
+					<h4> The Leaderboard is here  </h4>
+				</div>
 			</div>
-		</div>
+		<footer>
 	</div>
 
 		<!-- this is the final page with victory screen and play again button-->
-	<div class="fourthPageLayout">
-		<div class="row">
-			<div class="winnerSection">
+	<div class="row" id="fourthPageLayout">
+		<section class ="displayFinalPage col-s-10 col-m-10 col-l-10 col-xl-10">
+			<div id="userGameDisplay">
+				<div class="winnerSection">
+					<h5> Winner is: ------ </h5>
+				</div>
+			
+				<div class="loserSection">
+					<h5> Loser is: ----- </h5>
+				</div>
+	
+				<div class="playAgainSection">
+					<button id="playAgain"> Play Again? </button>
+				</div>
 			</div>
-		</div>
-
-		<div class="row">
-			<div class="loserSection">
-			</div>
-		</div>
-
-		<div class="row">
-			<button id="playAgain"> Play Again? </button>
-		</div>
+		</section>
 	</div>
 
 	<!-- Firebase -->
