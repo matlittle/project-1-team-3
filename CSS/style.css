@@ -28,7 +28,7 @@ body {
 /* width of the input for our user input */
 .form-control {
 	width: 400px;
-	margin: 0 auto;
+	margin: 0 auto 10px auto;
 	background-color: grey;
 	color: #4bfe31;
 }
@@ -47,7 +47,7 @@ body {
 }
 
 /* Adjust the First page div id here with comp image and colors */
-#layout-first-page {
+#first-page-layout {
 	color: #4bfe31;
 	font-family: computerFont;
 	font-size: 20px;
@@ -83,7 +83,7 @@ h3 {
 }
 
 /* Adjusting the 3rd page main container class */
-.third-page-layout {
+#third-page-layout {
 	margin-left: 5%;
 	margin-right: 5%;
 	margin-top: 2%;
