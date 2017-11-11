@@ -32,10 +32,12 @@ var otherPlayer = "";
 var timernumber = 1; 			//remove later
 var newtimer = 3;				// remove later						
 
-$(document).ready(function(){						// TAKE THIS OUT WHEN WE ARE PUTTING IT ALL TOGETHER!!!!
-	$("#readyUp").click(function(){                     // this will fade out the initial start page
-		$("#layoutFirstPage").hide();                // fades out first page 
-		$("#secondPageLayout").show();            // fades in second page
+
+// TAKE THIS OUT WHEN WE ARE PUTTING IT ALL TOGETHER!!!!
+$(document).ready(function(){
+	$("#readyUp").click(function(){			// this will fade out the initial start page
+		$("#layoutFirstPage").hide();		// fades out first page 
+		$("#secondPageLayout").show();		// fades in second page
 		timerRun();
 		
 	});
@@ -45,13 +47,11 @@ $(document).ready(function(){						// TAKE THIS OUT WHEN WE ARE PUTTING IT ALL T
 
 
 //this code will need to be deleted, its Wills benefit to see how to page responds to each page
-function timerRun()
-{
+function timerRun() {
 	timerIntervaId = setInterval(decrement, 1000);
 }
 
-function decrement()
-{
+function decrement() {
 	timernumber--;
 	if ( timernumber ===0)
 	{
@@ -63,14 +63,12 @@ function decrement()
 	fourthPageDecrement();
 }
 
-function fourthPageTimer()
-{
+function fourthPageTimer() {
 	console.log("Hello");
 	fourthPageTimerIntervaId = setInterval(fourthPageDecrement, 1000);
 }
 
-function fourthPageDecrement()
-{
+function fourthPageDecrement() {
 	newtimer--;
 	if ( newtimer ===0)
 	{
@@ -81,97 +79,94 @@ function fourthPageDecrement()
 		console.log("Hello");
 	}
 }
-
-
-
-
 // End of my benefit js stuff
+
 
 $("#add-newuser-btn").on("click", function(event){
 
-  $("#login-modal").hide();
-  $("#new-user-modal").show();
+	$("#login-modal").hide();
+	$("#new-user-modal").show();
 
 });
 
 //create a new user with email and password
 $("#submit-newuser-btn").on("click", function(event){
-  event.preventDefault();
+	event.preventDefault();
 
-  email = $('#new-user-name-input').val().trim();
-    //$('#user-name-input').val("");
+	email = $('#new-user-name-input').val().trim();
+	//$('#user-name-input').val("");
 
-  chosenName = $('#user-handle-input').val().trim();
-    //$('#user-name-input').val("");
+	chosenName = $('#user-handle-input').val().trim();
+	//$('#user-name-input').val("");
 
-  password = $('#new-password-input').val();//.trim();
-    //$('#password-input').val("");
+	password = $('#new-password-input').val();//.trim();
+	//$('#password-input').val("");
 
-  passwordAgain = $('#new-password-input-verify').val();//.trim();
-    //$('#password-again-input').val("");
+	passwordAgain = $('#new-password-input-verify').val();//.trim();
+	//$('#password-again-input').val("");
 
-  if (password === passwordAgain){
-    //create new account with email and password
-    //check if account already made
-    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      //call create user profile here
-      if (errorCode == 'auth/email-already-in-use') {
-        alert('Account already in use');
-        $('#user-name-input').val("");
-        $('#password-input').val("");
-        $('#password-again-input').val("");
-      } else {
-        alert(errorMessage);
-      }
-      console.log(error);
-    });
+	if (password === passwordAgain){
+	//create new account with email and password
+	//check if account already made
+	firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+		// Handle Errors here.
+		var errorCode = error.code;
+		var errorMessage = error.message;
+		//call create user profile here
+		if (errorCode == 'auth/email-already-in-use') {
+			alert('Account already in use');
+			$('#user-name-input').val("");
+			$('#password-input').val("");
+			$('#password-again-input').val("");
+		} else {
+			alert(errorMessage);
+		}
+		console.log(error);
+	});
 
-  } else {
-    alert('passwords do not match')
-    $('#password-input').val("");
-    $('#password-again-input').val("");
-  }
+	} else {
+		alert('passwords do not match')
+		$('#password-input').val("");
+		$('#password-again-input').val("");
+	}
 });
 
 //modal login
 $("#login-btn").on("click", function(event){
 
-  event.preventDefault();
+	event.preventDefault();
 
-  // $("#sign-out").show();
+	// $("#sign-out").show();
 
-  email = $('#user-name-input').val();//.trim();
-    $('#user-name-input').val("");
+	email = $('#user-name-input').val();//.trim();
+	$('#user-name-input').val("");
 
-  password = $('#password-input').val();//.trim();
-    $('#password-input').val("");
+	password = $('#password-input').val();//.trim();
+	$('#password-input').val("");
 
-  //sign in existing user
-  firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    if(errorCode == 'auth/wrong-password'){
-      alert("wrong password");
-      $('#password-input').val("");
-    }
+	//sign in existing user
+	firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+		// Handle Errors here.
+		var errorCode = error.code;
+		var errorMessage = error.message;
+		if(errorCode == 'auth/wrong-password'){
+			alert("wrong password");
+			$('#password-input').val("");
+		}
 
-  });
+	});
 
 });
 
 //add sign out event
 $("#sign-out").on("click", function(event){
-  event.preventDefault();
+	event.preventDefault();
 
-  firebase.auth().signOut().then(function() {
-    // Sign-out successful.
-  }).catch(function(error) {
-    // An error happened.
-  });
+	firebase.auth().signOut().then(function() {
+		// Sign-out successful.
+	}).catch(function(error) {
+		// An error happened.
+	});
 
 });
 
@@ -179,106 +174,103 @@ $("#sign-out").on("click", function(event){
 //Set an authentication state observer and get user data
 //currently signed in user
 firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    
-    // user is signed in
-    $("#sign-out").show();
-    $("#new-user-modal").hide();
-    $("#login-modal").hide();
-    // show an html element with user name of currently signed in
-    // close sign in modal here
+	if (user) {
 
-    //capture unique user id at
-    userID = user.uid;
+		// user is signed in
+		$("#sign-out").show();
+		$("#new-user-modal").hide();
+		$("#login-modal").hide();
+		// show an html element with user name of currently signed in
+		// close sign in modal here
 
-    if (userID in db.ref('users')){ //return the user profile associated with the id
+		//capture unique user id at
+		userID = user.uid;
 
-      console.log("user has profile")
+		if (userID in db.ref('users')){ //return the user profile associated with the id
 
-    } else { //if the user id signed in does not have a profile, push one
+			console.log("user has profile")
 
-      userProfile();
+		} else { //if the user id signed in does not have a profile, push one
 
-    }
+			userProfile();
 
-    //still need login with unique username
+		}
 
-    setPlayerStatus();
+		//still need login with unique username
 
-    
-  } else {
-    // user is signed out
-    // re-open up sign-in modal
-    $("#login-modal").show();
-    // change html element to show user signed out
-    $("#sign-out").hide();
-  }
+		setPlayerStatus();
+
+		
+	} else {
+		// user is signed out
+		// re-open up sign-in modal
+		$("#login-modal").show();
+		// change html element to show user signed out
+		$("#sign-out").hide();
+	}
 });
 
 
 //pushes userprofile to database
-function userProfile(){ 
-  //https://stackoverflow.com/questions/42885707/using-push-method-to-create-new-child-location-without-unique-key
-  db.ref('users').child(userID).set({
-
-    username: chosenName,
-    score: "", //latestScore
-    stats: "", //currentStats
-    avatar: ""
-
-  });
-
+function userProfile() { 
+	//https://stackoverflow.com/questions/42885707/using-push-method-to-create-new-child-location-without-unique-key
+	db.ref('users').child(userID).set({
+		username: chosenName,
+		score: "", //latestScore
+		stats: "", //currentStats
+		avatar: ""
+	});
 }
 
-function setPlayerStatus(){
+function setPlayerStatus() {
 
-  var player1state = "";
-  var player2state = "";
-  var localUsername = "";
+	var player1state = "";
+	var player2state = "";
+	var localUsername = "";
 
-  db.ref().once('value').then(function(snapshot) {
-    // var username = (snapshot.val());
-    player1state = (snapshot.child('current').child('player1').child('state').val());
-    player2state = (snapshot.child('current').child('player2').child('state').val());
-    localUsername = (snapshot.child('users').child(userID).child('username').val());
-    console.log(player1state);
-    console.log(player2state);
-    console.log(localUsername);
+	db.ref().once('value').then(function(snapshot) {
+		// var username = (snapshot.val());
+		player1state = (snapshot.child('current').child('player1').child('state').val());
+		player2state = (snapshot.child('current').child('player2').child('state').val());
+		localUsername = (snapshot.child('users').child(userID).child('username').val());
+		console.log(player1state);
+		console.log(player2state);
+		console.log(localUsername);
 
-    if (player1state === 'none'){// || player1state === "joining"
+		if (player1state === 'none') {// || player1state === "joining"
 
-      alert('player1 catch')
+			alert('player1 catch')
 
-      db.ref('current').child('player1').set({
+			db.ref('current').child('player1').set({
 
-        state: "active",
-        uid: userID, 
-        code: "",
-        avatar: `https://robohash.org/${localUsername}.png?size=200x200`
+				state: "active",
+				uid: userID, 
+				code: "",
+				avatar: `https://robohash.org/${localUsername}.png?size=200x200`
 
-      });
+			});
 
-    } else if (player2state === "none"){// || player2state === "joining"
+		} else if (player2state === "none") {// || player2state === "joining"
 
 
-      alert('player2 catch')
+			alert('player2 catch')
 
-      db.ref('current').child('player2').set({
+			db.ref('current').child('player2').set({
 
-        state: "active",
-        uid: userID, 
-        code: "",
-        avatar: `https://robohash.org/${localUsername}.png?size=200x200`
+				state: "active",
+				uid: userID, 
+				code: "",
+				avatar: `https://robohash.org/${localUsername}.png?size=200x200`
 
-      });
+			});
 
-    } else {
+		} else {
 
-      alert("game is full please try again later");
+			alert("game is full please try again later");
 
-    }
+		}
 
-  });
+	});
 
 }
 
@@ -387,7 +379,7 @@ function resetQuestions() {
 
 /*
 INPUT EVALUATION FUNCTION 
- 	This function takes the user input string from the text area, 
+	This function takes the user input string from the text area, 
 	the current question object,  
 	the function to run if they pass, 
 	and the function to run if they failed.
