@@ -31,9 +31,10 @@ var otherPlayer = "";
 
 var currQuestion = "";
 
-
+// Checks if both players active. Grabs question if they are.
 db.ref("current").on("value", checkIfBothActive);					
-
+// Grabs new question from FB when Obj changes. 
+db.ref("current/question").on("value", getNewQuestion);
 
 
 $("#add-newuser-btn").on("click", function(event){
@@ -337,13 +338,13 @@ function setCurrentFBQuestion(qNum) {
 
 /* Issue #59 */
 /* Function that will listen for changes to current question, and grab that question from Firebase when it does change. */
-db.ref("current/question").on("value", function(snapshot) {
+function getNewQuestion(snapshot) {
 	var qNum = snapshot.val();
 
 	db.ref(`questions/${qNum}`).once("value", function(snapshot) {
 		currQuestion = snapshot.val();
 	});
-});
+}
 
 
 /*
