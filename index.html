@@ -99,24 +99,22 @@
 	</div>
 
 		<!-- this is the final page with victory screen and play again button-->
-	<div class="fourthPageLayout">
-		<div class="row" id="winnerDisplayedHere">
-			<div class="winnerSection col-s-10 col-m-10 col-l-10 col-xl-10">
-				<h5> Winner is: ------ </h5>
+	<div class="row" id="fourthPageLayout">
+		<section class ="displayFinalPage col-s-10 col-m-10 col-l-10 col-xl-10">
+			<div id="userGameDisplay">
+				<div class="winnerSection">
+					<h5> Winner is: ------ </h5>
+				</div>
+			
+				<div class="loserSection">
+					<h5> Loser is: ----- </h5>
+				</div>
+	
+				<div class="playAgainSection">
+					<button id="playAgain"> Play Again? </button>
+				</div>
 			</div>
-		</div>
-
-		<div class="row" id="loserDisplayedHere">
-			<div class="loserSection col-s-10 col-m-10 col-l-10 col-xl-10">
-				<h5> Loser is: ----- </h5>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="playAgainSection col-s-10 col-m-10 col-l-10 col-xl-10">
-				<button id="playAgain"> Play Again? </button>
-			</div>
-		</div>
+		</section>
 	</div>
 
 	<!-- Firebase -->

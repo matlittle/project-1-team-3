@@ -14,7 +14,7 @@ $("#new-user-modal").hide();
 $("#sign-out").hide();
 $("#secondPageLayout").hide();
 $(".thirdPageLayout").hide();
-$(".fourthPageLayout").hide();
+$("#fourthPageLayout").hide();
 
 
 
@@ -30,17 +30,20 @@ var db = firebase.database();
 var currPlayer = "";
 var otherPlayer = "";
 
-var timernumber = 1;							// TAKE THIS OUT WHEN WE ARE PUTTING IT ALL TOGETHER!!!!
+var timernumber = 1; 			//remove later
+var newtimer = 3;				// remove later						
 
-$(document).ready(function(){	
+$(document).ready(function(){						// TAKE THIS OUT WHEN WE ARE PUTTING IT ALL TOGETHER!!!!
 	$("#readyUp").click(function(){                     // this will fade out the initial start page
 		$("#layoutFirstPage").hide();                // fades out first page 
 		$("#secondPageLayout").show();            // fades in second page
 		timerRun();
-
-
+		
 	});
+
 });
+
+
 
 //this code will need to be deleted, its Wills benefit to see how to page responds to each page
 function timerRun()
@@ -51,14 +54,35 @@ function timerRun()
 function decrement()
 {
 	timernumber--;
-	$(".instructions").html(timernumber);
 	if ( timernumber ===0)
 	{
 		stop();
 		$("#secondPageLayout").hide();
 		$(".thirdPageLayout").show();
+		
+	}
+	fourthPageDecrement();
+}
+
+function fourthPageTimer()
+{
+	console.log("Hello");
+	fourthPageTimerIntervaId = setInterval(fourthPageDecrement, 1000);
+}
+
+function fourthPageDecrement()
+{
+	newtimer--;
+	if ( newtimer ===0)
+	{
+		console.log("Hello");
+		stop();
+		$(".thirdPageLayout").hide();
+		$("#fourthPageLayout").show();
+		console.log("Hello");
 	}
 }
+
 
 
 

@@ -1,25 +1,24 @@
-body
-{
+body{
+
 	background-color: black;
 
 }
 
-@font-face        								/* Linking the fonts for the page */					
-{
+@font-face{       								/* Linking the fonts for the page */					
+
 	font-family: computerFont;
 	src: url("images/computer_7.ttf");
 }
 
-#login-modal								/*first page user log in */
-{
+#login-modal{								/*first page user log in */
+
 	text-align: center;
 	width: 75%;
 	margin: 0 auto;
 	margin-top: 270px;
 }
 
-#new-user-modal								/*first page new user log in */
-{
+#new-user-modal{								/*first page new user log in */
 	text-align: center;
 	width: 75%;
 	font-size: 15px;
@@ -27,16 +26,16 @@ body
 	margin-top: 240px;
 }
 
-.form-control							/* width of the input for our user input */
-{
+.form-control{							/* width of the input for our user input */
+
 	width: 400px;
 	margin: 0 auto;
 	background-color: grey;
 	color: #4bfe31;
 }
 
-.btn
-{
+.btn{
+
 	background-color: black;
 	border-color: #4bfe31;
 	color: #4bfe31;
@@ -48,9 +47,8 @@ body
 	color: #4bfe31;
 }
 
-#layoutFirstPage								/* Adjust the First page div id here with comp image and colors */
-{
-	
+#layoutFirstPage{								/* Adjust the First page div id here with comp image and colors */
+
 	color: #4bfe31;
 	font-family: computerFont;
 	font-size: 20px;
@@ -64,8 +62,8 @@ body
 	
 }
 
-#secondPageLayout								/*Adust the second page Waiting on Player 2 Page */
-{
+#secondPageLayout{								/*Adust the second page Waiting on Player 2 Page */
+
 	color: #4bfe31;
 	font-family: computerFont;
 	font-size: 20px;
@@ -78,16 +76,14 @@ body
 	margin-top: 50px;
 }
 
-h3 											/* Adjust the Waiting section on Page 2 */
-{
+h3{ 											/* Adjust the Waiting section on Page 2 */
 	text-align: center;
 	width: 75%;
 	margin: 0 auto;
 	margin-top: 270px;
 }
 
-.thirdPageLayout						/* Adjusting the 3rd page main container class */
-{
+.thirdPageLayout{						/* Adjusting the 3rd page main container class */
 
 	margin-left: 5%;
 	margin-right: 5%;
@@ -99,8 +95,7 @@ h3 											/* Adjust the Waiting section on Page 2 */
 	height: 800px;
 }
 
-#page3HeaderSection						/*Adjusts the header on the 3rd page, The questions go in the section tag, not here */
-{
+#page3HeaderSection{						/*Adjusts the header on the 3rd page, The questions go in the section tag, not here */
 	border-style: solid;
 	border-color: #4bfe31;
 	border-width: 5px;
@@ -121,8 +116,7 @@ h3 											/* Adjust the Waiting section on Page 2 */
 
 }
 
-.codingArea
-{
+.codingArea{
 	display: table-cell;
 	height: 700px;
 	background-image: url("images/computermonitor1.png");
@@ -131,8 +125,7 @@ h3 											/* Adjust the Waiting section on Page 2 */
 	margin: 0 auto;
 }
 
-.symbolArea
-{
+.symbolArea{
 	display: table-cell;
 	width: 10%;
 }
@@ -150,8 +143,7 @@ h3 											/* Adjust the Waiting section on Page 2 */
 	margin-top: 150px;
 }
 
-#userCodeTwo
-{
+#userCodeTwo{
 	border-style: solid;
 	border-color: #4bfe31;
 	border-width: 5px;
@@ -161,13 +153,11 @@ h3 											/* Adjust the Waiting section on Page 2 */
 	margin-top: 150px;
 }
 
-#versusSymbolArea
-{
+#versusSymbolArea{
 	margin: 0 auto;
 }
 
-footer
-{
+footer{
 	position: fixed;
 	width: 100%;
 	left: 0px;
@@ -175,21 +165,66 @@ footer
 }
 
 
-h4
-{
+h4{
 	text-align: center;
+	font-size: 20px;
+}
+
+#fourthPageLayout{
+	color: #4bfe31;
+	font-family: computerFont;
+	font-size: 30px;
+	background-image: url("images/endgamescreen2.png");
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 75%;
+	margin: 0 auto;
+	height: 800px;
+	margin-top: 50px;
+}
+
+.displayFinalPage{
+	font-size: 30px;
+	text-align: center;
+	width: 75%;
+	margin: 0 auto;
+	margin-top: 350px;
+}
+
+#userGameDisplay{
+	font-size: 30px;
+	background-color: black;
+	width: 360px;
+	margin: 0 auto;
+
 }
 
 
+#winnerDisplayedHere{
+	margin: 0 auto;
+	font-size: 30px;
+
+}
+
+#loserDisplayedHere{
+	margin: 0 auto;
+	font-size: 30px;
+
+}
+
+#finalButton{
+	margin: 0 auto;
+	color: black;
+}
+
+#playAgain{
+	background-color: black;
+	border-color: #4bfe31;
+	color: #4bfe31;
+}
+
+h5{
+	font-size: 30px;
+}
 
 
-
-
-
-
-
-/*  height: 80%;
-	width: 40%;
-	background-image: url("images/computermonitor1.png");
-	background-position: center;
-	background-repeat: no-repeat;       */ 
