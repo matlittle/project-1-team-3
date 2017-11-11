@@ -337,7 +337,7 @@ db.ref("current").on("value", function(snapshot) {
 	currObj.player1.state === "active" &&
 	currObj.player2.state === "active") {
 		var newQuestion = getRandomQuestion();
-		setNewQuestion(newQuestion);
+		setCurrentFBQuestion(newQuestion);
 	}
 });
 
@@ -361,7 +361,7 @@ function getRandomQuestion() {
 		var randomNum = Math.floor(Math.random()*unaskedQuestions.length);
 
 		return unaskedQuestions[randomNum];
-		
+
 		/*var chosenQuestion = qObj[unaskedQuestions[randomNum]]
 
 		db.ref(`questions/${unaskedQuestions[randomNum]}/asked`).set(true);
@@ -384,13 +384,9 @@ function resetQuestions() {
 
 
 /* Issue #40 */
-/* Write a function that will be passed a question object and the question number. Set the currQuestion variable as that object, and set the question."number".asked property to true in Firebase. */
-function setNewQuestion(qObj) {
-
-}
-
+/* Write a function that will be passed a question number. Set the Firebase current question to that question number.  */
 function setCurrentFBQuestion(qNum) {
-
+	db.ref("current/question").set(qNum);
 }
 
 
