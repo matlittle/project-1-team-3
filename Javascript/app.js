@@ -45,7 +45,6 @@ $(document).ready(function(){
 });
 
 
-
 //this code will need to be deleted, its Wills benefit to see how to page responds to each page
 function timerRun() {
 	timerIntervaId = setInterval(decrement, 1000);
