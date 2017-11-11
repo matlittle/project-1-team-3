@@ -31,57 +31,11 @@ var otherPlayer = "";
 
 var currQuestion = "";
 
-var timernumber = 1; 			//remove later
-var newtimer = 3;				// remove later						
+// Checks if both players active. Grabs question if they are.
+db.ref("current").on("value", checkIfBothActive);					
+// Grabs new question from FB when Obj changes. 
+db.ref("current/question").on("value", getNewQuestion);
 
-/*
-// TAKE THIS OUT WHEN WE ARE PUTTING IT ALL TOGETHER!!!!
-$(document).ready(function(){
-	$("#ready-up").click(function(){			// this will fade out the initial start page
-		$("#first-page-layout").hide();		// fades out first page 
-		$("#second-page-layout").show();		// fades in second page
-		timerRun();
-		
-	});
-
-});
-
-
-//this code will need to be deleted, its Wills benefit to see how to page responds to each page
-function timerRun() {
-	timerIntervaId = setInterval(decrement, 1000);
-}
-
-function decrement() {
-	timernumber--;
-	if ( timernumber ===0)
-	{
-		stop();
-		$("#second-page-layout").hide();
-		$("#third-page-layout").show();
-		
-	}
-	fourthPageDecrement();
-}
-
-function fourthPageTimer() {
-	console.log("Hello");
-	fourthPageTimerIntervaId = setInterval(fourthPageDecrement, 1000);
-}
-
-function fourthPageDecrement() {
-	newtimer--;
-	if ( newtimer ===0)
-	{
-		console.log("Hello");
-		stop();
-		$("#third-page-layout").hide();
-		$("#fourth-page-layout").show();
-		console.log("Hello");
-	}
-}
-// End of my benefit js stuff
-*/
 
 $("#add-newuser-btn").on("click", function(event){
 
@@ -286,17 +240,19 @@ function setPlayerStatus() {
 // End of Kyles Log In Code
 
 
+/*
+	Things we still need 
 
-/* 
-Pseudocode for remaining functions we're goind to need 
-I'm going to list out the remaining functions that we need, and provide the issue number in github that they correspond to. When working on a function, add it to the bottom of the document, and move the comment with it. Make sure to semantically name the function you're writing, and keep it self contained as much as possile. When you start working on it, close, then reopen the github issue to move it to the "Working" panel. Then when you're finished, close it, and submit a PR, with a link to the github issue in the comments. 
+	We mostly need function to control UI
+	Need to update page with "waiting" after logging in.
+	Update page with question when both players active. 
+	
+	We will need two function written that handle a pass or fail when checking
+		code
+	The pass function should notify the other player that you won. 
+		We'll need a FB object to track this.
+	The fail function should display reason for fail
 */
-
-
-/* Issue #26 and #27  (These issues will really be just one function I believe) */
-/* Write a function which we will fire when the page loads. This function will grab the "current" object from our Firebase database. If the player1.state is "inactive", the current player is player one. Otherwise, if player2.state is "inactive", the current player is player2. If both states are not "inactive", then the game is full. 
-You'll call on another function (Issue #34), which will change the state in Firebase to "joining". Pass that function the string "player1", or "player2", depending on which spot the user is taking. 
-For this function, you'll be setting the global variables currPlayer, and otherPlayer to "player1" or "player2". I would recommend writing the function so that if the player successfully joins, we set those variables, and return true. If the game is full, return false. */
 
 
 /* Issue #34 */
@@ -320,18 +276,10 @@ function loadDisconnect(player) {
 }
 
 
-/* Issue #37 */
-/* This function will take the current player string, a username string, and the avatar URL. It will be called when the user successfully logs in. With those pieces or information, you'll set the current.player1/2 object with the corresponding information. See Github issue and pinned Firebase database layout for details. */
-
-
-/* Issue #25 */
-/* Write a function that will take a string, which is the username. With that string, create and return a robohash url. See https://robohash.org/ and Github issue for details. */
-
-
 /* Issue #30 */
 /* This function will be fired when both the current.player1/2.state values are "active". This will likely use a Firebase .on("value", function that will listen for changes to the "current" object. If both player states are "active", and the currPlayer is player1, get a random question using the function written for Issue #46.
 */
-db.ref("current").on("value", function(snapshot) {
+function checkIfBothActive(snapshot) {
 	var currObj =snapshot.val();
 
 	if (currPlayer === "player1" &&
@@ -340,7 +288,7 @@ db.ref("current").on("value", function(snapshot) {
 		var newQuestion = getRandomQuestion();
 		setCurrentFBQuestion(newQuestion);
 	}
-});
+}
 
 
 
@@ -390,13 +338,13 @@ function setCurrentFBQuestion(qNum) {
 
 /* Issue #59 */
 /* Function that will listen for changes to current question, and grab that question from Firebase when it does change. */
-db.ref("current/question").on("value", function(snapshot) {
+function getNewQuestion(snapshot) {
 	var qNum = snapshot.val();
 
 	db.ref(`questions/${qNum}`).once("value", function(snapshot) {
 		currQuestion = snapshot.val();
 	});
-});
+}
 
 
 /*
