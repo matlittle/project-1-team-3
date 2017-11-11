@@ -25,7 +25,6 @@ var chosenName = "";
 //capture user id from firebase
 var userID = "";
 // user.uid
-var database = firebase.database();
 var db = firebase.database();
 var currPlayer = "";
 var otherPlayer = "";
@@ -192,7 +191,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     //capture unique user id at
     userID = user.uid;
 
-    if (userID in database.ref('users')){ //return the user profile associated with the id
+    if (userID in db.ref('users')){ //return the user profile associated with the id
 
       console.log("user has profile")
 
@@ -220,7 +219,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 //pushes userprofile to database
 function userProfile(){ 
   //https://stackoverflow.com/questions/42885707/using-push-method-to-create-new-child-location-without-unique-key
-  database.ref('users').child(userID).set({
+  db.ref('users').child(userID).set({
 
     username: chosenName,
     score: "", //latestScore
@@ -237,7 +236,7 @@ function setPlayerStatus(){
   var player2state = "";
   var localUsername = "";
 
-  database.ref().once('value').then(function(snapshot) {
+  db.ref().once('value').then(function(snapshot) {
     // var username = (snapshot.val());
     player1state = (snapshot.child('current').child('player1').child('state').val());
     player2state = (snapshot.child('current').child('player2').child('state').val());
@@ -250,7 +249,7 @@ function setPlayerStatus(){
 
       alert('player1 catch')
 
-      database.ref('current').child('player1').set({
+      db.ref('current').child('player1').set({
 
         state: "active",
         uid: userID, 
@@ -264,7 +263,7 @@ function setPlayerStatus(){
 
       alert('player2 catch')
 
-      database.ref('current').child('player2').set({
+      db.ref('current').child('player2').set({
 
         state: "active",
         uid: userID, 
