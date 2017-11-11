@@ -34,54 +34,7 @@ var currQuestion = "";
 var timernumber = 1; 			//remove later
 var newtimer = 3;				// remove later						
 
-/*
-// TAKE THIS OUT WHEN WE ARE PUTTING IT ALL TOGETHER!!!!
-$(document).ready(function(){
-	$("#ready-up").click(function(){			// this will fade out the initial start page
-		$("#first-page-layout").hide();		// fades out first page 
-		$("#second-page-layout").show();		// fades in second page
-		timerRun();
-		
-	});
 
-});
-
-
-//this code will need to be deleted, its Wills benefit to see how to page responds to each page
-function timerRun() {
-	timerIntervaId = setInterval(decrement, 1000);
-}
-
-function decrement() {
-	timernumber--;
-	if ( timernumber ===0)
-	{
-		stop();
-		$("#second-page-layout").hide();
-		$("#third-page-layout").show();
-		
-	}
-	fourthPageDecrement();
-}
-
-function fourthPageTimer() {
-	console.log("Hello");
-	fourthPageTimerIntervaId = setInterval(fourthPageDecrement, 1000);
-}
-
-function fourthPageDecrement() {
-	newtimer--;
-	if ( newtimer ===0)
-	{
-		console.log("Hello");
-		stop();
-		$("#third-page-layout").hide();
-		$("#fourth-page-layout").show();
-		console.log("Hello");
-	}
-}
-// End of my benefit js stuff
-*/
 
 $("#add-newuser-btn").on("click", function(event){
 
