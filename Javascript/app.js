@@ -344,7 +344,7 @@ db.ref("current").on("value", function(snapshot) {
 
 
 /* Issue #46 */
-/* Write a function that will read the current questions object from Firebase. From those questions, filter out the ones that have already been asked. From the unasked questions, choose a random one, and return that question object. */
+/* Write a function that will read the current questions object from Firebase. From those questions, filter out the ones that have already been asked. From the unasked questions, choose a random one, and return that question number. */
 function getRandomQuestion() {
 	db.ref("questions").once("value", function(snapshot) {
 		var qObj = snapshot.val();
@@ -359,11 +359,14 @@ function getRandomQuestion() {
 		}
 
 		var randomNum = Math.floor(Math.random()*unaskedQuestions.length);
-		var chosenQuestion = qObj[unaskedQuestions[randomNum]]
+
+		return unaskedQuestions[randomNum];
+		
+		/*var chosenQuestion = qObj[unaskedQuestions[randomNum]]
 
 		db.ref(`questions/${unaskedQuestions[randomNum]}/asked`).set(true);
 
-		return chosenQuestion;
+		return chosenQuestion;*/
 	})
 }
 
@@ -382,7 +385,13 @@ function resetQuestions() {
 
 /* Issue #40 */
 /* Write a function that will be passed a question object and the question number. Set the currQuestion variable as that object, and set the question."number".asked property to true in Firebase. */
+function setNewQuestion(qObj) {
 
+}
+
+function setCurrentFBQuestion(qNum) {
+
+}
 
 
 
