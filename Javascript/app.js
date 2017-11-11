@@ -29,6 +29,8 @@ var db = firebase.database();
 var currPlayer = "";
 var otherPlayer = "";
 
+var currQuestion = "";
+
 var timernumber = 1; 			//remove later
 var newtimer = 3;				// remove later						
 
@@ -336,14 +338,14 @@ db.ref("current").on("value", function(snapshot) {
 	currObj.player1.state === "active" &&
 	currObj.player2.state === "active") {
 		var newQuestion = getRandomQuestion();
-		setNewQuestion(newQuestion);
+		setCurrentFBQuestion(newQuestion);
 	}
 });
 
 
 
 /* Issue #46 */
-/* Write a function that will read the current questions object from Firebase. From those questions, filter out the ones that have already been asked. From the unasked questions, choose a random one, and return that question object. */
+/* Write a function that will read the current questions object from Firebase. From those questions, filter out the ones that have already been asked. From the unasked questions, choose a random one, and return that question number. */
 function getRandomQuestion() {
 	db.ref("questions").once("value", function(snapshot) {
 		var qObj = snapshot.val();
@@ -358,11 +360,14 @@ function getRandomQuestion() {
 		}
 
 		var randomNum = Math.floor(Math.random()*unaskedQuestions.length);
-		var chosenQuestion = qObj[unaskedQuestions[randomNum]]
+
+		return unaskedQuestions[randomNum];
+
+		/*var chosenQuestion = qObj[unaskedQuestions[randomNum]]
 
 		db.ref(`questions/${unaskedQuestions[randomNum]}/asked`).set(true);
 
-		return chosenQuestion;
+		return chosenQuestion;*/
 	})
 }
 
@@ -376,14 +381,22 @@ function resetQuestions() {
 }
 
 
-
-
-
 /* Issue #40 */
-/* Write a function that will be passed a question object and the question number. Set the currQuestion variable as that object, and set the question."number".asked property to true in Firebase. */
+/* Write a function that will be passed a question number. Set the Firebase current question to that question number.  */
+function setCurrentFBQuestion(qNum) {
+	db.ref("current/question").set(qNum);
+}
 
 
+/* Issue #59 */
+/* Function that will listen for changes to current question, and grab that question from Firebase when it does change. */
+db.ref("current/question").on("value", function(snapshot) {
+	var qNum = snapshot.val();
 
+	db.ref(`questions/${qNum}`).once("value", function(snapshot) {
+		currQuestion = snapshot.val();
+	});
+});
 
 
 /*
