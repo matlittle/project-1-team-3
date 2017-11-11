@@ -31,8 +31,8 @@ var otherPlayer = "";
 
 var currQuestion = "";
 
-var timernumber = 1; 			//remove later
-var newtimer = 3;				// remove later						
+
+db.ref("current").on("value", checkIfBothActive);					
 
 
 
@@ -278,7 +278,7 @@ function loadDisconnect(player) {
 /* Issue #30 */
 /* This function will be fired when both the current.player1/2.state values are "active". This will likely use a Firebase .on("value", function that will listen for changes to the "current" object. If both player states are "active", and the currPlayer is player1, get a random question using the function written for Issue #46.
 */
-db.ref("current").on("value", function(snapshot) {
+function checkIfBothActive(snapshot) {
 	var currObj =snapshot.val();
 
 	if (currPlayer === "player1" &&
@@ -287,7 +287,7 @@ db.ref("current").on("value", function(snapshot) {
 		var newQuestion = getRandomQuestion();
 		setCurrentFBQuestion(newQuestion);
 	}
-});
+}
 
 
 
