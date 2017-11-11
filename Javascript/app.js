@@ -286,6 +286,19 @@ function setPlayerStatus() {
 // End of Kyles Log In Code
 
 
+/*
+	Things we still need 
+
+	We mostly need function to control UI
+	Need to update page with "waiting" after logging in.
+	Update page with question when both players active. 
+	
+	We will need two function written that handle a pass or fail when checking
+		code
+	The pass function should notify the other player that you won. 
+		We'll need a FB object to track this.
+	The fail function should display reason for fail
+*/
 
 
 /* Issue #34 */
