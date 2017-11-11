@@ -12,9 +12,9 @@ firebase.initializeApp(config);
 
 $("#new-user-modal").hide();
 $("#sign-out").hide();
-$("#secondPageLayout").hide();
-$(".thirdPageLayout").hide();
-$("#fourthPageLayout").hide();
+$("#second-page-layout").hide();
+$(".third-page-layout").hide();
+$("#fourth-page-layout").hide();
 
 
 
@@ -35,9 +35,9 @@ var newtimer = 3;				// remove later
 
 // TAKE THIS OUT WHEN WE ARE PUTTING IT ALL TOGETHER!!!!
 $(document).ready(function(){
-	$("#readyUp").click(function(){			// this will fade out the initial start page
-		$("#layoutFirstPage").hide();		// fades out first page 
-		$("#secondPageLayout").show();		// fades in second page
+	$("#ready-up").click(function(){			// this will fade out the initial start page
+		$("#layout-first-page").hide();		// fades out first page 
+		$("#second-page-layout").show();		// fades in second page
 		timerRun();
 		
 	});
@@ -56,8 +56,8 @@ function decrement() {
 	if ( timernumber ===0)
 	{
 		stop();
-		$("#secondPageLayout").hide();
-		$(".thirdPageLayout").show();
+		$("#second-page-layout").hide();
+		$(".third-page-layout").show();
 		
 	}
 	fourthPageDecrement();
@@ -74,8 +74,8 @@ function fourthPageDecrement() {
 	{
 		console.log("Hello");
 		stop();
-		$(".thirdPageLayout").hide();
-		$("#fourthPageLayout").show();
+		$(".third-page-layout").hide();
+		$("#fourth-page-layout").show();
 		console.log("Hello");
 	}
 }
