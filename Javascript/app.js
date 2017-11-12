@@ -524,7 +524,7 @@ function codeFailed(err) {
 
 	var okBtn = $("<input type='button' class='err-btn' value='OK'>")
 
-	$("#user-code-one").append( $(errDiv).append(textEl, okBtn) );
+	$("#current-player").append( $(errDiv).append(textEl, okBtn) );
 
 	$(".err-btn").click(closeErrorMessage);
 }
