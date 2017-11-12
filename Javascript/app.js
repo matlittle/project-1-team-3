@@ -464,8 +464,11 @@ function checkUserCode(str, question, passFunc, failFunc) {
 		myWorker.onerror = function (e) {
 			stopWorker(myWorker);
 			clearTimeout(timeoutError);
-			failed = true;
-			failFunc(e);
+			
+			if (!failed) { 
+				failed = true;
+				failFunc(e);
+			}
 		}
 
 		/* if the worker is running for longer than 5 seconds, throw timeout */
@@ -617,7 +620,6 @@ function captureTabPress(event){
 }
 
 // Function to create an alert modal and remove the need for actual alerts
-
 function alertModal(str) {
 	var modalDiv = $("<div class='alert-modal'>");
 	var alertMsg = $("<p class='alert-text'>").text(str);
