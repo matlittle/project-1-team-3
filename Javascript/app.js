@@ -466,8 +466,11 @@ function checkUserCode(str, question, passFunc, failFunc) {
 		myWorker.onerror = function (e) {
 			stopWorker(myWorker);
 			clearTimeout(timeoutError);
-			failed = true;
-			failFunc(e);
+			
+			if (!failed) { 
+				failed = true;
+				failFunc(e);
+			}
 		}
 
 		/* if the worker is running for longer than 5 seconds, throw timeout */
@@ -623,7 +626,28 @@ function captureTabPress(event){
 
 
 
-
+/**/
+currQuestion = {
+	"question": "Write a function, countDigit, that takes one number, num. Return the number of digits in the number. Example: 22341 would return 5.",
+	"asked": false,
+	"function": {
+		"name": "countDigit",
+		"args": ["num"]
+	},
+	"tests": [{
+		"params": [345],
+		"passVal": 3
+	},
+	{
+		"params": [45678],
+		"passVal": 5
+	},
+	{
+		"params": [123456],
+		"passVal": 6
+	}]
+}
+/**/
 
 
 
