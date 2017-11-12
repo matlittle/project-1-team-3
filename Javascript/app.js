@@ -349,6 +349,13 @@ function getNewQuestion(snapshot) {
 }
 
 
+/* Function to add question to page */
+function displayCurrentQuestion() {
+	$(".header-for-question h2").text(currQuestion.question);
+
+	$("#user-code-one textarea").attr("value", "")
+}
+
 /*
 INPUT EVALUATION FUNCTION 
 	This function takes the user input string from the text area, 
@@ -480,6 +487,7 @@ function codePassed() {
 
 /* Reset the winner to empty */
 function resetWinner() {
+	// called prior to new rounds
 	db.ref("current/winner").set("");
 }
 
