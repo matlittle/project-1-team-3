@@ -335,45 +335,45 @@ function checkIfBothActive(snapshot) {
 	if (currPlayer === "player1" &&
 	currObj.player1.state === "active" &&
 	currObj.player2.state === "active") {
-		var newQuestion = getRandomQuestion();
-		setCurrentFBQuestion(newQuestion);
+		db.ref("questions").once("value", getRandomQuestion);
 	}
 }
 
 
 /* Issue #46 */
 /* Write a function that will read the current questions object from Firebase. From those questions, filter out the ones that have already been asked. From the unasked questions, choose a random one, and return that question number. */
-function getRandomQuestion() {
-	db.ref("questions").once("value", function(snapshot) {
-		var qObj = snapshot.val();
-		var qKeys = Object.getOwnPropertyNames(qObj);
-		var unaskedQuestions = jQuery.grep(qKeys, function(question){
-			return !qObj[question].asked;
-		})
-
-		if (unaskedQuestions.length === 0){
-			resetQuestions();
-			return getRandomQuestion();
-		}
-
-		var randomNum = Math.floor(Math.random()*unaskedQuestions.length);
-
-		return unaskedQuestions[randomNum];
-
-		/*var chosenQuestion = qObj[unaskedQuestions[randomNum]]
-
-		db.ref(`questions/${unaskedQuestions[randomNum]}/asked`).set(true);
-
-		return chosenQuestion;*/
+function getRandomQuestion(snapshot) {
+	var qObj = snapshot.val();
+	var qKeys = Object.getOwnPropertyNames(qObj);
+	var unaskedQuestions = jQuery.grep(qKeys, function(question){
+		return !qObj[question].asked;
 	})
+
+	if (unaskedQuestions.length === 0){
+		resetQuestions();
+		return;
+	}
+
+	var randomNum = Math.floor(Math.random()*unaskedQuestions.length);
+
+	// Set question to asked
+	db.ref(`questions/${unaskedQuestions[randomNum]}/asked`).set(true);
+
+	setCurrentFBQuestion(unaskedQuestions[randomNum]);
 }
 
 function resetQuestions() {
 	db.ref("questions").once("value", function(snapshot) {
 		var qKeys = Object.getOwnPropertyNames(snapshot.val());
+		var updateObj = {};
+
 		qKeys.forEach(function(key){
-			db.ref(`questions/${key}/asked`).setWithPriority(false, 2);
-		})
+			updateObj[`${key}/asked`] = false;
+		});
+
+		db.ref("questions").update(updateObj, function() {
+			db.ref("questions").once("value", getRandomQuestion);
+		});
 	})
 }
 
@@ -390,9 +390,11 @@ function setCurrentFBQuestion(qNum) {
 function getNewQuestion(snapshot) {
 	var qNum = snapshot.val();
 
-	db.ref(`questions/${qNum}`).once("value", function(snapshot) {
-		currQuestion = snapshot.val();
-	});
+	if (qNum !== "") {
+		db.ref(`questions/${qNum}`).once("value", function(snapshot) {
+			currQuestion = snapshot.val();
+		});
+	}
 }
 
 
@@ -403,7 +405,7 @@ function displayCurrentQuestion() {
 	var name = currQuestion.function.name;
 	var args = buildArgList(currQuestion.function.args);
 	var startFunc = `function ${name}(${args}) {\n\t`;
-	var endFunc = "\t}"
+	var endFunc = "\n}"
 
 	var textArea = $("#current-player textarea");
 	$(textArea).text(startFunc + endFunc);
@@ -443,8 +445,6 @@ function checkUserCode(str, question, passFunc, failFunc) {
 
 	question.tests.forEach(function(test) {
 		var functionString = buildFunctionString(test, question);
-
-		console.log(functionString);
 
 		/* (Stack Overflow comment) we are creating a new javascript file using blob. We just use the string passed to the function, and assign it to the Blob(content,type). */
 		var workerData = new Blob([functionString], { type: "text/javascript" });
@@ -518,11 +518,14 @@ function checkUserCode(str, question, passFunc, failFunc) {
 	/* Build full function string for testing */
 	function buildFunctionString(test, question) {
 		var f = question.function;
-		var args = buildArgList(f.args);
+		//var args = buildArgList(f.args);
 		var params = buildArgList(test.params);
 
-		var fullStr = `function ${f.name}(${args}) { \n ${str} \n }  `+
-					`postMessage( ${f.name}(${params}) ); `;
+		var fullStr = `${str} postMessage( ${f.name}(${params}) ); `;
+
+		// Change for now, since text area will have full function
+		/*var fullStr = `function ${f.name}(${args}) { \n ${str} \n }  `+
+					`postMessage( ${f.name}(${params}) ); `;*/
 
 		return fullStr;
 	}
@@ -614,7 +617,6 @@ function captureTabPress(event){
 		this.selectionEnd = curPos + 1;
 	} 
 }
-
 
 
 
