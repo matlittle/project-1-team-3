@@ -353,7 +353,17 @@ function getNewQuestion(snapshot) {
 function displayCurrentQuestion() {
 	$(".header-for-question h2").text(currQuestion.question);
 
-	$("#user-code-one textarea").attr("value", "")
+	var name = currQuestion.function.name;
+	var args = buildArgList(currQuestion.function.args);
+	var startFunc = `function ${name}(${args}) {\n\t`;
+	var endFunc = "\t}"
+
+	var textArea = $("#user-code-one textarea");
+	$(textArea).attr("value", startFunc + endFunc);
+
+	// Position cursor in correct spot
+	textArea.selectionStart = startFunc.length;
+	textArea.selectionEnd = startFunc.length;
 }
 
 /*
