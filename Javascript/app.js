@@ -257,6 +257,17 @@ function setPlayerStatus() {
 */
 
 
+/* Function to set local current and other player */
+function setLocalPlayers(str) {
+	if (str === "player1") {
+		currPlayer = str;
+		otherPlayer = "player2"
+	} else if (str === "player2") {
+		currPlayer = str;
+		otherPlayer = "player1"
+	}
+}
+
 /* Issue #34 */
 /* Write a function that takes a string, "player1", or "player2". With that given string, set the current.player1/2.state to "joining" */
 function setPlayerState(current) {
@@ -291,7 +302,6 @@ function checkIfBothActive(snapshot) {
 		setCurrentFBQuestion(newQuestion);
 	}
 }
-
 
 
 /* Issue #46 */
