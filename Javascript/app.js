@@ -363,15 +363,15 @@ function getNewQuestion(snapshot) {
 
 /* Function to add question to page */
 function displayCurrentQuestion() {
-	$(".header-for-question h2").text(currQuestion.question);
+	$("#question-text").text(currQuestion.question);
 
 	var name = currQuestion.function.name;
 	var args = buildArgList(currQuestion.function.args);
 	var startFunc = `function ${name}(${args}) {\n\t`;
 	var endFunc = "\t}"
 
-	var textArea = $("#user-code-one textarea");
-	$(textArea).attr("value", startFunc + endFunc);
+	var textArea = $("#current-player textarea");
+	$(textArea).text(startFunc + endFunc);
 
 	// Position cursor in correct spot
 	textArea.selectionStart = startFunc.length;
