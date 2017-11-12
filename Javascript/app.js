@@ -346,37 +346,43 @@ function checkIfBothActive(snapshot) {
 	currObj.player1.state === "active" &&
 	currObj.player2.state === "active") {
 		console.log("both states active, and player1");
-		var newQuestion = getRandomQuestion();
-		setCurrentFBQuestion(newQuestion);
+
+		db.ref("questions").once("value", getRandomQuestion);
+
+		//var newQuestion = getRandomQuestion();
+		//setCurrentFBQuestion(newQuestion);
 	}
 }
 
 
 /* Issue #46 */
 /* Write a function that will read the current questions object from Firebase. From those questions, filter out the ones that have already been asked. From the unasked questions, choose a random one, and return that question number. */
-function getRandomQuestion() {
-	db.ref("questions").once("value", function(snapshot) {
-		var qObj = snapshot.val();
-		var qKeys = Object.getOwnPropertyNames(qObj);
-		var unaskedQuestions = jQuery.grep(qKeys, function(question){
-			return !qObj[question].asked;
-		})
+function getRandomQuestion(snapshot) {
+	//db.ref("questions").once("value", function(snapshot) {
 
-		if (unaskedQuestions.length === 0){
-			resetQuestions();
-			return getRandomQuestion();
-		}
+	var qObj = snapshot.val();
+	var qKeys = Object.getOwnPropertyNames(qObj);
+	var unaskedQuestions = jQuery.grep(qKeys, function(question){
+		return !qObj[question].asked;
+	})
+	console.log("unaskedQuestions: ", unaskedQuestions);
 
-		var randomNum = Math.floor(Math.random()*unaskedQuestions.length);
+	if (unaskedQuestions.length === 0){
+		resetQuestions();
+		return getRandomQuestion();
+	}
 
-		return unaskedQuestions[randomNum];
+	var randomNum = Math.floor(Math.random()*unaskedQuestions.length);
+
+	setCurrentFBQuestion(unaskedQuestions[randomNum]);
+
+		//return unaskedQuestions[randomNum];
 
 		/*var chosenQuestion = qObj[unaskedQuestions[randomNum]]
 
 		db.ref(`questions/${unaskedQuestions[randomNum]}/asked`).set(true);
 
 		return chosenQuestion;*/
-	})
 }
 
 function resetQuestions() {
@@ -657,7 +663,9 @@ currQuestion = {
 	}]
 }
 
-getRandomQuestion();
+db.ref("questions").once("value", getRandomQuestion);
+
+
 /**/
 
 
