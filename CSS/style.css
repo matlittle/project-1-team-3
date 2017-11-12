@@ -19,6 +19,9 @@ body, html {
 #login-modal,
 #new-user-modal {
 	text-align: center;
+}
+
+#modal-content {
 	margin: auto;
 	margin-top: 10%;
 	width: 600px;
@@ -154,7 +157,7 @@ h5 {
 
 
 /* STYLES FOR ERROR MESSAGES */
-.err-msg {
+.err-msg, .alert-modal {
     position: absolute;
     top: 0;
     left: 0;
@@ -182,4 +185,15 @@ h5 {
 #user-code-one {
 	position: relative;
 }
+
+.alert-modal {
+	font-size: 26px;
+	width: 80%;
+	top: 15%;
+}
+
+#modal-content {
+	position: relative;
+}
+
 /* End styles for error messages */
