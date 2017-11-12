@@ -467,6 +467,39 @@ function checkUserCode(str, question, passFunc, failFunc) {
 	}
 }
 
+
+/* Function which will run if the user code passes the tests */
+function codePassed() {
+	console.log("Code passed");
+
+	db.ref("current/winner").setWithPriority(currPlayer, 2);
+}
+
+/* Reset the winner to empty */
+function resetWinner() {
+	db.ref("current/winner").set("");
+}
+
+
+/* Function to run if the user code fails */
+function codeFailed(err) {
+	var errDiv = $("<div class='err-msg'>");
+	var textEl = $("<p class='err-text'>").text(err.message);
+
+	var okBtn = $("<input type='button' class='err-btn' value='OK'>")
+
+	$("#user-code-one").append( $(errDiv).append(textEl, okBtn) );
+
+	$(".err-btn").click(closeErrorMessage);
+}
+
+/* Close error message display */
+function closeErrorMessage(e) {
+	e.preventDefault();
+
+	$( $(this).parent() ).remove();
+}
+
 // function to capture tabs in text area---tab key is "9"
 function captureTabPress(event){
 	var key = event.keyCode;

@@ -217,3 +217,27 @@ h5 {
 }
 
 
+/* STYLES FOR ERROR MESSGAES */
+.err-msg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 80%;
+    margin-top: 10%;
+    margin-left: 10%;
+    text-align: center;
+    background: black;
+    padding: 10% 0;
+    border: 2px solid red;
+    color: red;
+       max-height: 80%;
+}
+
+.err-btn {
+	margin-top: 20px;
+}
+
+#user-code-one {
+	position: relative;
+}
+
