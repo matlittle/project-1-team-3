@@ -40,6 +40,9 @@ db.ref("current/question").on("value", getNewQuestion);
 // Listens for a winner
 db.ref("current/winner").on("value", showWinner);
 
+// Handle code check button click
+$("#check-code").click(handleCodeSubmission);
+
 
 $("#add-newuser-btn").on("click", function(event){
 
@@ -376,6 +379,14 @@ function displayCurrentQuestion() {
 	// Position cursor in correct spot
 	textArea.selectionStart = startFunc.length;
 	textArea.selectionEnd = startFunc.length;
+}
+
+
+/* Function to handle code submit button click */
+function handleCodeSubmission() {
+	var code = $("#current-player textarea").val();
+
+	checkUserCode(code, currQuestion, codePassed, codeFailed);
 }
 
 /*
