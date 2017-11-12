@@ -35,6 +35,8 @@ var currQuestion = "";
 db.ref("current").on("value", checkIfBothActive);					
 // Grabs new question from FB when Obj changes. 
 db.ref("current/question").on("value", getNewQuestion);
+// Listens for a winner
+db.ref("current/winner").on("value", showWinner);
 
 
 $("#add-newuser-btn").on("click", function(event){
@@ -492,6 +494,20 @@ function codeFailed(err) {
 	$("#user-code-one").append( $(errDiv).append(textEl, okBtn) );
 
 	$(".err-btn").click(closeErrorMessage);
+}
+
+
+/* Function that checks for, and shows the winner */
+function showWinner(snapshot) {
+	var winner = snapshot.val();
+
+	if (winner !== "") {
+		if (winner === currPlayer) {
+			console.log("you won");
+		} else {
+			console.log("other player won");
+		}
+	}
 }
 
 
