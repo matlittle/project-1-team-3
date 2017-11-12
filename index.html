@@ -4,120 +4,110 @@
 	<title> Holmgang! </title>
 	<meta charset = "UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Bootstrap -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<!-- Google Font -->
+	<link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
+	<!-- Custom Style Sheet -->
 	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>	
+	
 </head>
 <body>
 	
-	<!-- This is the first page divs classes -->
+	<!-- Main Content Area -->
+	<div class="container-fluid" id="content">
 
-	<div class="row" id="first-page-layout">
-		<section class="log-in-section col-s-10 col-m-10 col-l-10 col-xl-10">
-			<h1 id="sign-out">sign out</h1>
-			<div id="login-modal" class="modal">
-				<h1 class="modal-text">login here</h1>
-				<label for="user-name-input">E-mail</label>
-	            <input class="form-control" id="user-name-input" type="text">
-	            <label for="password-input">Password</label>
-	            <input class="form-control" id="password-input" type="password">
-	            <button class="btn btn-primary" id="login-btn" type="submit">Login</button>
-	            <button class="btn btn-primary" id="add-newuser-btn" type="submit">New User</button>
-	            <br>
-	            <br>
-	            <button class="btn btn-primary" id="ready-up" type="submit"> Im Ready! </button>
+		<div class="row" id="header-row">
+			<div class="col-xs-8 col-xs-offset-2">
+				<h1>Header</h1>
 			</div>
-		</section>
-
-		<!-- need to have a new user login modal -->
-		
-		<section class="new-user-section col-s-10 col-m-10 col-l-10 col-xl-10">
-			<div id="new-user-modal" class="modal">
-				<h1 class="modal-text">login here</h1>
-				<label for="new-user-name-input">E-mail</label>
-	            <input class="form-control" id="new-user-name-input" type="text">
-	 			<!--            handle input -->
-	            <label for="user-handle-input">Handle</label>
-	            <input class="form-control" id="user-handle-input" type="text">
-				<!-- 			end handle input -->
-	            <label for="password-input">Password</label>
-	            <input class="form-control" id="new-password-input" type="password">
-	            <label for="password-again-input">Password Again</label>
-	            <input class="form-control" id="new-password-input-verify" type="password">
-	            <button class="btn btn-primary" id="submit-newuser-btn" type="submit">Submit</button>
-			</div>
-		</section>
-	</div>
-
-
-	<!--This is the second pages screen and div classes -->
-	
-	<div class="row" id="second-page-layout">
-		<secton class="second-page-connection-screen col-s-10 col-m-10 col-l-10 col-xl-10">
-				<h3> Waiting on Player 2 </h3>
-		</secton>
-	</div>
-
-	<!-- This is the 3rd page which contains the coding content and versus screen-->
-	
-	<div class="row" id="third-page-layout">
-		<div id="page-3-header-section">
-			<div class="header-for-question">
-				<h2> Question insertion </h2>
+			<div class="col-xs-2">
+				<p id="sign-out">sign out</p>
 			</div>
 		</div>
 
-		<div class="coder-spot">			
-				<div class="coding-area">
-					<div id="user-code-one">
-						<h4> User 1 Coding is in here under userCodeOne <br> div class tag </h4>
-					</div>
-				</div>
-				
-				<div class="symbol-area">
-					<div id="versus-symbol-area">
-						<h4> This will have some kind <br> of symbol or animation </h4>
-					</div>
-				</div>
-
-				<div class="coding-area">
-					<div id="user-code-two">
-						<h4> User 2 Coding is in here under userCode2 <br> div class tag </h4>
-					</div>
-				</div>	
+		<div class="row" id="question-row">
+			<div class="col-xs-12">
+				<h2 id="question-text"> Question</h2>
+			</div>
 		</div>
-		
-		<footer>
-			<div class="row" id="leaderboard-section">
-				<div class="leaderboard">
-					<h4> The Leaderboard is here  </h4>
+
+		<div class="row" id="code-row">			
+			<div class="coding-area col-xs-6">
+				<div id="current-player">
+					<textarea class="code-textarea"></textarea>
 				</div>
 			</div>
-		<footer>
-	</div>
 
-		<!-- this is the final page with victory screen and play again button-->
-	<div class="row" id="fourth-page-layout">
-		<section class="display-final-page col-s-10 col-m-10 col-l-10 col-xl-10">
+			<div class="coding-area col-xs-6">
+				<div id="other-player">
+					<textarea class="code-textarea" readonly></textarea>
+				</div>
+			</div>	
+		</div>
+		
+	</div>
+	<!-- /Main Content Area -->
+
+
+
+	<!-- Modal -->
+	<div class="modal">
+		<!-- Main Login Form -->
+		<div id="login-modal">
+			<h1 class="modal-text">Login</h1>
+			<label for="user-name-input">E-mail</label>
+			<input class="form-control" id="user-name-input" type="text">
+			<label for="password-input">Password</label>
+			<input class="form-control" id="password-input" type="password">
+			<button class="btn btn-primary" id="login-btn" type="submit">Login</button>
+			<button class="btn btn-primary" id="add-newuser-btn" type="submit">New User</button>
+		</div>
+		<!-- /Main Login Form -->
+
+		<!-- New User Form -->
+		<div id="new-user-modal">
+			<h1 class="modal-text">New User</h1>
+			<label for="new-user-name-input">E-mail</label>
+			<input class="form-control" id="new-user-name-input" type="text">
+			<label for="user-handle-input">Handle</label>
+			<input class="form-control" id="user-handle-input" type="text">
+			<label for="password-input">Password</label>
+			<input class="form-control" id="new-password-input" type="password">
+			<label for="password-again-input">Repeat Password</label>
+			<input class="form-control" id="new-password-input-verify" type="password">
+			<button class="btn btn-primary" id="submit-newuser-btn" type="submit">Submit</button>
+		</div>
+		<!-- /New User Form -->
+	</div>
+	<!-- /Modal -->
+
+
+	<!-- Game Won Display -->
+	<div class="row" id="game-won-display">
+		<section class="display-final-page">
 			<div id="user-game-display">
 				<div class="winner-section">
 					<h5> Winner is: ------ </h5>
 				</div>
-			
+
 				<div class="loser-section">
 					<h5> Loser is: ----- </h5>
 				</div>
-	
+
 				<div class="play-again-section">
 					<button id="play-again"> Play Again? </button>
 				</div>
 			</div>
 		</section>
 	</div>
+	<!-- /Game Won Display -->
 
 	<!-- Firebase -->
 	<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
-
+	<!-- jQuery -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<!-- Game JS File -->
 	<script src="Javascript/app.js"></script>
 
 </body>

@@ -10,11 +10,13 @@ var config = {
 firebase.initializeApp(config);
 
 
-$("#new-user-modal").hide();
+/*$("#new-user-modal").hide();
 $("#sign-out").hide();
 $("#second-page-layout").hide();
 $("#third-page-layout").hide();
-$("#fourth-page-layout").hide();
+$("#fourth-page-layout").hide();*/
+
+$(".modal").show();
 
 
 
@@ -134,7 +136,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 	if (user) {
 
 		// user is signed in
-		$("#sign-out").show();
+		//$("#sign-out").show();
 		$("#new-user-modal").hide();
 		$("#login-modal").hide();
 		// show an html element with user name of currently signed in
@@ -163,7 +165,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 		// re-open up sign-in modal
 		$("#login-modal").show();
 		// change html element to show user signed out
-		$("#sign-out").hide();
+		//$("#sign-out").hide();
 	}
 });
 
