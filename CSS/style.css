@@ -171,6 +171,12 @@ h5 {
 
 .err-btn {
 	margin-top: 20px;
+	background-color: black;
+	border-color: red;
+}
+
+.err-btn:focus {
+	outline: none;
 }
 
 #user-code-one {
