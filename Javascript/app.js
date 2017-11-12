@@ -399,7 +399,7 @@ function displayCurrentQuestion() {
 	var name = currQuestion.function.name;
 	var args = buildArgList(currQuestion.function.args);
 	var startFunc = `function ${name}(${args}) {\n\t`;
-	var endFunc = "\t}"
+	var endFunc = "\n}"
 
 	var textArea = $("#current-player textarea");
 	$(textArea).text(startFunc + endFunc);
@@ -514,11 +514,14 @@ function checkUserCode(str, question, passFunc, failFunc) {
 	/* Build full function string for testing */
 	function buildFunctionString(test, question) {
 		var f = question.function;
-		var args = buildArgList(f.args);
+		//var args = buildArgList(f.args);
 		var params = buildArgList(test.params);
 
-		var fullStr = `function ${f.name}(${args}) { \n ${str} \n }  `+
-					`postMessage( ${f.name}(${params}) ); `;
+		var fullStr = `${str} postMessage( ${f.name}(${params}) ); `;
+
+		// Change for now, since text area will have full function
+		/*var fullStr = `function ${f.name}(${args}) { \n ${str} \n }  `+
+					`postMessage( ${f.name}(${params}) ); `;*/
 
 		return fullStr;
 	}
