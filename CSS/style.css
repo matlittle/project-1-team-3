@@ -171,14 +171,16 @@ hr.small {
 	height: 400px;
 }
 
-
-/* Services */
+.body-background{
+	text-align: center;
+}
 
 .log-in {
 	padding: 50px 0;
 	height: 600px;
 	background-color: black;
 	color: white;
+	text-align: center;
 }
 
 .leaderboard {
