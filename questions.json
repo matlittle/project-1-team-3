@@ -1,10 +1,11 @@
-questions: {
+{
+	"questions": {
 	"_01": {
-		"question": "Write a function, reverseString, that takes a string, str. Return that string in reverse order. Example: 'Hello World!' would return '!dlroW olleH'",
+		"question": "Write a function, reverseString, that takes a string, str. Return that string in reverse order. Example: 'Hello World!' would return '!dlroW olleH'.",
 		"asked": false,
 		"function": {
 			"name": "reverseString",
-			"args": ["str"],
+			"args": ["str"]
 		},
 		"tests": [{
 			"params": ["Testing 123"],
@@ -20,11 +21,11 @@ questions: {
 		}]
 	},
 	"_02": {
-		"question": "Write a function, medianNumber, that takes three numbers, num1, num2, num3. Return the median number from those three arguments. Example: 4, 9, 2 would return: 4",
-		"asked": "false",
+		"question": "Write a function, medianNumber, that takes three numbers, num1, num2, num3. Return the median number from those three arguments. Example: 4, 9, 2 would return: 4.",
+		"asked": false,
 		"function": {
 			"name": "medianNumber",
-			"args": ["num1", "num2", "num3"],
+			"args": ["num1", "num2", "num3"]
 		},
 		"tests": [{
 			"params": [1, 2, 3],
@@ -38,8 +39,188 @@ questions: {
 			"params": [100, 75, 200],
 			"passVal": 100
 		}]
+	},
+	"_03": {
+		"question": "Write a function, largestNumber, that takes three numbers, num1, num2, num3. Return the largest number. Example: 59, 3, 110 would return: 110.",
+		"asked": false,
+		"function": {
+			"name": "largestNumber",
+			"args": ["num1", "num2", "num3"]
+		},
+		"tests": [{
+			"params": [1, 2, 3],
+			"passVal": 3
+		},
+		{
+			"params": [-5, 5, 0],
+			"passVal": 5
+		},
+		{
+			"params": [100, 75, 200],
+			"passVal": 200
+		}]
+	},
+	"_04": {
+		"question": "Write a function, convertAge, that takes your age as an argument, num. Convert the number into hours. Example: 46 would return 402,960.",
+		"asked": false,
+		"function": {
+			"name": "convertNumber",
+			"args": ["num"]
+		},
+		"tests": [{
+			"params": [12],
+			"passVal": 105120
+		},
+		{
+			"params": [45],
+			"passVal": 394200
+		},
+		{
+			"params": [29],
+			"passVal": 254040
+		}]
+	},
+	"_05": {
+		"question": "Write a function, alphaOrder, that takes a string, str. Return that string with the letters in alphabetical order. Example: 'Javascript' would return 'Jaaciprstv'",
+		"asked": false,
+		"function": {
+			"name": "alphaOrder",
+			"args": ["str"]
+		},
+		"tests": [{
+			"params": ["Houston"],
+			"passVal": ["Hnoostu"]
+		},
+		{
+			"params": ["apple"],
+			"passVal": ["aelpp"]
+		},
+		{
+			"params": ["turkey"],
+			"passVal": ["ekrtuy"]
+		}]
+	},
+	"_06": {
+		"question": "Write a function, switchCase, that takes a string, str. Switch the case of each character and return the string. Example: 'Hello World' would return 'hELLO wORLD'",
+		"asked": false,
+		"function": {
+			"name": "switchCase",
+			"args": ["str"]
+		},
+		"tests": [{
+			"params": ["Good Morning"],
+			"passVal": ["gOOD mORNING"]
+		},
+		{
+			"params": ["December"],
+			"passVal": ["dECEMBER"]
+		},
+		{
+			"params": ["McDonald"],
+			"passVal": ["mCdONALD"]
+		}]
+	},
+	"_07": {
+		"question": "Write a function, rightDigit, that takes two numbers, num1 and num2. Return true if the right digits are the same. Example: 35, 105 would return true.",
+		"asked": false,
+		"function": {
+			"name": "rightDigit",
+			"args": ["num1, num2"]
+		},
+		"tests": [{
+			"params": [35, 47],
+			"passVal": false
+		},
+		{
+			"params": [533, 23],
+			"passVal": true
+		},
+		{
+			"params": [15, 104],
+			"passVal": false
+		}]
+	},
+	"_08": {
+		"question": "Write a function, reverseNumber, that takes a number, num. Return the number in reverse order. Example: 1352 would return 2531.",
+		"asked": false,
+		"function": {
+			"name": "reverseNumber",
+			"args": ["num"]
+		},
+		"tests": [{
+			"params": [453],
+			"passVal": 354
+		},
+		{
+			"params": [1462],
+			"passVal": 2641
+		},
+		{
+			"params": [98765],
+			"passVal": 56789
+		}]
+	},
+	"_09": {
+		"question": "Write a function, checkPrime, that takes a number, num. Return true if the number is a prime number. Example: 39 would return false.",
+		"asked": false,
+		"function": {
+			"name": "checkPrime",
+			"args": ["num"]
+		},
+		"tests": [{
+			"params": [39],
+			"passVal": false
+		},
+		{
+			"params": [11],
+			"passVal": true
+		},
+		{
+			"params": [57],
+			"passVal": false
+		}]
+	},
+	"_10": {
+		"question": "Write a function, countDigit, that takes one number, num. Return the number of digits in the number. Example: 22341 would return 5.",
+		"asked": false,
+		"function": {
+			"name": "countDigit",
+			"args": ["num"]
+		},
+		"tests": [{
+			"params": [345],
+			"passVal": 3
+		},
+		{
+			"params": [45678],
+			"passVal": 5
+		},
+		{
+			"params": [123456],
+			"passVal": 6
+		}]
+	},
+	"_11": {
+		"question": "Write a function, gcd, that takes two numbers, num1 and num2. Return the gcd (greatest common denominator). Example: 12, 24 would return 12.",
+		"asked": false,
+		"function": {
+			"name": "gcd",
+			"args": ["num1", "num2"]
+		},
+		"tests": [{
+			"params": [24, 12],
+			"passVal": 12
+		},
+		{
+			"params": [53, 2],
+			"passVal": 1
+		},
+		{
+			"params": [3, 15],
+			"passVal": 3
+		}]
+	}
 	}
 }
-
 
 
