@@ -29,15 +29,15 @@
 		},
 		"tests": [{
 			"params": [1, 2, 3],
-			"passVal": 2
+			"passVal": [2]
 		},
 		{
 			"params": [-5, 5, 0],
-			"passVal": 0
+			"passVal": [0]
 		},
 		{
 			"params": [100, 75, 200],
-			"passVal": 100
+			"passVal": [100]
 		}]
 	},
 	"_03": {
@@ -49,15 +49,15 @@
 		},
 		"tests": [{
 			"params": [1, 2, 3],
-			"passVal": 3
+			"passVal": [3]
 		},
 		{
 			"params": [-5, 5, 0],
-			"passVal": 5
+			"passVal": [5]
 		},
 		{
 			"params": [100, 75, 200],
-			"passVal": 200
+			"passVal": [200]
 		}]
 	},
 	"_04": {
@@ -133,11 +133,11 @@
 		},
 		{
 			"params": [533, 23],
-			"passVal": [false]
+			"passVal": [true]
 		},
 		{
 			"params": [15, 104],
-			"passVal": [true]
+			"passVal": [false]
 		}]
 	},
 	"_08": {
@@ -188,16 +188,16 @@
 			"args": ["num1", "num2"]
 		},
 		"tests": [{
-			"params": [5 93],
-			"passVal": [93 5]
+			"params": [5, 93],
+			"passVal": [93, 5]
 		},
 		{
-			"params": [25 3],
-			"passVal": [3 25]
+			"params": [25, 3],
+			"passVal": [3, 25]
 		},
 		{
-			"params": [110 2],
-			"passVal": [2 110]
+			"params": [110, 2],
+			"passVal": [2, 110]
 		}]
 	},
 	"_11": {
@@ -229,18 +229,18 @@
 		},
 		"tests": [{
 			"params": [24, 12],
-			"passVal": []
+			"passVal": [12]
 		},
 		{
-			"params": [53 2],
-			"passVal": [5]
+			"params": [53, 2],
+			"passVal": [1]
 		},
 		{
-			"params": [3 15],
-			"passVal": [6]
+			"params": [3, 15],
+			"passVal": [3]
 		}]
 	}
-	} //questions
+	} 
 } 
 
 
