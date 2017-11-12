@@ -10,110 +10,137 @@
 </head>
 <body>
 	
-	<!-- This is the first page divs classes -->
+	<!-- Nav Bar Section top right when not clicked -->
 
-	<div class="row" id="first-page-layout">
-		<section class="log-in-section col-s-10 col-m-10 col-l-10 col-xl-10">
-			<h1 id="sign-out">sign out</h1>
-			<div id="login-modal" class="modal">
-				<h1 class="modal-text">login here</h1>
-				<label for="user-name-input">E-mail</label>
-	            <input class="form-control" id="user-name-input" type="text">
-	            <label for="password-input">Password</label>
-	            <input class="form-control" id="password-input" type="password">
-	            <button class="btn btn-primary" id="login-btn" type="submit">Login</button>
-	            <button class="btn btn-primary" id="add-newuser-btn" type="submit">New User</button>
-	            <br>
-	            <br>
-	            <button class="btn btn-primary" id="ready-up" type="submit"> Im Ready! </button>
-			</div>
-		</section>
+    <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle">
+    </a>
+    <nav id="sidebar-wrapper">
+      <ul class="sidebar-nav">
+        <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle">
+        </a>
+        <li class="sidebar-brand">
+          <a class="button" href="#top-section"> Navigation </a>
+        </li>
+        <li>
+          <a class="button" href="#top"> Home </a>
+        </li>
+        <li>
+          <a class="button" href="#about"> About Holmgang </a>
+        </li>
+        <li>
+          <a class="button" href="#log-in"> Log In </a>
+        </li>
+        <li>
+          <a class="button" href="#coding"> Play Time </a>
+        </li>
+        <li>
+          <a class="button" href="#scoreboard"> Leaderboard </a>
+        </li>
+      </ul>
+    </nav>
 
-		<!-- need to have a new user login modal -->
-		
-		<section class="new-user-section col-s-10 col-m-10 col-l-10 col-xl-10">
-			<div id="new-user-modal" class="modal">
-				<h1 class="modal-text">login here</h1>
-				<label for="new-user-name-input">E-mail</label>
-	            <input class="form-control" id="new-user-name-input" type="text">
-	 			<!--            handle input -->
-	            <label for="user-handle-input">Handle</label>
-	            <input class="form-control" id="user-handle-input" type="text">
-				<!-- 			end handle input -->
-	            <label for="password-input">Password</label>
-	            <input class="form-control" id="new-password-input" type="password">
-	            <label for="password-again-input">Password Again</label>
-	            <input class="form-control" id="new-password-input-verify" type="password">
-	            <button class="btn btn-primary" id="submit-newuser-btn" type="submit">Submit</button>
-			</div>
-		</section>
-	</div>
+	<!-- Header, Contains the first thing you see on the page --> 
+	<header class="header" id="top-section">
+		<div class="text-vertical-center">
+			<h1> Welcome to the 2017 version of Holmgang </h1>
+			<h3> Hope you are ready to hone and polish your coding skills! </h3>
+			<br>
+			<a href="#about" class="btn btn-dark btn-lg js-scroll-trigger"> About Holgang </a>
+		</div>
+	</header>
 
+	<!-- This is the second section, second portion of the page, contains the information about Holmgang -->
 
-	<!--This is the second pages screen and div classes -->
-	
-	<div class="row" id="second-page-layout">
-		<secton class="second-page-connection-screen col-s-10 col-m-10 col-l-10 col-xl-10">
-				<h3> Waiting on Player 2 </h3>
-		</secton>
-	</div>
+    <div id="about" class="about">
+      <div class="container text-center">
+        <h2> 
+        	Originally, Holmgang was a duel practiced by medieval Scandinavians as a way to settle their disuputes.  The duels were not fought with the likes of guns but with axes and swords in an area defined by the cloak of an ox.  Because these practices are barbaric, we have refined the duel to be fought in the likes of a computer screen with only your wits at your desposal.  Good luck, and may the odds ever be in your favor. 
+        </h2>
+      </div>
+    </div>
 
-	<!-- This is the 3rd page which contains the coding content and versus screen-->
-	
-	<div class="row" id="third-page-layout">
-		<div id="page-3-header-section">
-			<div class="header-for-question">
-				<h2> Question insertion </h2>
+	<!-- 3rd section, for log in and play time -->
+
+	<div id="log-in" class="log-in">
+		<div class="container">
+			<div class="row text-center">
+				<div class="col-lg-10 mx-auto">
+					<h1 id="sign-out">sign out</h1>				
+					<div id="login-modal" class="modal-sm">
+						<h1 class="modal-text">login here</h1>
+						<label for="user-name-input">E-mail</label>
+						<input class="form-control" id="user-name-input" type="text">
+						<label for="password-input">Password</label>
+						<input class="form-control" id="password-input" type="password">
+						<button class="btn btn-primary" id="login-btn" type="submit" style="background-color: #ee7600; color: navy">Login</button>
+						<button class="btn btn-primary" id="add-newuser-btn" type="submit" style="background-color: #ee7600; color: navy">New User</button>
+							
+							<!-- button for github login -->
+
+						<button class="btn btn-primary" id="github-sign-in" type="submit" style="background-color: #ee7600; color: navy">Sign in with GitHub</button>
+					</div>
+
+							<!-- need to have a new user login modal -->
+
+					<div id="new-user-modal" class="modal-sm">
+						<h1 class="modal-text">login here</h1>
+						<label for="new-user-name-input">E-mail</label>
+						<input class="form-control" id="new-user-name-input" type="text">
+							<!--            handle input -->
+						<label for="user-handle-input">Handle</label>
+						<input class="form-control" id="user-handle-input" type="text">
+							<!-- 			end handle input -->
+						<label for="password-input">Password</label>
+						<input class="form-control" id="new-password-input" type="password">
+						<label for="password-again-input">Password Again</label>
+						<input class="form-control" id="new-password-input-verify" type="password">
+						<button class="btn btn-primary" id="submit-newuser-btn" type="submit" style="background-color: #ee7600; color: navy">Submit</button>
+					</div>					
+				</div>
 			</div>
 		</div>
-
-		<div class="coder-spot">			
-				<div class="coding-area">
-					<div id="user-code-one">
-						<h4> User 1 Coding is in here under userCodeOne <br> div class tag </h4>
-					</div>
-				</div>
-				
-				<div class="symbol-area">
-					<div id="versus-symbol-area">
-						<h4> This will have some kind <br> of symbol or animation </h4>
-					</div>
-				</div>
-
-				<div class="coding-area">
-					<div id="user-code-two">
-						<h4> User 2 Coding is in here under userCode2 <br> div class tag </h4>
-					</div>
-				</div>	
-		</div>
-		
-		<footer>
-			<div class="row" id="leaderboard-section">
-				<div class="leaderboard">
-					<h4> The Leaderboard is here  </h4>
-				</div>
-			</div>
-		<footer>
 	</div>
-
-		<!-- this is the final page with victory screen and play again button-->
-	<div class="row" id="fourth-page-layout">
-		<section class="display-final-page col-s-10 col-m-10 col-l-10 col-xl-10">
-			<div id="user-game-display">
-				<div class="winner-section">
-					<h5> Winner is: ------ </h5>
-				</div>
-			
-				<div class="loser-section">
-					<h5> Loser is: ----- </h5>
-				</div>
 	
-				<div class="play-again-section">
-					<button id="play-again"> Play Again? </button>
+	<!-- This will need the most work, this is where we will code against each other --> 	
+
+	<div class="coding" id="#coding">
+		<div class="text-vertical-center">
+			<h1>This is where the Question will be displayed and the users do their coding </h1>
+		</div>
+	</div>
+
+	<!-- This will be where the scoreboard goes -->
+
+	<div class="leaderboard" id="leaderboard">
+		<div class="container text-center">
+			<h3>The Scoreboard Will Go Here.</h3>
+		</div>
+	</div>
+
+
+	<!-- Footer for end of page --> 
+
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto text-center">
+					<p>9990 Richmond Ave
+					<br>Houston, TX </p>
+					<ul class="list-unstyled">
+					<i class="fa fa-envelope-o fa-fw"></i>
+					<a href="mailto:name@example.com"> WilliamShepardsRealEmailAddress@yahoo.com</a>
+					</li>
+					</ul>
+					<br>
+					<hr class="small">
+					<p class="text-muted"> Copyright &copy; Project 1 Group 3 2017</p>
 				</div>
 			</div>
-		</section>
-	</div>
+		</div>
+		<a id="to-top" href="#top" class="btn btn-dark btn-lg js-scroll-trigger">
+		<i class="fa fa-chevron-up fa-fw fa-1x"></i>
+		</a>
+	</footer>
 
 	<!-- Firebase -->
 	<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
@@ -122,4 +149,5 @@
 
 </body>
 </html>
+
 
