@@ -634,3 +634,7 @@ function closeAlert(event) {
 
 	$( $(this).parent() ).remove();
 }
+
+
+
+
