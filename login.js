@@ -1,7 +1,4 @@
-$("#new-user-modal").hide();
-$("#sign-out").hide();
-
-  // Initialize Firebase
+// Initialize Firebase
 var config = {
     apiKey: "AIzaSyBQvtQvPuAfLIyeLNPhIXdvU8gWNTtMU9I",
     authDomain: "project1testing-377b6.firebaseapp.com",
@@ -17,10 +14,6 @@ var db = firebase.database()
 
 
 var loginHandler = {
-
-  // email: "",
-  // password: "",
-  // passwordAgain: "",
   
   chosenName: "",
 
@@ -28,9 +21,6 @@ var loginHandler = {
 
   //capture user id from firebase
   userID: "",
-  // user.uid
-
-//############
 
   showNewUserForm: function(){
 
@@ -38,9 +28,6 @@ var loginHandler = {
     $("#new-user-modal").show();
 
   },
-
-//########
-
 
   //create a new user with email and password
   submitNewUser: function(){
@@ -82,8 +69,6 @@ var loginHandler = {
 
   },
 
-//########
-
   login: function(){
 
     email = $('#user-name-input').val();
@@ -106,7 +91,6 @@ var loginHandler = {
 
   },
 
-//##################
 //add sign out event
 
   signout: function(){
@@ -118,8 +102,6 @@ var loginHandler = {
     });
 
   },
-
-//#####################
 
   //Set an authentication state observer and get user data
   //currently signed in user
@@ -142,21 +124,22 @@ var loginHandler = {
 
         db.ref().once('value').then(function(snapshot) {
 
-          if (snapshot.child('users').child(this.userID).exists()){ //return the user profile associated with the id
+          if (snapshot.child('users').child(loginHandler.userID).exists()){ //return the user profile associated with the id
 
             //console.log("user has profile")
+
+            loginHandler.setPlayerStatus();
 
           } else { //if the user id signed in does not have a profile, push one
 
             //console.log("user does not have profile")
             loginHandler.userProfile();
 
+            loginHandler.setPlayerStatus();
+
           }
 
         });
-
-        //still need login with unique username
-        loginHandler.setPlayerStatus();
       
       } else {
 
@@ -172,9 +155,6 @@ var loginHandler = {
 
   },
 
-//#####################
-
-
   //pushes userprofile to database
   userProfile: function(){ 
     //https://stackoverflow.com/questions/42885707/using-push-method-to-create-new-child-location-without-unique-key
@@ -188,8 +168,6 @@ var loginHandler = {
     });
 
   },
-
-//######################
   
   //sets which player logging in user is 
   setPlayerStatus: function(){
@@ -208,9 +186,9 @@ var loginHandler = {
       playerAssigned1 = (snapshot.child('current').child('player1').child('uid').val());
       playerAssigned2 = (snapshot.child('current').child('player2').child('uid').val());
 
-      localUsername = (snapshot.child('users').child(this.userID).child('username').val());
+      localUsername = (snapshot.child('users').child(loginHandler.userID).child('username').val());
 
-      if (playerAssigned1 === this.userID || playerAssigned2 === this.userID){//if a player is not already assigned
+      if (playerAssigned1 === loginHandler.userID || playerAssigned2 === loginHandler.userID){//if a player is not already assigned
 
         alert("player already assigned");
 
@@ -255,15 +233,13 @@ var loginHandler = {
     });
 
   },
-
-//######################
   
   //forces the current player to clear out their player status
   clearPlayer: function(){
 
     if (this.currPlayer !== ""){
 
-      db.ref('current').child(this.currPlayer).set({
+      db.ref('current').child(loginHandler.currPlayer).set({
 
         state: "inactive",
         uid: "", 
@@ -277,14 +253,12 @@ var loginHandler = {
 
   },
 
-//#######################
-
   //pushes userprofile to db
   userProfile: function(){ 
     //https://stackoverflow.com/questions/42885707/using-push-method-to-create-new-child-location-without-unique-key
     db.ref('users').child(this.userID).set({
 
-      username: this.chosenName,
+      username: loginHandler.chosenName,
       score: "", //latestScore
       stats: "" //currentStats
 
@@ -294,11 +268,15 @@ var loginHandler = {
 
 }
 
-//###################
+//################### end handler object
 
-//jquery handlers for login
+//jquery handlers for login object
 
-//might need to move event.preventdefaults into these functions
+$("#new-user-modal").hide();
+$("#sign-out").hide();
+
+//event listener for login state change
+loginHandler.authenticationListener();
 
 //open new user submission form
 $("#add-newuser-btn").on("click", function(event){
@@ -334,10 +312,11 @@ $("#sign-out").on("click", function(event){
 });
 
 
-//event listenr for login state change
-loginHandler.authenticationListener();
+//###########################################################################
 
-//#########################
+
+//## full game function if you want to use it
+
 
 function fullGame(){
 
@@ -358,6 +337,7 @@ function fullGame(){
 
 
 //#######################github auth###/////////////////////
+//###########in dev does not work please ignore this shitty code##############
 
 
 $("#github-sign-in").on("click", function(event){
