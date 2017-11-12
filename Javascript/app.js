@@ -35,6 +35,8 @@ var currQuestion = "";
 db.ref("current").on("value", checkIfBothActive);					
 // Grabs new question from FB when Obj changes. 
 db.ref("current/question").on("value", getNewQuestion);
+// Listens for a winner
+db.ref("current/winner").on("value", showWinner);
 
 
 $("#add-newuser-btn").on("click", function(event){
@@ -347,6 +349,23 @@ function getNewQuestion(snapshot) {
 }
 
 
+/* Function to add question to page */
+function displayCurrentQuestion() {
+	$(".header-for-question h2").text(currQuestion.question);
+
+	var name = currQuestion.function.name;
+	var args = buildArgList(currQuestion.function.args);
+	var startFunc = `function ${name}(${args}) {\n\t`;
+	var endFunc = "\t}"
+
+	var textArea = $("#user-code-one textarea");
+	$(textArea).attr("value", startFunc + endFunc);
+
+	// Position cursor in correct spot
+	textArea.selectionStart = startFunc.length;
+	textArea.selectionEnd = startFunc.length;
+}
+
 /*
 INPUT EVALUATION FUNCTION 
 	This function takes the user input string from the text area, 
@@ -368,7 +387,7 @@ function checkUserCode(str, question, passFunc, failFunc) {
 	window.URL = URL;
 
 	question.tests.forEach(function(test) {
-		var functionString = buildFunctionString(test);
+		var functionString = buildFunctionString(test, question);
 
 		console.log(functionString);
 
@@ -441,7 +460,8 @@ function checkUserCode(str, question, passFunc, failFunc) {
 		}
 	}
 
-	function buildFunctionString(test) {
+	/* Build full function string for testing */
+	function buildFunctionString(test, question) {
 		var f = question.function;
 		var args = buildArgList(f.args);
 		var params = buildArgList(test.params);
@@ -451,21 +471,74 @@ function checkUserCode(str, question, passFunc, failFunc) {
 
 		return fullStr;
 	}
+}
 
-	function buildArgList(a) {
-		var list = "";
 
-		a.forEach(function(arg){
-			if(list.length === 0) {
-				list += arg;
-			} else {
-				list += `, ${arg}`;
-			}
-		});
+/* Builds a function argument list from an array*/
+function buildArgList(a) {
+	var list = "";
 
-		return list;
+	a.forEach(function(arg){
+		if(list.length === 0) {
+			list += arg;
+		} else {
+			list += `, ${arg}`;
+		}
+	});
+
+	return list;
+}
+
+
+/* Function which will run if the user code passes the tests */
+function codePassed() {
+	console.log("Code passed");
+
+	db.ref("current/winner").setWithPriority(currPlayer, 2);
+}
+
+
+/* Reset the winner to empty */
+function resetWinner() {
+	// called prior to new rounds
+	db.ref("current/winner").set("");
+}
+
+
+/* Function to run if the user code fails */
+function codeFailed(err) {
+	var errDiv = $("<div class='err-msg'>");
+	var textEl = $("<p class='err-text'>").text(err.message);
+
+	var okBtn = $("<input type='button' class='err-btn' value='OK'>")
+
+	$("#user-code-one").append( $(errDiv).append(textEl, okBtn) );
+
+	$(".err-btn").click(closeErrorMessage);
+}
+
+
+/* Function that checks for, and shows the winner */
+function showWinner(snapshot) {
+	var winner = snapshot.val();
+
+	if (winner !== "") {
+		if (winner === currPlayer) {
+			console.log("you won");
+		} else {
+			console.log("other player won");
+		}
 	}
 }
+
+
+/* Close error message display */
+function closeErrorMessage(e) {
+	e.preventDefault();
+
+	$( $(this).parent() ).remove();
+}
+
 
 // function to capture tabs in text area---tab key is "9"
 function captureTabPress(event){
