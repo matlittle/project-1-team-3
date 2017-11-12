@@ -16,7 +16,7 @@ $("#second-page-layout").hide();
 $("#third-page-layout").hide();
 $("#fourth-page-layout").hide();*/
 
-$(".modal").show();
+$(".modal").hide();
 
 
 
@@ -246,6 +246,34 @@ function setPlayerStatus() {
 
 // End of Kyles Log In Code
 
+
+// Capture User Input Section 
+
+
+// Set the interval for code checks
+function startInterval() {
+	var pushInterval = setInterval(function() {
+		var currStr = $("#current-player textarea").val();
+		pushChanges(currStr);
+	}, 100);
+}
+
+// Push data to firebase for the current player
+function pushChanges(str) {
+	db.ref(`/current/${currPlayer}/code`).set(str);
+}
+
+// Listener and updater for other player's code
+function listenForCodeUpdates() {
+	db.ref(`/current/${otherPlayer}/code`).on("value", function(data) {
+		updateOtherPlayer(data.val());
+	});
+}
+
+// Function to update other player
+function updateOtherPlayer(str) {
+	$("#other-player textarea").text(str);
+}
 
 /*
 	Things we still need 
