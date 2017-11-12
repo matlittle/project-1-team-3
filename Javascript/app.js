@@ -7,6 +7,14 @@ var config = {
   storageBucket: "project1testing-377b6.appspot.com",
   messagingSenderId: "547730341651"
 };
+var config = {
+	apiKey: "AIzaSyBpqb28_j0cWU_-3hiiLDwYZd-w20TPToM",
+	authDomain: "project-1-40c23.firebaseapp.com",
+	databaseURL: "https://project-1-40c23.firebaseio.com",
+	projectId: "project-1-40c23",
+	storageBucket: "project-1-40c23.appspot.com",
+	messagingSenderId: "692133169214"
+};
 firebase.initializeApp(config);
 
 
@@ -330,11 +338,14 @@ function loadDisconnect(player) {
 /* This function will be fired when both the current.player1/2.state values are "active". This will likely use a Firebase .on("value", function that will listen for changes to the "current" object. If both player states are "active", and the currPlayer is player1, get a random question using the function written for Issue #46.
 */
 function checkIfBothActive(snapshot) {
+	console.log("checkIfBothActive fired");
 	var currObj =snapshot.val();
+	console.log("currObj: ", currObj);
 
 	if (currPlayer === "player1" &&
 	currObj.player1.state === "active" &&
 	currObj.player2.state === "active") {
+		console.log("both states active, and player1");
 		var newQuestion = getRandomQuestion();
 		setCurrentFBQuestion(newQuestion);
 	}
@@ -390,9 +401,11 @@ function setCurrentFBQuestion(qNum) {
 function getNewQuestion(snapshot) {
 	var qNum = snapshot.val();
 
-	db.ref(`questions/${qNum}`).once("value", function(snapshot) {
-		currQuestion = snapshot.val();
-	});
+	if (qNum !== "") {
+		db.ref(`questions/${qNum}`).once("value", function(snapshot) {
+			currQuestion = snapshot.val();
+		});
+	}
 }
 
 
@@ -644,7 +657,7 @@ currQuestion = {
 	}]
 }
 
-displayCurrentQuestion();
+getRandomQuestion();
 /**/
 
 
