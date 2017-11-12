@@ -338,19 +338,12 @@ function loadDisconnect(player) {
 /* This function will be fired when both the current.player1/2.state values are "active". This will likely use a Firebase .on("value", function that will listen for changes to the "current" object. If both player states are "active", and the currPlayer is player1, get a random question using the function written for Issue #46.
 */
 function checkIfBothActive(snapshot) {
-	console.log("checkIfBothActive fired");
 	var currObj =snapshot.val();
-	console.log("currObj: ", currObj);
 
 	if (currPlayer === "player1" &&
 	currObj.player1.state === "active" &&
 	currObj.player2.state === "active") {
-		console.log("both states active, and player1");
-
 		db.ref("questions").once("value", getRandomQuestion);
-
-		//var newQuestion = getRandomQuestion();
-		//setCurrentFBQuestion(newQuestion);
 	}
 }
 
@@ -358,14 +351,11 @@ function checkIfBothActive(snapshot) {
 /* Issue #46 */
 /* Write a function that will read the current questions object from Firebase. From those questions, filter out the ones that have already been asked. From the unasked questions, choose a random one, and return that question number. */
 function getRandomQuestion(snapshot) {
-	//db.ref("questions").once("value", function(snapshot) {
-
 	var qObj = snapshot.val();
 	var qKeys = Object.getOwnPropertyNames(qObj);
 	var unaskedQuestions = jQuery.grep(qKeys, function(question){
 		return !qObj[question].asked;
 	})
-	console.log("unaskedQuestions: ", unaskedQuestions);
 
 	if (unaskedQuestions.length === 0){
 		resetQuestions();
@@ -378,14 +368,6 @@ function getRandomQuestion(snapshot) {
 	db.ref(`questions/${unaskedQuestions[randomNum]}/asked`).set(true);
 
 	setCurrentFBQuestion(unaskedQuestions[randomNum]);
-
-		//return unaskedQuestions[randomNum];
-
-		/*var chosenQuestion = qObj[unaskedQuestions[randomNum]]
-
-		db.ref(`questions/${unaskedQuestions[randomNum]}/asked`).set(true);
-
-		return chosenQuestion;*/
 }
 
 function resetQuestions() {
@@ -396,8 +378,6 @@ function resetQuestions() {
 		qKeys.forEach(function(key){
 			updateObj[`${key}/asked`] = false;
 		});
-
-		console.log("updateObj: ", updateObj);
 
 		db.ref("questions").update(updateObj, function() {
 			db.ref("questions").once("value", getRandomQuestion);
@@ -473,8 +453,6 @@ function checkUserCode(str, question, passFunc, failFunc) {
 
 	question.tests.forEach(function(test) {
 		var functionString = buildFunctionString(test, question);
-
-		console.log(functionString);
 
 		/* (Stack Overflow comment) we are creating a new javascript file using blob. We just use the string passed to the function, and assign it to the Blob(content,type). */
 		var workerData = new Blob([functionString], { type: "text/javascript" });
@@ -652,32 +630,6 @@ function captureTabPress(event){
 
 
 
-/**/
-currQuestion = {
-	"question": "Write a function, medianNumber, that takes three numbers, num1, num2, num3. Return the median number from those three arguments. Example: 4, 9, 2 would return: 4.",
-	"asked": false,
-	"function": {
-		"name": "medianNumber",
-		"args": ["num1", "num2", "num3"]
-	},
-	"tests": [{
-		"params": [1, 2, 3],
-		"passVal": 2
-	},
-	{
-		"params": [-5, 5, 0],
-		"passVal": 0
-	},
-	{
-		"params": [100, 75, 200],
-		"passVal": 100
-	}]
-}
-
-db.ref("questions").once("value", getRandomQuestion);
-
-
-/**/
 
 
 
