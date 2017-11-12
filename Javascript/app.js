@@ -258,6 +258,10 @@ function startInterval() {
 	}, 100);
 }
 
+// Enable Tab character in textareas for coding
+
+$("textarea").keydown(captureTabPress);
+
 // Push data to firebase for the current player
 function pushChanges(str) {
 	db.ref(`/current/${currPlayer}/code`).set(str);
