@@ -16,7 +16,7 @@ $("#second-page-layout").hide();
 $("#third-page-layout").hide();
 $("#fourth-page-layout").hide();*/
 
-$(".modal").hide();
+$(".modal").show();
 
 
 
@@ -249,7 +249,6 @@ function setPlayerStatus() {
 
 // Capture User Input Section 
 
-
 // Set the interval for code checks
 function startInterval() {
 	var pushInterval = setInterval(function() {
@@ -259,7 +258,6 @@ function startInterval() {
 }
 
 // Enable Tab character in textareas for coding
-
 $("textarea").keydown(captureTabPress);
 
 // Push data to firebase for the current player
@@ -615,19 +613,24 @@ function captureTabPress(event){
 	} 
 }
 
+// Function to create an alert modal and remove the need for actual alerts
 
+function alertModal(str) {
+	var modalDiv = $("<div class='alert-modal'>");
+	var alertMsg = $("<p class='alert-text'>").text(str);
 
+	var okBtn = $("<input type='button' class='alert-btn' value='OK'>")
 
+	$("#modal-content").append( $(modalDiv).append(alertMsg, okBtn) );
+	$(".modal").css("display", "block");
+	$("#modal-content").css("display", "block");
 
+	$(".alert-btn").click(closeAlert);
 
+}
 
+function closeAlert(event) {
+	event.preventDefault();
 
-
-
-
-
-
-
-
-
-
+	$( $(this).parent() ).remove();
+}
