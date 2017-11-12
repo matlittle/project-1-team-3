@@ -475,6 +475,7 @@ function codePassed() {
 	db.ref("current/winner").setWithPriority(currPlayer, 2);
 }
 
+
 /* Reset the winner to empty */
 function resetWinner() {
 	db.ref("current/winner").set("");
@@ -493,12 +494,14 @@ function codeFailed(err) {
 	$(".err-btn").click(closeErrorMessage);
 }
 
+
 /* Close error message display */
 function closeErrorMessage(e) {
 	e.preventDefault();
 
 	$( $(this).parent() ).remove();
 }
+
 
 // function to capture tabs in text area---tab key is "9"
 function captureTabPress(event){
