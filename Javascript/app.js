@@ -369,10 +369,13 @@ function getRandomQuestion(snapshot) {
 
 	if (unaskedQuestions.length === 0){
 		resetQuestions();
-		return getRandomQuestion();
+		return;
 	}
 
 	var randomNum = Math.floor(Math.random()*unaskedQuestions.length);
+
+	// Set question to asked
+	db.ref(`questions/${unaskedQuestions[randomNum]}/asked`).set(true);
 
 	setCurrentFBQuestion(unaskedQuestions[randomNum]);
 
@@ -388,9 +391,17 @@ function getRandomQuestion(snapshot) {
 function resetQuestions() {
 	db.ref("questions").once("value", function(snapshot) {
 		var qKeys = Object.getOwnPropertyNames(snapshot.val());
+		var updateObj = {};
+
 		qKeys.forEach(function(key){
-			db.ref(`questions/${key}/asked`).setWithPriority(false, 2);
-		})
+			updateObj[`${key}/asked`] = false;
+		});
+
+		console.log("updateObj: ", updateObj);
+
+		db.ref("questions").update(updateObj, function() {
+			db.ref("questions").once("value", getRandomQuestion);
+		});
 	})
 }
 
