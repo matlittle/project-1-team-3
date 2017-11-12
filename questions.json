@@ -29,15 +29,15 @@
 		},
 		"tests": [{
 			"params": [1, 2, 3],
-			"passVal": [2]
+			"passVal": 2
 		},
 		{
 			"params": [-5, 5, 0],
-			"passVal": [0]
+			"passVal": 0
 		},
 		{
 			"params": [100, 75, 200],
-			"passVal": [100]
+			"passVal": 100
 		}]
 	},
 	"_03": {
@@ -49,15 +49,15 @@
 		},
 		"tests": [{
 			"params": [1, 2, 3],
-			"passVal": [3]
+			"passVal": 3
 		},
 		{
 			"params": [-5, 5, 0],
-			"passVal": [5]
+			"passVal": 5
 		},
 		{
 			"params": [100, 75, 200],
-			"passVal": [200]
+			"passVal": 200
 		}]
 	},
 	"_04": {
@@ -69,15 +69,15 @@
 		},
 		"tests": [{
 			"params": [12],
-			"passVal": [105120]
+			"passVal": 105120
 		},
 		{
 			"params": [45],
-			"passVal": [394200]
+			"passVal": 394200
 		},
 		{
 			"params": [29],
-			"passVal": [254040]
+			"passVal": 254040
 		}]
 	},
 	"_05": {
@@ -105,7 +105,7 @@
 		"asked": false,
 		"function": {
 			"name": "switchCase",
-			"args": ["str"],
+			"args": ["str"]
 		},
 		"tests": [{
 			"params": ["Good Morning"],
@@ -129,15 +129,15 @@
 		},
 		"tests": [{
 			"params": [35, 47],
-			"passVal": [false]
+			"passVal": false
 		},
 		{
 			"params": [533, 23],
-			"passVal": [true]
+			"passVal": true
 		},
 		{
 			"params": [15, 104],
-			"passVal": [false]
+			"passVal": false
 		}]
 	},
 	"_08": {
@@ -149,15 +149,15 @@
 		},
 		"tests": [{
 			"params": [453],
-			"passVal": [354]
+			"passVal": 354
 		},
 		{
 			"params": [1462],
-			"passVal": [2641]
+			"passVal": 2641
 		},
 		{
 			"params": [98765],
-			"passVal": [56789]
+			"passVal": 56789
 		}]
 	},
 	"_09": {
@@ -169,38 +169,18 @@
 		},
 		"tests": [{
 			"params": [39],
-			"passVal": [false]
+			"passVal": false
 		},
 		{
 			"params": [11],
-			"passVal": [true]
+			"passVal": true
 		},
 		{
 			"params": [57],
-			"passVal": [false]
+			"passVal": false
 		}]
 	},
 	"_10": {
-		"question": "Write a function, swapNumber that takes two numbers, num1 and num2. Swap the position of the numbers. Example: 5, 93 would return 93, 5.",
-		"asked": false,
-		"function": {
-			"name": "swapNumber",
-			"args": ["num1", "num2"]
-		},
-		"tests": [{
-			"params": [5, 93],
-			"passVal": [93, 5]
-		},
-		{
-			"params": [25, 3],
-			"passVal": [3, 25]
-		},
-		{
-			"params": [110, 2],
-			"passVal": [2, 110]
-		}]
-	},
-	"_11": {
 		"question": "Write a function, countDigit, that takes one number, num. Return the number of digits in the number. Example: 22341 would return 5.",
 		"asked": false,
 		"function": {
@@ -209,18 +189,18 @@
 		},
 		"tests": [{
 			"params": [345],
-			"passVal": [3]
+			"passVal": 3
 		},
 		{
 			"params": [45678],
-			"passVal": [5]
+			"passVal": 5
 		},
 		{
 			"params": [123456],
-			"passVal": [6]
+			"passVal": 6
 		}]
 	},
-	"_12": {
+	"_11": {
 		"question": "Write a function, gcd, that takes two numbers, num1 and num2. Return the gcd (greatest common denominator). Example: 12, 24 would return 12.",
 		"asked": false,
 		"function": {
@@ -229,18 +209,18 @@
 		},
 		"tests": [{
 			"params": [24, 12],
-			"passVal": [12]
+			"passVal": 12
 		},
 		{
 			"params": [53, 2],
-			"passVal": [1]
+			"passVal": 1
 		},
 		{
 			"params": [3, 15],
-			"passVal": [3]
+			"passVal": 3
 		}]
 	}
-	} 
-} 
+	}
+}
 
 
