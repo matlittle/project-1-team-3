@@ -587,7 +587,30 @@ function captureTabPress(event){
 
 
 
+/**/
+currQuestion = {
+	"question": "Write a function, medianNumber, that takes three numbers, num1, num2, num3. Return the median number from those three arguments. Example: 4, 9, 2 would return: 4.",
+	"asked": false,
+	"function": {
+		"name": "medianNumber",
+		"args": ["num1", "num2", "num3"]
+	},
+	"tests": [{
+		"params": [1, 2, 3],
+		"passVal": 2
+	},
+	{
+		"params": [-5, 5, 0],
+		"passVal": 0
+	},
+	{
+		"params": [100, 75, 200],
+		"passVal": 100
+	}]
+}
 
+displayCurrentQuestion();
+/**/
 
 
 
