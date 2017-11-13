@@ -27,14 +27,6 @@ $("#fourth-page-layout").hide();*/
 $(".modal").show();
 
 
-
-var email = "";
-var password = "";
-var passwordAgain = "";
-var chosenName = "";
-//capture user id from firebase
-var userID = "";
-// user.uid
 var db = firebase.database();
 var currPlayer = "";
 var otherPlayer = "";
@@ -156,14 +148,11 @@ var loginHandler = {
 				});
 			
 			} else {
-
 				loginHandler.clearPlayer();
 
 				// user is signed out
 				// re-open up sign-in modal
 				$("#login-modal").show();
-				// change html element to show user signed out
-				$("#sign-out").hide();
 			}
 		});
 	},
@@ -186,8 +175,8 @@ var loginHandler = {
 
 		db.ref().once('value').then(function(snapshot) {
 
-			var p1 = snapshot.val().player1;
-			var p2 = snapshot.val().player2;
+			var p1 = snapshot.val().current.player1;
+			var p2 = snapshot.val().current.player2;
 			var localUsername = snapshot.val().users[loginHandler.userID].username;
 			var uid = loginHandler.userID;
 
@@ -245,7 +234,7 @@ var loginHandler = {
 			score: "", //latestScore
 			stats: "" //currentStats
 		});
-	}, 
+	}
 }
 
 //################### end handler object
