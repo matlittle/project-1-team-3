@@ -59,11 +59,10 @@ var loginHandler = {
 	//create a new user with email and password
 	submitNewUser: function(){
 
-		email = $('#new-user-name-input').val().trim();
-		newUserName = $('#user-handle-input').val().trim();
-		this.chosenName = newUserName;
-		password = $('#new-password-input').val();//.trim();
-		passwordAgain = $('#new-password-input-verify').val();//.trim();
+		var email = $('#new-user-name-input').val().trim();
+		this.chosenName = $('#user-handle-input').val().trim();
+		var password = $('#new-password-input').val();//.trim();
+		var passwordAgain = $('#new-password-input-verify').val();//.trim();
 
 		if (password === passwordAgain){
 			//create new account with email and password
@@ -79,20 +78,18 @@ var loginHandler = {
 				} else {
 					alertModal(errorMessage);
 				}
-				console.log(error);
 			});
 
 		} else {
 			alertModal("Passwords do not match")
 			clearEls('#password-input', '#password-again-input');
 		}
-
 	},
 
 	login: function(){
 
-		email = $('#user-name-input').val();
-		password = $('#password-input').val();
+		var email = $('#user-name-input').val();
+		var password = $('#password-input').val();
 
 		clearEls('#user-name-input', '#password-input');
 
@@ -107,11 +104,9 @@ var loginHandler = {
 			}
 
 		});
-
 	},
 
 	//add sign out event
-
 	signout: function(){
 
 		firebase.auth().signOut().then(function() {
@@ -238,11 +233,6 @@ var loginHandler = {
 }
 
 //################### end handler object
-
-//jquery handlers for login object
-
-$("#new-user-modal").hide();
-$("#sign-out").hide();
 
 //event listener for login state change
 loginHandler.authenticationListener();
