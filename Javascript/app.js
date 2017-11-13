@@ -329,10 +329,13 @@ function handleCurrentObjChange(snapshot) {
 		db.ref("questions").once("value", getRandomQuestion);
 		// need to start question timer from here
 
-	} else if () {
-
+	// If other player has not joined yet
+	} else if (currObj[otherPlayer].state === "inactive") {
+		// show a waiting for other player message
+		displayMessage("Waiting for other player");
 	}
 }
+
 
 // Capture User Input Section 
 
