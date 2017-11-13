@@ -317,6 +317,11 @@ function clearEls() {
 }
 
 
+// Function to handle current obj changes
+function handleCurrentObjChange(snapshot) {
+	
+}
+
 // Capture User Input Section 
 
 // Set the interval for code checks
