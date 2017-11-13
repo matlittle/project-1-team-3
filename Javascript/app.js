@@ -21,7 +21,7 @@ var otherPlayer = "";
 var currQuestion = "";
 
 // Checks if both players active. Grabs question if they are.
-db.ref("current").on("value", checkIfBothActive);					
+db.ref("current").on("value", handleCurrentObjChange);					
 // Grabs new question from FB when Obj changes. 
 db.ref("current/question").on("value", getNewQuestion);
 // Listens for a winner
@@ -319,7 +319,19 @@ function clearEls() {
 
 // Function to handle current obj changes
 function handleCurrentObjChange(snapshot) {
-	
+	var currObj =snapshot.val();
+
+	// If both states are active, and current player is player 1
+	if (currPlayer === "player1" &&
+	currObj.player1.state === "active" &&
+	currObj.player2.state === "active") {
+		// gets a new random question. 
+		db.ref("questions").once("value", getRandomQuestion);
+		// need to start question timer from here
+
+	} else if () {
+
+	}
 }
 
 // Capture User Input Section 
@@ -388,7 +400,8 @@ function loadDisconnect(player) {
 /* Issue #30 */
 /* This function will be fired when both the current.player1/2.state values are "active". This will likely use a Firebase .on("value", function that will listen for changes to the "current" object. If both player states are "active", and the currPlayer is player1, get a random question using the function written for Issue #46.
 */
-function checkIfBothActive(snapshot) {
+/* Using handleCurrentObjChange instead */
+/*function checkIfBothActive(snapshot) {
 	var currObj =snapshot.val();
 
 	if (currPlayer === "player1" &&
@@ -396,7 +409,7 @@ function checkIfBothActive(snapshot) {
 	currObj.player2.state === "active") {
 		db.ref("questions").once("value", getRandomQuestion);
 	}
-}
+}*/
 
 
 /* Issue #46 */
