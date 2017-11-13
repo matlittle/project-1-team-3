@@ -69,9 +69,7 @@ var loginHandler = {
 
 		email = $('#new-user-name-input').val().trim();
 		newUserName = $('#user-handle-input').val().trim();
-
 		this.chosenName = newUserName;
-
 		password = $('#new-password-input').val();//.trim();
 		passwordAgain = $('#new-password-input-verify').val();//.trim();
 
@@ -84,20 +82,18 @@ var loginHandler = {
 				var errorMessage = error.message;
 				//call create user profile here
 				if (errorCode == 'auth/email-already-in-use') {
-					alert('Account already in use');
-					$('#user-name-input').val("");
-					$('#password-input').val("");
-					$('#password-again-input').val("");
+					alertModal('Account already in use');
+					clearEls('#user-name-input', '#password-input', '#password-again-input');
 				} else {
-					alert(errorMessage);
+					alertModal(errorMessage);
 				}
 				console.log(error);
 			});
 
 		} else {
-			alert('passwords do not match')
-			$('#password-input').val("");
-			$('#password-again-input').val("");
+			alertModal("Passwords do not match")
+
+			clearEls('#password-input', '#password-again-input');
 		}
 
 	},
@@ -105,10 +101,9 @@ var loginHandler = {
 	login: function(){
 
 		email = $('#user-name-input').val();
-			$('#user-name-input').val("");
-
 		password = $('#password-input').val();
-			$('#password-input').val("");
+
+		clearEls('#user-name-input', '#password-input');
 
 		//sign in existing user
 		firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
@@ -116,7 +111,7 @@ var loginHandler = {
 			var errorCode = error.code;
 			var errorMessage = error.message;
 			if(errorCode == 'auth/wrong-password'){
-				alert("wrong password");
+				alertModal("wrong password");
 				$('#password-input').val("");
 			}
 
@@ -227,13 +222,11 @@ var loginHandler = {
 					alert('player1 catch')
 
 					db.ref('current').child('player1').set({
-
 						state: "active",
 						uid: loginHandler.userID, 
 						code: "",
 						avatar: `https://robohash.org/${localUsername}.png?size=200x200`,
 						username: localUsername
-
 					});
 
 				} else if (player2state === "inactive"){
@@ -243,13 +236,11 @@ var loginHandler = {
 					alert('player2 catch')
 
 					db.ref('current').child('player2').set({
-
 						state: "active",
 						uid: loginHandler.userID, 
 						code: "",
 						avatar: `https://robohash.org/${localUsername}.png?size=200x200`,
 						username: localUsername
-
 					});
 
 				}
@@ -280,7 +271,7 @@ var loginHandler = {
 			score: "", //latestScore
 			stats: "" //currentStats
 		});
-	}
+	}, 
 }
 
 //################### end handler object
@@ -327,6 +318,13 @@ $("#sign-out").on("click", function(event){
 
 
 // End of Kyles Log In Code
+
+//Function to clear elements values
+function clearEls() {
+	arguments.forEach( function(el) {
+		$(el).val("");
+	});
+}
 
 
 // Capture User Input Section 
