@@ -134,11 +134,12 @@ var loginHandler = {
 				db.ref().once('value').then(function(snapshot) {
 
 					if (snapshot.child('users').child(loginHandler.userID).exists()){ 
-					//return the user profile associated with the id
+						//return the user profile associated with the id
 						loginHandler.setPlayerStatus();
 
-					} else { //if the user id signed in does not have a profile, push one
-						loginHandler.userProfile();
+					} else { 
+						//if the user id signed in does not have a profile, push one
+						loginHandler.pushUserProfile();
 					}
 				});
 			
@@ -147,20 +148,21 @@ var loginHandler = {
 
 				// user is signed out
 				// re-open up sign-in modal
-				$("#login-modal").show();
+				$(".modal").show();
 			}
 		});
 	},
 
-	//pushes userprofile to database
-	userProfile: function(){ 
+	//pushes user profile to database
+	pushUserProfile: function(){ 
 		//https://stackoverflow.com/questions/42885707/using-push-method-to-create-new-child-location-without-unique-key
+		console.log("Creating profile");
 		db.ref('users').child(this.userID).set({
 			username: loginHandler.chosenName,
 			score: "", //latestScore
-			stats: "", //currentStats
-			avatar: "",
+			stats: "" //currentStats
 		}).then(function() {
+			console.log("Setting status after profile creation");
 			loginHandler.setPlayerStatus();
 		});
 	},
@@ -184,11 +186,11 @@ var loginHandler = {
 				if (p1.state === 'inactive'){
 					loginHandler.currPlayer = "player1";
 					alert('player1 catch')
-					setActivePlayer('player1', uid, localUsername)
+					loginHandler.setActivePlayer('player1', uid, localUsername)
 				} else if (p2.state === "inactive"){
 					loginHandler.currPlayer = "player2";
 					alert('player2 catch')
-					setActivePlayer('player2', uid, localUsername)
+					loginHandler.setActivePlayer('player2', uid, localUsername)
 				}
 
 			}
@@ -219,16 +221,6 @@ var loginHandler = {
 				username: ""
 			});
 		}
-	},
-
-	//pushes userprofile to db
-	userProfile: function(){ 
-		//https://stackoverflow.com/questions/42885707/using-push-method-to-create-new-child-location-without-unique-key
-		db.ref('users').child(this.userID).set({
-			username: loginHandler.chosenName,
-			score: "", //latestScore
-			stats: "" //currentStats
-		});
 	}
 }
 
@@ -274,9 +266,9 @@ $("#sign-out").on("click", function(event){
 
 //Function to clear elements values
 function clearEls() {
-	arguments.forEach( function(el) {
-		$(el).val("");
-	});
+	for (var i = 0; i < arguments.length; i++) {
+		$(arguments[i]).val("");
+	}
 }
 
 
