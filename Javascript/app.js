@@ -319,29 +319,32 @@ function clearEls() {
 
 // Function to handle current obj changes
 function handleCurrentObjChange(snapshot) {
-	var currObj =snapshot.val();
+	var currObj = snapshot.val();
+	var beginVal = currObj[otherPlayer].state;
 
-	// If both states are active, and current player is player 1
-	if (currPlayer === "player1" &&
-	currObj.player1.state === "active" &&
-	currObj.player2.state === "active") {
-		// gets a new random question. 
-		db.ref("questions").once("value", getRandomQuestion);
-		// need to start question timer from here
+	var ref = db.ref(`current/${otherPlayer}/state`);
 
-	// If other player has not joined yet
-	} else if (currObj[otherPlayer].state === "inactive") {
-		// show a waiting for other player message
-		// set timeout to wait one second prior to displaying message. 
-		// This resolves the issue of a player refreshing the page. 
-		setTimeout(function() {
-			db.ref(`current/${otherPlayer}/state`).once("value", function(snapshot) {
-				if (snapshot.val() === "inactive") {
+	// set timeout to wait one second prior to firing anything, and check for same value. 
+	// This resolves the issue of a player refreshing the page. 
+	setTimeout( function() {
+		ref.once("value", function(snapshot) {
+			if (snapshot.val() === beginVal) {
+				// If both states are active, and current player is player 1
+				if (currPlayer === "player1" &&
+				currObj.player1.state === "active" &&
+				currObj.player2.state === "active") {
+					// gets a new random question. 
+					db.ref("questions").once("value", getRandomQuestion);
+					// need to start question timer from here
+
+				// If other player has not joined yet
+				} else if (currObj[otherPlayer].state === "inactive") {
+					// show a waiting for other player message
 					displayMessage("Waiting for other player");
 				}
-			});
-		}, 1 * 1000);
-	}
+			}
+		}
+	} 1 * 1000);
 }
 
 
