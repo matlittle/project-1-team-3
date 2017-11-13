@@ -171,11 +171,13 @@ var loginHandler = {
         		loginHandler.persistence();
         		loginHandler.reactivate("player1")
 
+        		loginHandler.setActivePlayer('player1', uid, localUsername)
         	} else if (p2.uid === uid){
         		loginHandler.currPlayer = "player2";
         		loginHandler.persistence();
         		loginHandler.reactivate("player2")
 
+        		loginHandler.setActivePlayer('player2', uid, localUsername)
 			} else {
 
 				if (p1.state === 'inactive'){
@@ -311,9 +313,12 @@ function clearEls() {
 }
 
 
-// Function to handle current obj changes
+// Function to handle current obj state changes
 function handleCurrentObjChange(snapshot) {
 	var currObj = snapshot.val();
+
+	console.log("Handling obj change");
+	console.log("otherPlayer:", otherPlayer);
 
 	if (otherPlayer === "") return; 
 
