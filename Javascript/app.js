@@ -171,13 +171,13 @@ var loginHandler = {
         		loginHandler.persistence();
         		loginHandler.reactivate("player1")
 
-        		loginHandler.setActivePlayer('player1', uid, localUsername)
+        		setLocalPlayers("player1");
         	} else if (p2.uid === uid){
         		loginHandler.currPlayer = "player2";
         		loginHandler.persistence();
         		loginHandler.reactivate("player2")
 
-        		loginHandler.setActivePlayer('player2', uid, localUsername)
+        		setLocalPlayers("player2");
 			} else {
 
 				if (p1.state === 'inactive'){
@@ -330,6 +330,7 @@ function handleCurrentObjChange(snapshot) {
 	setTimeout( function() {
 		ref.once("value", function(snapshot) {
 			if (snapshot.val() === beginVal) {
+				currObj = snapshot.val();
 				// If both states are active, and current player is player 1
 				if (currPlayer === "player1" &&
 				currObj.player1.state === "active" &&
@@ -382,6 +383,7 @@ function updateOtherPlayer(str) {
 
 /* Function to set local current and other player */
 function setLocalPlayers(str) {
+	console.log("Setting local");
 	if (str === "player1") {
 		currPlayer = str;
 		otherPlayer = "player2"
