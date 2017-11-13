@@ -20,8 +20,9 @@ var otherPlayer = "";
 
 var currQuestion = "";
 
-// Checks if both players active. Grabs question if they are.
-db.ref("current").on("value", handleCurrentObjChange);					
+// Handles when a player state changes
+db.ref("current/player1/state").on("value", handleCurrentObjChange);
+db.ref("current/player2/state").on("value", handleCurrentObjChange);					
 // Grabs new question from FB when Obj changes. 
 db.ref("current/question").on("value", getNewQuestion);
 // Listens for a winner
@@ -166,16 +167,11 @@ var loginHandler = {
 
 			if (p1.uid === uid){
 				//if a player is already assigned
-				alert("player already assigned");
-
         		loginHandler.currPlayer = "player1";
         		loginHandler.persistence();
         		loginHandler.reactivate("player1")
 
         	} else if (p2.uid === uid){
-
-        		alert("player already assigned");
-
         		loginHandler.currPlayer = "player2";
         		loginHandler.persistence();
         		loginHandler.reactivate("player2")
@@ -188,7 +184,6 @@ var loginHandler = {
 					loginHandler.deactivate("player1");
           			loginHandler.persistence();
 					
-					alert('player1 catch')
 					loginHandler.setActivePlayer('player1', uid, localUsername)
 				} else if (p2.state === "inactive"){
 					loginHandler.currPlayer = "player2";
@@ -196,7 +191,6 @@ var loginHandler = {
 					loginHandler.deactivate("player2");
           			loginHandler.persistence();
 
-					alert('player2 catch')
 					loginHandler.setActivePlayer('player2', uid, localUsername)
 				}
 
@@ -320,8 +314,10 @@ function clearEls() {
 // Function to handle current obj changes
 function handleCurrentObjChange(snapshot) {
 	var currObj = snapshot.val();
-	var beginVal = currObj[otherPlayer].state;
 
+	if (otherPlayer === "") return; 
+
+	var beginVal = currObj[otherPlayer].state;
 	var ref = db.ref(`current/${otherPlayer}/state`);
 
 	// set timeout to wait one second prior to firing anything, and check for same value. 
@@ -340,11 +336,11 @@ function handleCurrentObjChange(snapshot) {
 				// If other player has not joined yet
 				} else if (currObj[otherPlayer].state === "inactive") {
 					// show a waiting for other player message
-					displayMessage("Waiting for other player");
+					displayMsg("Waiting for other player");
 				}
 			}
-		}
-	} 1 * 1000);
+		});
+	}, 1 * 1000);
 }
 
 
