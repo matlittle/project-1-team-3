@@ -332,7 +332,15 @@ function handleCurrentObjChange(snapshot) {
 	// If other player has not joined yet
 	} else if (currObj[otherPlayer].state === "inactive") {
 		// show a waiting for other player message
-		displayMessage("Waiting for other player");
+		// set timeout to wait one second prior to displaying message. 
+		// This resolves the issue of a player refreshing the page. 
+		setTimeout(function() {
+			db.ref(`current/${otherPlayer}/state`).once("value", function(snapshot) {
+				if (snapshot.val() === "inactive") {
+					displayMessage("Waiting for other player");
+				}
+			});
+		}, 1 * 1000);
 	}
 }
 
