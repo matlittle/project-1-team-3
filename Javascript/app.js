@@ -1,11 +1,11 @@
 // Initialize Firebase database
 var config = {
-  apiKey: "AIzaSyBQvtQvPuAfLIyeLNPhIXdvU8gWNTtMU9I",
-  authDomain: "project1testing-377b6.firebaseapp.com",
-  databaseURL: "https://project1testing-377b6.firebaseio.com",
-  projectId: "project1testing-377b6",
-  storageBucket: "project1testing-377b6.appspot.com",
-  messagingSenderId: "547730341651"
+	apiKey: "AIzaSyBQvtQvPuAfLIyeLNPhIXdvU8gWNTtMU9I",
+	authDomain: "project1testing-377b6.firebaseapp.com",
+	databaseURL: "https://project1testing-377b6.firebaseio.com",
+	projectId: "project1testing-377b6",
+	storageBucket: "project1testing-377b6.appspot.com",
+	messagingSenderId: "547730341651"
 };
 firebase.initializeApp(config);
 
@@ -19,14 +19,6 @@ $("#fourth-page-layout").hide();*/
 $(".modal").show();
 
 
-
-var email = "";
-var password = "";
-var passwordAgain = "";
-var chosenName = "";
-//capture user id from firebase
-var userID = "";
-// user.uid
 var db = firebase.database();
 var currPlayer = "";
 var otherPlayer = "";
@@ -44,197 +36,215 @@ db.ref("current/winner").on("value", showWinner);
 $("#check-code").click(handleCodeSubmission);
 
 
+var loginHandler = {
+	
+	chosenName: "",
+	currPlayer: "",
+	//capture user id from firebase
+	userID: "",
+
+	showNewUserForm: function(){
+		$("#login-modal").hide();
+		$("#new-user-modal").show();
+	},
+
+	//create a new user with email and password
+	submitNewUser: function(){
+
+		var email = $('#new-user-name-input').val().trim();
+		this.chosenName = $('#user-handle-input').val().trim();
+		var password = $('#new-password-input').val();//.trim();
+		var passwordAgain = $('#new-password-input-verify').val();//.trim();
+
+		if (password === passwordAgain){
+			//create new account with email and password
+			//check if account already made
+			firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+				// Handle Errors here.
+				var errorCode = error.code;
+				var errorMessage = error.message;
+				//call create user profile here
+				if (errorCode == 'auth/email-already-in-use') {
+					alertModal('Account already in use');
+					clearEls('#user-name-input', '#password-input', '#password-again-input');
+				} else {
+					alertModal(errorMessage);
+				}
+			});
+
+		} else {
+			alertModal("Passwords do not match")
+			clearEls('#password-input', '#password-again-input');
+		}
+	},
+
+	login: function(){
+
+		var email = $('#user-name-input').val();
+		var password = $('#password-input').val();
+
+		clearEls('#user-name-input', '#password-input');
+
+		//sign in existing user
+		firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+			// Handle Errors here.
+			var errorCode = error.code;
+			var errorMessage = error.message;
+			if(errorCode == 'auth/wrong-password'){
+				alertModal("wrong password");
+				$('#password-input').val("");
+			}
+
+		});
+	},
+
+	//add sign out event
+	signout: function(){
+
+		firebase.auth().signOut().then(function() {
+			
+		}).catch(function(error) {
+			// An error happened.
+		});
+	},
+
+	//Set an authentication state observer and get user data
+	//currently signed in user
+
+	authenticationListener: function(){
+
+		firebase.auth().onAuthStateChanged(function(user) {
+			
+			if (user) {
+				// user is signed in
+				$(".modal").hide();
+				// close sign in modal here
+
+				//capture unique user id at
+				loginHandler.userID = user.uid;
+
+				db.ref().once('value').then(function(snapshot) {
+
+					if (snapshot.child('users').child(loginHandler.userID).exists()){ 
+						//return the user profile associated with the id
+						loginHandler.setPlayerStatus();
+
+					} else { 
+						//if the user id signed in does not have a profile, push one
+						loginHandler.pushUserProfile();
+					}
+				});
+			
+			} else {
+				loginHandler.clearPlayer();
+
+				// user is signed out
+				// re-open up sign-in modal
+				$(".modal").show();
+			}
+		});
+	},
+
+	//pushes user profile to database
+	pushUserProfile: function(){ 
+		//https://stackoverflow.com/questions/42885707/using-push-method-to-create-new-child-location-without-unique-key
+		console.log("Creating profile");
+		db.ref('users').child(this.userID).set({
+			username: loginHandler.chosenName,
+			score: "", //latestScore
+			stats: "" //currentStats
+		}).then(function() {
+			console.log("Setting status after profile creation");
+			loginHandler.setPlayerStatus();
+		});
+	},
+	
+	//sets which player logging in user is 
+	setPlayerStatus: function(){
+
+		db.ref().once('value').then(function(snapshot) {
+
+			var p1 = snapshot.val().current.player1;
+			var p2 = snapshot.val().current.player2;
+			var localUsername = snapshot.val().users[loginHandler.userID].username;
+			var uid = loginHandler.userID;
+
+			if (p1.uid === uid || p2.uid === uid){
+				//if a player is already assigned
+				alert("player already assigned");
+
+			} else {
+
+				if (p1.state === 'inactive'){
+					loginHandler.currPlayer = "player1";
+					alert('player1 catch')
+					loginHandler.setActivePlayer('player1', uid, localUsername)
+				} else if (p2.state === "inactive"){
+					loginHandler.currPlayer = "player2";
+					alert('player2 catch')
+					loginHandler.setActivePlayer('player2', uid, localUsername)
+				}
+
+			}
+
+		});
+	},
+
+	setActivePlayer: function(player, uid, username) {
+		db.ref('current').child(player).set({
+			state: "active",
+			uid: uid, 
+			code: "",
+			avatar: `https://robohash.org/${username}.png?size=200x200`,
+			username: username
+		});
+
+		setLocalPlayers(player);
+	},
+	
+	//forces the current player to clear out their player status
+	clearPlayer: function(){
+		if (this.currPlayer !== ""){
+			db.ref('current').child(loginHandler.currPlayer).set({
+				state: "inactive",
+				uid: "", 
+				code: "",
+				avatar: "",
+				username: ""
+			});
+		}
+	}
+}
+
+//################### end handler object
+
+//event listener for login state change
+loginHandler.authenticationListener();
+
+//open new user submission form
 $("#add-newuser-btn").on("click", function(event){
-
-	$("#login-modal").hide();
-	$("#new-user-modal").show();
-
+	loginHandler.showNewUserForm();
 });
 
 //create a new user with email and password
 $("#submit-newuser-btn").on("click", function(event){
 	event.preventDefault();
-
-	email = $('#new-user-name-input').val().trim();
-	//$('#user-name-input').val("");
-
-	chosenName = $('#user-handle-input').val().trim();
-	//$('#user-name-input').val("");
-
-	password = $('#new-password-input').val();//.trim();
-	//$('#password-input').val("");
-
-	passwordAgain = $('#new-password-input-verify').val();//.trim();
-	//$('#password-again-input').val("");
-
-	if (password === passwordAgain){
-	//create new account with email and password
-	//check if account already made
-	firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-		// Handle Errors here.
-		var errorCode = error.code;
-		var errorMessage = error.message;
-		//call create user profile here
-		if (errorCode == 'auth/email-already-in-use') {
-			alert('Account already in use');
-			$('#user-name-input').val("");
-			$('#password-input').val("");
-			$('#password-again-input').val("");
-		} else {
-			alert(errorMessage);
-		}
-		console.log(error);
-	});
-
-	} else {
-		alert('passwords do not match')
-		$('#password-input').val("");
-		$('#password-again-input').val("");
-	}
+	loginHandler.submitNewUser();
 });
 
 //modal login
 $("#login-btn").on("click", function(event){
-
 	event.preventDefault();
-
-	// $("#sign-out").show();
-
-	email = $('#user-name-input').val();//.trim();
-	$('#user-name-input').val("");
-
-	password = $('#password-input').val();//.trim();
-	$('#password-input').val("");
-
-	//sign in existing user
-	firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-		// Handle Errors here.
-		var errorCode = error.code;
-		var errorMessage = error.message;
-		if(errorCode == 'auth/wrong-password'){
-			alert("wrong password");
-			$('#password-input').val("");
-		}
-
-	});
-
+	loginHandler.login();
 });
 
-//add sign out event
 $("#sign-out").on("click", function(event){
 	event.preventDefault();
-
-	firebase.auth().signOut().then(function() {
-		// Sign-out successful.
-	}).catch(function(error) {
-		// An error happened.
-	});
-
+	loginHandler.signout();
 });
 
 
-//Set an authentication state observer and get user data
-//currently signed in user
-firebase.auth().onAuthStateChanged(function(user) {
-	if (user) {
-
-		// user is signed in
-		//$("#sign-out").show();
-		$("#new-user-modal").hide();
-		$("#login-modal").hide();
-		// show an html element with user name of currently signed in
-		// close sign in modal here
-
-		//capture unique user id at
-		userID = user.uid;
-
-		if (userID in db.ref('users')){ //return the user profile associated with the id
-
-			console.log("user has profile")
-
-		} else { //if the user id signed in does not have a profile, push one
-
-			userProfile();
-
-		}
-
-		//still need login with unique username
-
-		setPlayerStatus();
-
-		
-	} else {
-		// user is signed out
-		// re-open up sign-in modal
-		$("#login-modal").show();
-		// change html element to show user signed out
-		//$("#sign-out").hide();
-	}
-});
-
-
-//pushes userprofile to database
-function userProfile() { 
-	//https://stackoverflow.com/questions/42885707/using-push-method-to-create-new-child-location-without-unique-key
-	db.ref('users').child(userID).set({
-		username: chosenName,
-		score: "", //latestScore
-		stats: "", //currentStats
-		avatar: ""
-	});
-}
-
-function setPlayerStatus() {
-
-	var player1state = "";
-	var player2state = "";
-	var localUsername = "";
-
-	db.ref().once('value').then(function(snapshot) {
-		// var username = (snapshot.val());
-		player1state = (snapshot.child('current').child('player1').child('state').val());
-		player2state = (snapshot.child('current').child('player2').child('state').val());
-		localUsername = (snapshot.child('users').child(userID).child('username').val());
-		console.log(player1state);
-		console.log(player2state);
-		console.log(localUsername);
-
-		if (player1state === 'none') {// || player1state === "joining"
-
-			alert('player1 catch')
-
-			db.ref('current').child('player1').set({
-
-				state: "active",
-				uid: userID, 
-				code: "",
-				avatar: `https://robohash.org/${localUsername}.png?size=200x200`
-
-			});
-
-		} else if (player2state === "none") {// || player2state === "joining"
-
-
-			alert('player2 catch')
-
-			db.ref('current').child('player2').set({
-
-				state: "active",
-				uid: userID, 
-				code: "",
-				avatar: `https://robohash.org/${localUsername}.png?size=200x200`
-
-			});
-
-		} else {
-
-			alert("game is full please try again later");
-
-		}
-
-	});
-
-}
+//###########################################################################
 
 //need to get out username and return to terry
 
@@ -245,6 +255,13 @@ function setPlayerStatus() {
 
 
 // End of Kyles Log In Code
+
+//Function to clear elements values
+function clearEls() {
+	for (var i = 0; i < arguments.length; i++) {
+		$(arguments[i]).val("");
+	}
+}
 
 
 // Capture User Input Section 
@@ -276,20 +293,6 @@ function listenForCodeUpdates() {
 function updateOtherPlayer(str) {
 	$("#other-player textarea").text(str);
 }
-
-/*
-	Things we still need 
-
-	We mostly need function to control UI
-	Need to update page with "waiting" after logging in.
-	Update page with question when both players active. 
-	
-	We will need two function written that handle a pass or fail when checking
-		code
-	The pass function should notify the other player that you won. 
-		We'll need a FB object to track this.
-	The fail function should display reason for fail
-*/
 
 
 /* Function to set local current and other player */
