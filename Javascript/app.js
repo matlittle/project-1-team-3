@@ -10,11 +10,6 @@ var config = {
 firebase.initializeApp(config);
 
 
-/*$("#new-user-modal").hide();
-$("#sign-out").hide();
-$("#second-page-layout").hide();
-$("#third-page-layout").hide();
-$("#fourth-page-layout").hide();*/
 
 $(".modal").show();
 
@@ -280,6 +275,7 @@ loginHandler.authenticationListener();
 
 //open new user submission form
 $("#add-newuser-btn").on("click", function(event){
+	event.preventDefault();
 	loginHandler.showNewUserForm();
 });
 
