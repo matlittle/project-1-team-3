@@ -700,5 +700,26 @@ function closeAlert(event) {
 	$( $(this).parent() ).remove();
 }
 
+// Creates a timer to fire the game initialization when both players have joined
+function runTimer(n) {
+	var timerInt = setInterval( function() {
+		if (n > 0) {
+			displayMsg(`New question in ${n} seconds!`);
+			n--;
+		} else {
+			clearTimeout(timerInt);
+
+			displayCurrentQuestion();
+		}
+	}, 1000);
+}
+
+// Displays a message in the question area
+function displayMsg(str) {
+	$("#question-text").html(str)
+}
+
+
+
 
 
