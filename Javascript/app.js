@@ -169,18 +169,38 @@ var loginHandler = {
 			var localUsername = snapshot.val().users[loginHandler.userID].username;
 			var uid = loginHandler.userID;
 
-			if (p1.uid === uid || p2.uid === uid){
+			if (p1.uid === uid){
 				//if a player is already assigned
 				alert("player already assigned");
+
+        		loginHandler.currPlayer = "player1";
+        		loginHandler.persistence();
+        		loginHandler.reactivate("player1")
+
+        	} else if (p2.uid === uid){
+
+        		alert("player already assigned");
+
+        		loginHandler.currPlayer = "player2";
+        		loginHandler.persistence();
+        		loginHandler.reactivate("player2")
 
 			} else {
 
 				if (p1.state === 'inactive'){
 					loginHandler.currPlayer = "player1";
+					
+					loginHandler.deactivate("player1");
+          			loginHandler.persistence();
+					
 					alert('player1 catch')
 					loginHandler.setActivePlayer('player1', uid, localUsername)
 				} else if (p2.state === "inactive"){
 					loginHandler.currPlayer = "player2";
+
+					loginHandler.deactivate("player2");
+          			loginHandler.persistence();
+
 					alert('player2 catch')
 					loginHandler.setActivePlayer('player2', uid, localUsername)
 				}
@@ -213,7 +233,44 @@ var loginHandler = {
 				username: ""
 			});
 		}
+	},
+
+	persistence: function(){
+
+	    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(function() {
+
+			loginHandler.deactivate(loginHandler.currPlayer);
+			// Existing and future Auth states are now persisted in the current
+			// session only. Closing the window would clear any existing state even
+			// if a user forgets to sign out.
+			// ...
+			// New sign-in will be persisted with session persistence.
+			return firebase.auth().signInWithEmailAndPassword(email, password);
+	    })
+	    .catch(function(error) {
+			// Handle Errors here.
+			var errorCode = error.code;
+			var errorMessage = error.message;
+	    });
+  	},
+
+  	deactivate: function(player){
+
+		var ref = db.ref(`current/${player}/state`);
+
+		ref.onDisconnect().set("inactive");
+	      
+	},
+
+
+	reactivate: function(player){
+
+		var ref = db.ref(`current/${player}/state`);
+
+		ref.set("active");
+	      
 	}
+
 }
 
 //################### end handler object
