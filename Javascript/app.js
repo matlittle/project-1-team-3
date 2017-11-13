@@ -138,12 +138,8 @@ var loginHandler = {
 		firebase.auth().onAuthStateChanged(function(user) {
 			
 			if (user) {
-				
 				// user is signed in
-				$("#sign-out").show();
-				$("#new-user-modal").hide();
-				$("#login-modal").hide();
-				// show an html element with user name of currently signed in
+				$(".modal").hide();
 				// close sign in modal here
 
 				//capture unique user id at
@@ -151,18 +147,12 @@ var loginHandler = {
 
 				db.ref().once('value').then(function(snapshot) {
 
-					if (snapshot.child('users').child(loginHandler.userID).exists()){ //return the user profile associated with the id
-
-						//console.log("user has profile")
-
+					if (snapshot.child('users').child(loginHandler.userID).exists()){ 
+					//return the user profile associated with the id
 						loginHandler.setPlayerStatus();
 
 					} else { //if the user id signed in does not have a profile, push one
-
-						//console.log("user does not have profile")
 						loginHandler.userProfile();
-
-						loginHandler.setPlayerStatus();
 					}
 				});
 			
@@ -187,66 +177,49 @@ var loginHandler = {
 			score: "", //latestScore
 			stats: "", //currentStats
 			avatar: "",
+		}).then(function() {
+			loginHandler.setPlayerStatus();
 		});
 	},
 	
 	//sets which player logging in user is 
 	setPlayerStatus: function(){
 
-		var player1state = "";
-		var player2state = "";
-		var localUsername = "";
-		var playerAssigned1 = "";
-		var playerAssigned2 = "";
-
 		db.ref().once('value').then(function(snapshot) {
 
-			player1state = (snapshot.child('current').child('player1').child('state').val());
-			player2state = (snapshot.child('current').child('player2').child('state').val());
+			var p1 = snapshot.val().player1;
+			var p2 = snapshot.val().player2;
+			var localUsername = snapshot.val().users[loginHandler.userID].username;
+			var uid = loginHandler.userID;
 
-			playerAssigned1 = (snapshot.child('current').child('player1').child('uid').val());
-			playerAssigned2 = (snapshot.child('current').child('player2').child('uid').val());
-
-			localUsername = (snapshot.child('users').child(loginHandler.userID).child('username').val());
-
-			if (playerAssigned1 === loginHandler.userID || playerAssigned2 === loginHandler.userID){//if a player is not already assigned
-
+			if (p1.uid === uid || p2.uid === uid){
+				//if a player is already assigned
 				alert("player already assigned");
 
 			} else {
 
-				if (player1state === 'inactive'){
-
+				if (p1.state === 'inactive'){
 					loginHandler.currPlayer = "player1";
-
 					alert('player1 catch')
-
-					db.ref('current').child('player1').set({
-						state: "active",
-						uid: loginHandler.userID, 
-						code: "",
-						avatar: `https://robohash.org/${localUsername}.png?size=200x200`,
-						username: localUsername
-					});
-
-				} else if (player2state === "inactive"){
-
+					setActivePlayer('player1', uid, localUsername)
+				} else if (p2.state === "inactive"){
 					loginHandler.currPlayer = "player2";
-
 					alert('player2 catch')
-
-					db.ref('current').child('player2').set({
-						state: "active",
-						uid: loginHandler.userID, 
-						code: "",
-						avatar: `https://robohash.org/${localUsername}.png?size=200x200`,
-						username: localUsername
-					});
-
+					setActivePlayer('player2', uid, localUsername)
 				}
 
 			}
 
+		});
+	},
+
+	setActivePlayer: function(player, uid, username) {
+		db.ref('current').child(player).set({
+			state: "active",
+			uid: uid, 
+			code: "",
+			avatar: `https://robohash.org/${username}.png?size=200x200`,
+			username: username
 		});
 	},
 	
