@@ -144,7 +144,6 @@ var loginHandler = {
       } else {
 
         loginHandler.clearPlayer();
-
         // user is signed out
         // re-open up sign-in modal
         $("#login-modal").show();
@@ -188,15 +187,38 @@ var loginHandler = {
 
       localUsername = (snapshot.child('users').child(loginHandler.userID).child('username').val());
 
-      if (playerAssigned1 === loginHandler.userID || playerAssigned2 === loginHandler.userID){//if a player is not already assigned
+      //############new
+
+      if (playerAssigned1 === loginHandler.userID){//if a player is not already assigned
 
         alert("player already assigned");
+
+        loginHandler.currPlayer = "player1";
+        loginHandler.persistence();
+
+        loginHandler.reactivate('player1')
+
+      } else if(playerAssigned2 === loginHandler.userID){
+
+        alert("player already assigned");
+
+        loginHandler.currPlayer = "player2";
+        loginHandler.persistence();
+
+        loginHandler.reactivate('player2')
+       
+      //############new
 
       } else {
 
         if (player1state === 'inactive'){
 
           loginHandler.currPlayer = "player1";
+
+          //############new
+          loginHandler.deactivate('player1');
+          loginHandler.persistence();
+          //###############NEW
 
           alert('player1 catch')
 
@@ -213,6 +235,11 @@ var loginHandler = {
         } else if (player2state === "inactive"){
 
           loginHandler.currPlayer = "player2";
+
+          //############new
+          loginHandler.deactivate('player2');
+          loginHandler.persistence();
+          //###############NEW
 
           alert('player2 catch')
 
@@ -265,6 +292,44 @@ var loginHandler = {
     });
 
   },
+
+  //####################new
+
+  persistence: function(){
+
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(function() {
+
+      loginHandler.deactivate(loginHandler.currPlayer);
+      // Existing and future Auth states are now persisted in the current
+      // session only. Closing the window would clear any existing state even
+      // if a user forgets to sign out.
+      // ...
+      // New sign-in will be persisted with session persistence.
+      return firebase.auth().signInWithEmailAndPassword(email, password);
+    })
+    .catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+    });
+
+  },
+
+  deactivate: function(player){
+
+    var ref = db.ref(`current/${player}/state`);
+
+    ref.onDisconnect().set("inactive");
+      
+  },
+
+  reactivate: function(player){
+
+    var ref = db.ref(`current/${player}/state`);
+
+    ref.set("active");
+      
+  }
 
 }
 
