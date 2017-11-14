@@ -9,15 +9,15 @@
 		},
 		"tests": [{
 			"params": ["Testing 123"],
-			"passVal": ["321 gnitseT"]
+			"passVal": "321 gnitseT"
 		},
 		{
 			"params": ["0123456789"],
-			"passVal": ["9876543210"]
+			"passVal": "9876543210"
 		},
 		{
 			"params": ["Hello World!"],
-			"passVal": ["!dlroW olleH"]
+			"passVal": "!dlroW olleH"
 		}]
 	},
 	"_02": {
@@ -64,7 +64,7 @@
 		"question": "Write a function, convertAge, that takes your age as an argument, num. Convert the number into hours. Example: 46 would return 402,960.",
 		"asked": false,
 		"function": {
-			"name": "convertNumber",
+			"name": "convertAge",
 			"args": ["num"]
 		},
 		"tests": [{
@@ -89,15 +89,15 @@
 		},
 		"tests": [{
 			"params": ["Houston"],
-			"passVal": ["Hnoostu"]
+			"passVal": "Hnoostu"
 		},
 		{
 			"params": ["apple"],
-			"passVal": ["aelpp"]
+			"passVal": "aelpp"
 		},
 		{
 			"params": ["turkey"],
-			"passVal": ["ekrtuy"]
+			"passVal": "ekrtuy"
 		}]
 	},
 	"_06": {
@@ -109,15 +109,15 @@
 		},
 		"tests": [{
 			"params": ["Good Morning"],
-			"passVal": ["gOOD mORNING"]
+			"passVal": "gOOD mORNING"
 		},
 		{
 			"params": ["December"],
-			"passVal": ["dECEMBER"]
+			"passVal": "dECEMBER"
 		},
 		{
 			"params": ["McDonald"],
-			"passVal": ["mCdONALD"]
+			"passVal": "mCdONALD"
 		}]
 	},
 	"_07": {
@@ -218,6 +218,86 @@
 		{
 			"params": [3, 15],
 			"passVal": 3
+		}]
+	},
+	"_12": {
+		"question": "Write a function, volumeBox, that takes three numbers, num1, num2, num3, as dimensions of a box. Return the volume. Example: 3 , 5, 10 would return 150.",
+		"asked": false,
+		"function": {
+			"name": "volumeBox",
+			"args": ["length", "width", "height"]
+		},
+		"tests": [{
+			"params": [3, 4, 5],
+			"passVal": 60
+		},
+		{
+			"params": [2, 3, 9],
+			"passVal": 54
+		},
+		{
+			"params": [1, 2, 3],
+			"passVal": 6
+		}]
+	},
+	"_13": {
+		"question": "Write a function, isEven, that takes a number, num. Return true if the number is even. Example: 53 would return false.",
+		"asked": false,
+		"function": {
+			"name": "isEven",
+			"args": ["num"]
+		},
+		"tests": [{
+			"params": [10],
+			"passVal": true
+		},
+		{
+			"params": [5],
+			"passVal": false
+		},
+		{
+			"params": [23],
+			"passVal": false
+		}]
+	},
+	"_14": {
+		"question": "Write a function, circleArea, that takes a number, num, as the radius of a circle. Return the area of the circle to 2 decimal places. Example: 3 would return 28.27.",
+		"asked": false,
+		"function": {
+			"name": "circleArea",
+			"args": ["num"]
+		},
+		"tests": [{
+			"params": [3],
+			"passVal": 28.27
+		},
+		{
+			"params": [10],
+			"passVal": 314.16
+		},
+		{
+			"params": [21],
+			"passVal": 1385.44
+		}]
+	},
+	"_15": {
+		"question": "Write a function, factorial, that takes a number, num. Return the factorial of that number. Example: 5 would return 120.",
+		"asked": false,
+		"function": {
+			"name": "factorial",
+			"args": ["num"]
+		},
+		"tests": [{
+			"params": [4],
+			"passVal": 24
+		},
+		{
+			"params": [8],
+			"passVal": 40320
+		},
+		{
+			"params": [10],
+			"passVal": 3628800
 		}]
 	}
 	}
