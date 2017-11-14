@@ -36,6 +36,10 @@ db.ref("current/activeQuestion").on("value", listenForNewQuestion);
 // Handle code check button click
 $("#check-code").click(handleCodeSubmission);
 
+// Handle enter press in password fields
+$("#password-input").keydown(handleEnterLogin);
+$("#new-password-input-verify").keydown(handleEnterNewUser);
+
 
 var loginHandler = {
 	
@@ -309,6 +313,20 @@ $("#sign-out").on("click", function(event){
 function clearEls() {
 	for (var i = 0; i < arguments.length; i++) {
 		$(arguments[i]).val("");
+	}
+}
+
+
+//Functions to handle enter presses when logging in
+function handleEnterLogin(e) {
+	if(e.keyCode === 13) {
+		$("#login-btn").click();
+	}
+}
+
+function handleEnterNewUser(e) {
+	if(e.keyCode === 13) {
+		$("#submit-newuser-btn").click();
 	}
 }
 
