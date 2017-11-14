@@ -341,6 +341,7 @@ function handleCurrentObjChange() {
 						// gets a new random question. 
 						db.ref("questions").once("value", getRandomQuestion);
 						// need to start question timer from here
+						runTimer(3);
 
 					// If other player has not joined yet
 					} else if (currObj[otherPlayer].state === "inactive") {
