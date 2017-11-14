@@ -172,18 +172,18 @@ var loginHandler = {
 
 			if (p1.uid === uid){
 				//if a player is already assigned
-        		loginHandler.currPlayer = "player1";
-        		loginHandler.persistence();
-        		loginHandler.reactivate("player1")
+				loginHandler.currPlayer = "player1";
+				loginHandler.persistence();
+				loginHandler.reactivate("player1")
 
-        		setLocalPlayers("player1");
+				setLocalPlayers("player1");
 
-        	} else if (p2.uid === uid){
-        		loginHandler.currPlayer = "player2";
-        		loginHandler.persistence();
-        		loginHandler.reactivate("player2")
+			} else if (p2.uid === uid){
+				loginHandler.currPlayer = "player2";
+				loginHandler.persistence();
+				loginHandler.reactivate("player2")
 
-        		setLocalPlayers("player2");
+				setLocalPlayers("player2");
 
 			} else {
 
@@ -191,14 +191,14 @@ var loginHandler = {
 					loginHandler.currPlayer = "player1";
 					
 					loginHandler.deactivate("player1");
-          			loginHandler.persistence();
+					loginHandler.persistence();
 					
 					loginHandler.setActivePlayer('player1', uid, localUsername)
 				} else if (p2.state === "inactive"){
 					loginHandler.currPlayer = "player2";
 
 					loginHandler.deactivate("player2");
-          			loginHandler.persistence();
+					loginHandler.persistence();
 
 					loginHandler.setActivePlayer('player2', uid, localUsername)
 				}
@@ -235,7 +235,7 @@ var loginHandler = {
 
 	persistence: function(){
 
-	    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(function() {
+		firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(function() {
 
 			loginHandler.deactivate(loginHandler.currPlayer);
 			// Existing and future Auth states are now persisted in the current
@@ -244,31 +244,23 @@ var loginHandler = {
 			// ...
 			// New sign-in will be persisted with session persistence.
 			return firebase.auth().signInWithEmailAndPassword(email, password);
-	    })
-	    .catch(function(error) {
+		})
+		.catch(function(error) {
 			// Handle Errors here.
 			var errorCode = error.code;
 			var errorMessage = error.message;
-	    });
-  	},
+		});
+	},
 
-  	deactivate: function(player){
-
+	deactivate: function(player){
 		var stRef = db.ref(`current/${player}/state`);
-		var qRef = db.ref('current/activeQuestion');
-
-		stRef.onDisconnect().set("inactive");
-		qRef.onDisconnect().set(false);
-	      
+		stRef.onDisconnect().set("inactive"); 
 	},
 
 
 	reactivate: function(player){
-
 		var ref = db.ref(`current/${player}/state`);
-
 		ref.set("active");
-	      
 	}
 
 }
@@ -329,7 +321,7 @@ function handleCurrentObjChange() {
 
 		if (otherPlayer === "") return; 
 
-		var beginVal = currObj[otherPlayer].state;
+		var beginState = currObj[otherPlayer].state;
 
 		var ref = db.ref(`current/${otherPlayer}/state`);
 
@@ -337,7 +329,11 @@ function handleCurrentObjChange() {
 		// This resolves the issue of a player refreshing the page. 
 		setTimeout( function() {
 			ref.once("value", function(snapshot) {
-				if (snapshot.val() === beginVal && currObj.activeQuestion === false) {
+				if (snapshot.val() !== beginState) {
+					return;
+				}
+
+				if (currObj.activeQuestion === false) {
 					// If both states are active
 					if ( currObj.player1.state === "active" &&
 					currObj.player2.state === "active") {
@@ -354,6 +350,11 @@ function handleCurrentObjChange() {
 						// show a waiting for other player message
 						displayMsg("Waiting for other player");
 					}
+				} else if (beginState === "inactive") {
+					db.ref("current/activeQuestion").set(false);
+					$(".code-textarea").empty();
+
+					displayMsg("Waiting for other player");
 				}
 			});
 		}, 1 * 1000);
