@@ -721,7 +721,8 @@ function showWinner(snapshot) {
 	if (winner !== "") {
 		db.ref(`current/${winner}/username`).once("value", function(snapshot) {
 			if (winner === currPlayer) {
-				var name = "You"
+				var name = "You";
+				incrementScore();
 			} else {
 				var name = snapshot.val();
 			}
@@ -745,6 +746,15 @@ function showWinner(snapshot) {
 			setTimeout(startNewRound, 10 * 1000);
 		});
 	}
+}
+
+function incrementScore() {
+	var uid = loginHandler.userID, oldScore;
+	db.ref(`users/${uid}/score`).once("value", function() {
+		oldScore = snapshot.val();
+	})then(function() {
+		db.ref(`users/${uid}/score`).set(oldScore + 1);
+	});
 }
 
 
