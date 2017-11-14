@@ -174,13 +174,11 @@ var loginHandler = {
 	//pushes user profile to database
 	pushUserProfile: function(){ 
 		//https://stackoverflow.com/questions/42885707/using-push-method-to-create-new-child-location-without-unique-key
-		console.log("Creating profile");
 		db.ref('users').child(this.userID).set({
 			username: loginHandler.chosenName,
 			score: "", //latestScore
 			stats: "" //currentStats
 		}).then(function() {
-			console.log("Setting status after profile creation");
 			loginHandler.setPlayerStatus();
 		});
 	},
@@ -437,7 +435,6 @@ function pushChanges(str) {
 // Listener and updater for other player's code
 function listenForCodeUpdates() {
 	db.ref(`/current/${otherPlayer}/code`).on("value", function(data) {
-		console.log(data);
 		updateOtherPlayer(data.val());
 	});
 }
@@ -546,7 +543,6 @@ function setCurrentFBQuestion(qNum) {
 /* Function that will listen for changes to current question, and grab that question from Firebase when it does change. */
 function getNewQuestion(snapshot) {
 	var qNum = snapshot.val();
-	console.log("getting question");
 
 	if (qNum !== "") {
 		db.ref(`questions/${qNum}`).once("value", function(snapshot) {
@@ -684,8 +680,6 @@ function checkUserCode(str, question, passFunc, failFunc) {
 
 		var fullStr = `${str} postMessage( ${f.name}(${params}) ); `;
 
-		console.log("fullStr: ", fullStr);
-
 		// Change for now, since text area will have full function
 		/*var fullStr = `function ${f.name}(${args}) { \n ${str} \n }  `+
 					`postMessage( ${f.name}(${params}) ); `;*/
@@ -706,8 +700,6 @@ function buildArgList(a) {
 			list += `, ${arg}`;
 		}
 	});
-
-	console.log("Arg List: ", list);
 
 	return list;
 }
@@ -731,16 +723,12 @@ function buildParamList(a) {
 		}
 	});
 
-	console.log("List: ", list);
-
 	return list;
 }
 
 
 /* Function which will run if the user code passes the tests */
 function codePassed() {
-	console.log("Code passed");
-
 	db.ref("current/winner").set(currPlayer);
 }
 
