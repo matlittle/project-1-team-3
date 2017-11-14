@@ -588,7 +588,6 @@ INPUT EVALUATION FUNCTION
 function checkUserCode(str, question, passFunc, failFunc) {
 
 	if (typeof (Worker) === undefined) {		// check if browser supports web workers 
-		alert('No webworker supported');
 		return false;
 	}
 	/* Initialize Variables */
