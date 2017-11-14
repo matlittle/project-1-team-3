@@ -36,6 +36,10 @@ db.ref("current/activeQuestion").on("value", listenForNewQuestion);
 // Handle code check button click
 $("#check-code").click(handleCodeSubmission);
 
+// Handle enter press in password fields
+$("#password-input").keydown(handleEnterLogin);
+$("#new-password-input-verify").keydown(handleEnterNewUser);
+
 
 var loginHandler = {
 	
@@ -309,6 +313,20 @@ $("#sign-out").on("click", function(event){
 function clearEls() {
 	for (var i = 0; i < arguments.length; i++) {
 		$(arguments[i]).val("");
+	}
+}
+
+
+//Functions to handle enter presses when logging in
+function handleEnterLogin(e) {
+	if(e.keyCode === 13) {
+		$("#login-btn").click();
+	}
+}
+
+function handleEnterNewUser(e) {
+	if(e.keyCode === 13) {
+		$("#submit-newuser-btn").click();
 	}
 }
 
@@ -756,6 +774,12 @@ function showWinner(snapshot) {
 					"color": "red",
 					"border-color": "red"
 				});
+
+				// show loser gif
+				giphyPop("loser");
+			} else {
+				// show winner gif
+				giphyPop("won");
 			}
 
 			$(container).show();
@@ -770,7 +794,7 @@ function showWinner(snapshot) {
 function incrementScore() {
 	var uid = loginHandler.userID, oldScore;
 	db.ref(`users/${uid}/score`).once("value", function(snapshot) {
-		oldScore = snapshot.val();
+		oldScore = parseInt(snapshot.val());
 	}).then(function() {
 		db.ref(`users/${uid}/score`).set(oldScore + 1);
 	});
@@ -926,8 +950,8 @@ function giphyPop(type) {
 
 	//$("#add-gifs-divs").empty();
 
-	var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-    type + "&api_key=TH0GEBfezZR36QstPFbKKOPXMAeBGylD&limit=1";
+	var queryURL = "https://api.giphy.com/v1/gifs/random?tag=" +
+    type + "&api_key=TH0GEBfezZR36QstPFbKKOPXMAeBGylD&rating=g";
 
     var source = "";
 
@@ -936,12 +960,9 @@ function giphyPop(type) {
 		method: "GET"
 	}).done(function(response){
 
-		source = response.data[0].images.fixed_height.url;
+		source = response.data.image_original_url;
 
-		console.log(source);
-
-
-		$(".add-gif-div").append($("<img>", {//need to add this div to html
+		$("#winner-div").append($("<img>", {//need to add this div to html
 			src: source,
 			alt: "lose-win-gif",
 		 	class: "passfailwin-gif"
