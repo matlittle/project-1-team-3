@@ -186,48 +186,6 @@ textarea {
 	max-width: 480px;
 }
 
-/* */
-.display-final-page {
-	font-size: 30px;
-	text-align: center;
-	width: 75%;
-	margin: 0 auto;
-	margin-top: 350px;
-}
-
-#user-game-display {
-	font-size: 30px;
-	background-color: black;
-	width: 360px;
-	margin: 0 auto;
-}
-
-#winner-displayed-here {
-	margin: 0 auto;
-	font-size: 30px;
-}
-
-#loser-displayed-here {
-	margin: 0 auto;
-	font-size: 30px;
-}
-
-#final-button {
-	margin: 0 auto;
-	color: black;
-}
-
-#play-again {
-	background-color: black;
-	border-color: #80c576;
-	color: #80c576;
-}
-
-h5 {
-	font-size: 30px;
-}
-/* End Game Won Popup styles*/
-
 
 /* STYLES FOR ERROR MESSAGES */
 .err-msg, .alert-modal {
