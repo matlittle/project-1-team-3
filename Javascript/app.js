@@ -767,6 +767,11 @@ function displayPlayers() {
 		var oppText = $("<p>").text(other);
 		var oppImg = $("<img>").attr("src", oppAv)
 
+		$("#player-avatar").empty();
+		$("#opponent-avatar").empty();
+		$("#player-name-display").empty();
+		$("#opponent-name-display").empty();
+
 		$("#player-avatar").append(currImg);
 		$("#opponent-avatar").append(oppImg);
 		$("#player-name-display").append(currText);

@@ -103,6 +103,10 @@ h5 {
 	line-height: 120px;
 }
 
+h5 > p {
+	margin: 0;
+}
+
 #check-code {
 	display: block;
 	margin: 5px auto 0;
