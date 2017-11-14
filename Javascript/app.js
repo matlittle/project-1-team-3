@@ -666,13 +666,14 @@ function checkUserCode(str, question, passFunc, failFunc) {
 			}
 		} else {
 			stopWorker(worker);
-			failed = true;
 
-			var obj = {
-				message: `Expected result: ${test.passVal}.  Result received: ${e.data}`
+			if(!failed) {
+				failed = true;
+				var obj = {
+					message: `Expected result: ${test.passVal}. Result received: ${e.data}`
+				}
+				failFunc(obj);
 			}
-
-			failFunc(obj);
 		}
 	}
 
