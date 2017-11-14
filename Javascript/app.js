@@ -253,9 +253,11 @@ var loginHandler = {
 
   	deactivate: function(player){
 
-		var ref = db.ref(`current/${player}/state`);
+		var stRef = db.ref(`current/${player}/state`);
+		var qRef = db.ref('current/activeQuestion');
 
-		ref.onDisconnect().set("inactive");
+		stRef.onDisconnect().set("inactive");
+		qRef.onDisconnect().set(false);
 	      
 	},
 
