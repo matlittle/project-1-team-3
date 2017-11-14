@@ -25,9 +25,9 @@ var currQuestion = "";
 db.ref("current/player1/state").on("value", handleCurrentObjChange);
 db.ref("current/player2/state").on("value", handleCurrentObjChange);					
 // Grabs new question from FB when Obj changes. 
-db.ref("gameState/question").on("value", getNewQuestion);
+db.ref("current/question").on("value", getNewQuestion);
 // Listens for a winner
-db.ref("gameState/winner").on("value", showWinner);
+db.ref("current/winner").on("value", showWinner);
 
 // Handle code check button click
 $("#check-code").click(handleCodeSubmission);
@@ -319,12 +319,7 @@ function handleCurrentObjChange() {
 	db.ref("current").once("value", function(snapshot) {
 		var currObj = snapshot.val();
 
-		console.log("Handling obj change");
-		console.log("otherPlayer:", otherPlayer);
-
 		if (otherPlayer === "") return; 
-
-		console.log("otherPlayer: ", otherPlayer, "  currObj: ", currObj);
 
 		var beginVal = currObj[otherPlayer].state;
 
@@ -480,7 +475,7 @@ function resetQuestions() {
 /* Issue #40 */
 /* Write a function that will be passed a question number. Set the Firebase current question to that question number.  */
 function setCurrentFBQuestion(qNum) {
-	db.ref("gameState/question").set(qNum);
+	db.ref("current/question").set(qNum);
 }
 
 
@@ -494,6 +489,7 @@ function getNewQuestion(snapshot) {
 		db.ref(`questions/${qNum}`).once("value", function(snapshot) {
 			currQuestion = snapshot.val();
 		}).then(function() {
+			console.log("Thenable");
 			runTimer(3);
 		});
 	}
@@ -660,7 +656,7 @@ function buildArgList(a) {
 function codePassed() {
 	console.log("Code passed");
 
-	db.ref("gameState/winner").set(currPlayer);
+	db.ref("current/winner").set(currPlayer);
 }
 
 
