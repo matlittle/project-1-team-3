@@ -21,8 +21,7 @@ var otherPlayer = "";
 var currQuestion = "";
 
 // Handles when a player state changes
-db.ref("current/player1/state").on("value", handleCurrentObjChange);
-db.ref("current/player2/state").on("value", handleCurrentObjChange);					
+db.ref("current").on("value", handleCurrentObjChange);					
 // Grabs new question from FB when Obj changes. 
 db.ref("current/gameState/question").on("value", getNewQuestion);
 // Listens for a winner
