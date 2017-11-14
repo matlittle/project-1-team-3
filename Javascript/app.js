@@ -23,9 +23,9 @@ var currQuestion = "";
 // Handles when a player state changes
 db.ref("current").on("value", handleCurrentObjChange);					
 // Grabs new question from FB when Obj changes. 
-db.ref("current/gameState/question").on("value", getNewQuestion);
+db.ref("gameState/question").on("value", getNewQuestion);
 // Listens for a winner
-db.ref("current/gameState/winner").on("value", showWinner);
+db.ref("gameState/winner").on("value", showWinner);
 
 // Handle code check button click
 $("#check-code").click(handleCodeSubmission);
@@ -472,7 +472,7 @@ function resetQuestions() {
 /* Issue #40 */
 /* Write a function that will be passed a question number. Set the Firebase current question to that question number.  */
 function setCurrentFBQuestion(qNum) {
-	db.ref("current/gameState/question").set(qNum);
+	db.ref("gameState/question").set(qNum);
 }
 
 
@@ -482,7 +482,7 @@ function getNewQuestion(snapshot) {
 	var qNum = snapshot.val();
 
 	if (qNum !== "") {
-		db.ref(`questions/gameState/${qNum}`).once("value", function(snapshot) {
+		db.ref(`gameState/${qNum}`).once("value", function(snapshot) {
 			currQuestion = snapshot.val();
 		});
 	}
