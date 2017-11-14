@@ -103,7 +103,10 @@ var loginHandler = {
 	signout: function(){
 
 		firebase.auth().signOut().then(function() {
-			
+			db.ref(`current/${currPlayer}/code`).set("");
+			$("#current-player textarea").val("");
+			activeQuestion = false;
+			currQuestion = "";
 		}).catch(function(error) {
 			// An error happened.
 		});
@@ -352,12 +355,13 @@ function handleCurrentObjChange() {
 					}
 				} else if (beginState === "inactive") {
 					db.ref("current/activeQuestion").set(false);
-					$(".code-textarea").empty();
+					db.ref(`current/${otherPlayer}/code`).set("");
+					$(".code-textarea").val("");
 
 					displayMsg("Waiting for other player");
 				}
 			});
-		}, 1 * 1000);
+		}, 3 * 1000);
 	});
 }
 
@@ -416,7 +420,6 @@ function updateOtherPlayer(str) {
 
 /* Function to set local current and other player */
 function setLocalPlayers(str) {
-	console.log("Setting local");
 	if (str === "player1") {
 		currPlayer = str;
 		otherPlayer = "player2"
