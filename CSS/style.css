@@ -117,9 +117,9 @@ h5 > p {
 }
 
 textarea {
-	tab-size: 4;
-	-moz-tab-size : 4;
-    -o-tab-size : 4;
+	tab-size: 2;
+	-moz-tab-size : 2;
+    -o-tab-size : 2;
 }
 
 #check-code {
