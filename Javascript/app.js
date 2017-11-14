@@ -761,7 +761,7 @@ function showWinner(snapshot) {
 				giphyPop("loser");
 			} else {
 				// show winner gif
-				giphyPop("winner");
+				giphyPop("won");
 			}
 
 			$(container).show();
