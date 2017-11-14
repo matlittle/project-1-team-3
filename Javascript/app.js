@@ -10,11 +10,6 @@ var config = {
 firebase.initializeApp(config);
 
 
-/*$("#new-user-modal").hide();
-$("#sign-out").hide();
-$("#second-page-layout").hide();
-$("#third-page-layout").hide();
-$("#fourth-page-layout").hide();*/
 
 $(".modal").show();
 
@@ -25,12 +20,13 @@ var otherPlayer = "";
 
 var currQuestion = "";
 
-// Checks if both players active. Grabs question if they are.
-db.ref("current").on("value", checkIfBothActive);					
+// Handles when a player state changes
+db.ref("current/player1/state").on("value", handleCurrentObjChange);
+db.ref("current/player2/state").on("value", handleCurrentObjChange);					
 // Grabs new question from FB when Obj changes. 
-db.ref("current/question").on("value", getNewQuestion);
+db.ref("gameState/question").on("value", getNewQuestion);
 // Listens for a winner
-db.ref("current/winner").on("value", showWinner);
+db.ref("gameState/winner").on("value", showWinner);
 
 // Handle code check button click
 $("#check-code").click(handleCodeSubmission);
@@ -171,20 +167,17 @@ var loginHandler = {
 
 			if (p1.uid === uid){
 				//if a player is already assigned
-				alert("player already assigned");
-
         		loginHandler.currPlayer = "player1";
         		loginHandler.persistence();
         		loginHandler.reactivate("player1")
 
+        		setLocalPlayers("player1");
         	} else if (p2.uid === uid){
-
-        		alert("player already assigned");
-
         		loginHandler.currPlayer = "player2";
         		loginHandler.persistence();
         		loginHandler.reactivate("player2")
 
+        		setLocalPlayers("player2");
 			} else {
 
 				if (p1.state === 'inactive'){
@@ -193,7 +186,6 @@ var loginHandler = {
 					loginHandler.deactivate("player1");
           			loginHandler.persistence();
 					
-					alert('player1 catch')
 					loginHandler.setActivePlayer('player1', uid, localUsername)
 				} else if (p2.state === "inactive"){
 					loginHandler.currPlayer = "player2";
@@ -201,7 +193,6 @@ var loginHandler = {
 					loginHandler.deactivate("player2");
           			loginHandler.persistence();
 
-					alert('player2 catch')
 					loginHandler.setActivePlayer('player2', uid, localUsername)
 				}
 
@@ -280,6 +271,7 @@ loginHandler.authenticationListener();
 
 //open new user submission form
 $("#add-newuser-btn").on("click", function(event){
+	event.preventDefault();
 	loginHandler.showNewUserForm();
 });
 
@@ -321,6 +313,47 @@ function clearEls() {
 }
 
 
+// Function to handle current obj state changes
+function handleCurrentObjChange() {
+	db.ref("current").once("value", function(snapshot) {
+		var currObj = snapshot.val();
+
+		console.log("Handling obj change");
+		console.log("otherPlayer:", otherPlayer);
+
+		if (otherPlayer === "") return; 
+
+		console.log("otherPlayer: ", otherPlayer, "  currObj: ", currObj);
+
+		var beginVal = currObj[otherPlayer].state;
+
+		var ref = db.ref(`current/${otherPlayer}/state`);
+
+		// set timeout to wait one second prior to firing anything, and check for same value. 
+		// This resolves the issue of a player refreshing the page. 
+		setTimeout( function() {
+			ref.once("value", function(snapshot) {
+				if (snapshot.val() === beginVal) {
+					// If both states are active, and current player is player 1
+					if (currPlayer === "player1" &&
+					currObj.player1.state === "active" &&
+					currObj.player2.state === "active") {
+						// gets a new random question. 
+						db.ref("questions").once("value", getRandomQuestion);
+						// need to start question timer from here
+
+					// If other player has not joined yet
+					} else if (currObj[otherPlayer].state === "inactive") {
+						// show a waiting for other player message
+						displayMsg("Waiting for other player");
+					}
+				}
+			});
+		}, 1 * 1000);
+	});
+}
+
+
 // Capture User Input Section 
 
 // Set the interval for code checks
@@ -354,6 +387,7 @@ function updateOtherPlayer(str) {
 
 /* Function to set local current and other player */
 function setLocalPlayers(str) {
+	console.log("Setting local");
 	if (str === "player1") {
 		currPlayer = str;
 		otherPlayer = "player2"
@@ -387,7 +421,8 @@ function loadDisconnect(player) {
 /* Issue #30 */
 /* This function will be fired when both the current.player1/2.state values are "active". This will likely use a Firebase .on("value", function that will listen for changes to the "current" object. If both player states are "active", and the currPlayer is player1, get a random question using the function written for Issue #46.
 */
-function checkIfBothActive(snapshot) {
+/* Using handleCurrentObjChange instead */
+/*function checkIfBothActive(snapshot) {
 	var currObj =snapshot.val();
 
 	if (currPlayer === "player1" &&
@@ -395,7 +430,7 @@ function checkIfBothActive(snapshot) {
 	currObj.player2.state === "active") {
 		db.ref("questions").once("value", getRandomQuestion);
 	}
-}
+}*/
 
 
 /* Issue #46 */
@@ -439,7 +474,7 @@ function resetQuestions() {
 /* Issue #40 */
 /* Write a function that will be passed a question number. Set the Firebase current question to that question number.  */
 function setCurrentFBQuestion(qNum) {
-	db.ref("current/question").set(qNum);
+	db.ref("gameState/question").set(qNum);
 }
 
 
@@ -449,7 +484,7 @@ function getNewQuestion(snapshot) {
 	var qNum = snapshot.val();
 
 	if (qNum !== "") {
-		db.ref(`questions/${qNum}`).once("value", function(snapshot) {
+		db.ref(`gameState/${qNum}`).once("value", function(snapshot) {
 			currQuestion = snapshot.val();
 		});
 	}
