@@ -377,7 +377,7 @@ function handleCurrentObjChange() {
 function listenForNewQuestion(snapshot) {
 	var bool = snapshot.val();
 
-	if(currQuestion === "" && currPlayer === "") {
+	if(currQuestion === "" || currPlayer === "") {
 		setTimeout(function() {
 			listenForNewQuestion(snapshot);
 		}, 100);
