@@ -16,7 +16,7 @@ freezePage();
 $("#content").show();
 
 
-var db = firebase.database();
+const db = firebase.database();
 var currPlayer = "";
 var otherPlayer = "";
 
