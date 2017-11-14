@@ -752,7 +752,7 @@ function incrementScore() {
 	var uid = loginHandler.userID, oldScore;
 	db.ref(`users/${uid}/score`).once("value", function() {
 		oldScore = snapshot.val();
-	})then(function() {
+	}).then(function() {
 		db.ref(`users/${uid}/score`).set(oldScore + 1);
 	});
 }
