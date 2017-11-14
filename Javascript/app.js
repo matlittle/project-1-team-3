@@ -21,7 +21,8 @@ var otherPlayer = "";
 var currQuestion = "";
 
 // Handles when a player state changes
-db.ref("current").on("value", handleCurrentObjChange);					
+db.ref("current/player1/state").on("value", handleCurrentObjChange);
+db.ref("current/player2/state").on("value", handleCurrentObjChange);					
 // Grabs new question from FB when Obj changes. 
 db.ref("gameState/question").on("value", getNewQuestion);
 // Listens for a winner
@@ -313,42 +314,43 @@ function clearEls() {
 
 
 // Function to handle current obj state changes
-function handleCurrentObjChange(snapshot) {
-	var currObj = snapshot.val();
+function handleCurrentObjChange() {
+	db.ref("current").once("value", function(snapshot) {
+		var currObj = snapshot.val();
 
-	console.log("Handling obj change");
-	console.log("otherPlayer:", otherPlayer);
+		console.log("Handling obj change");
+		console.log("otherPlayer:", otherPlayer);
 
-	if (otherPlayer === "") return; 
+		if (otherPlayer === "") return; 
 
-	console.log("otherPlayer: ", otherPlayer, "  currObj: ", currObj);
+		console.log("otherPlayer: ", otherPlayer, "  currObj: ", currObj);
 
-	var beginVal = currObj[otherPlayer].state;
+		var beginVal = currObj[otherPlayer].state;
 
-	var ref = db.ref(`current/${otherPlayer}/state`);
+		var ref = db.ref(`current/${otherPlayer}/state`);
 
-	// set timeout to wait one second prior to firing anything, and check for same value. 
-	// This resolves the issue of a player refreshing the page. 
-	setTimeout( function() {
-		ref.once("value", function(snapshot) {
-			if (snapshot.val() === beginVal) {
-				currObj = snapshot.val();
-				// If both states are active, and current player is player 1
-				if (currPlayer === "player1" &&
-				currObj.player1.state === "active" &&
-				currObj.player2.state === "active") {
-					// gets a new random question. 
-					db.ref("questions").once("value", getRandomQuestion);
-					// need to start question timer from here
+		// set timeout to wait one second prior to firing anything, and check for same value. 
+		// This resolves the issue of a player refreshing the page. 
+		setTimeout( function() {
+			ref.once("value", function(snapshot) {
+				if (snapshot.val() === beginVal) {
+					// If both states are active, and current player is player 1
+					if (currPlayer === "player1" &&
+					currObj.player1.state === "active" &&
+					currObj.player2.state === "active") {
+						// gets a new random question. 
+						db.ref("questions").once("value", getRandomQuestion);
+						// need to start question timer from here
 
-				// If other player has not joined yet
-				} else if (currObj[otherPlayer].state === "inactive") {
-					// show a waiting for other player message
-					displayMsg("Waiting for other player");
+					// If other player has not joined yet
+					} else if (currObj[otherPlayer].state === "inactive") {
+						// show a waiting for other player message
+						displayMsg("Waiting for other player");
+					}
 				}
-			}
-		});
-	}, 1 * 1000);
+			});
+		}, 1 * 1000);
+	});
 }
 
 
