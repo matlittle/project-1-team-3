@@ -12,6 +12,7 @@ firebase.initializeApp(config);
 
 
 $(".modal").show();
+freezePage();
 
 
 var db = firebase.database();
@@ -348,6 +349,8 @@ function handleCurrentObjChange() {
 						// show a waiting for other player message
 						displayMsg("Waiting for other player");
 					}
+				} else if (currObj.activeQuestion === true) {
+					displayCurrentQuestion();
 				}
 			});
 		}, 1 * 1000);
@@ -653,7 +656,7 @@ function buildArgList(a) {
 function codePassed() {
 	console.log("Code passed");
 
-	db.ref("current/winner").setWithPriority(currPlayer, 2);
+	db.ref("gameState/winner").set(currPlayer);
 }
 
 
@@ -681,12 +684,26 @@ function codeFailed(err) {
 function showWinner(snapshot) {
 	var winner = snapshot.val();
 
+	
+
 	if (winner !== "") {
-		if (winner === currPlayer) {
-			console.log("you won");
-		} else {
-			console.log("other player won");
-		}
+		db.ref(`current/${winner}/username`).once("value", function(snapshot) {
+			var container = $("<div id='winner-div'>").css("display", "none");;
+			var text = $("<h2>").text(`${snapshot.val()} won!`);
+
+			$("#code-row").append( $(container).append(text) );
+
+			if (winner !== currPlayer) {
+				$(container).css({
+					"color": "red",
+					"border-color": "red"
+				});
+			}
+
+			$(container).show();
+
+			freezePage();
+		});
 	}
 }
 
@@ -762,10 +779,25 @@ function displayMsg(str) {
 
 // Function to start the round
 function startRound() {
+	unfreezePage();
 	displayCurrentQuestion();
 
 	startInterval();
 	listenForCodeUpdates();
+}
+
+
+// Function to freeze page when game is over
+function freezePage() {
+	$("#current-player textarea").attr("readonly", "true");
+	$("#check-code").hide();
+}
+
+
+// Unfreeze the page on new round
+function unfreezePage() {
+	$("#current-player textarea").attr("readonly", "false");
+	$("#check-code").show();
 }
 
 
