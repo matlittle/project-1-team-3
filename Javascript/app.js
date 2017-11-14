@@ -207,7 +207,7 @@ var loginHandler = {
 			state: "active",
 			uid: uid, 
 			code: "",
-			avatar: `https://robohash.org/${username}.png?size=200x200`,
+			avatar: `https://robohash.org/${username}.png?size=100x100`,
 			username: username
 		});
 
@@ -335,14 +335,18 @@ function handleCurrentObjChange() {
 		setTimeout( function() {
 			ref.once("value", function(snapshot) {
 				if (snapshot.val() === beginVal && currObj.activeQuestion === false) {
-					// If both states are active, and current player is player 1
-					if (currPlayer === "player1" &&
-					currObj.player1.state === "active" &&
+					// If both states are active
+					if ( currObj.player1.state === "active" &&
 					currObj.player2.state === "active") {
-						// gets a new random question. 
-						db.ref("questions").once("value", getRandomQuestion);
-						// need to start question timer from here
-						runTimer(3);
+						
+						displayPlayers();
+
+						if (currPlayer === "player1") {
+							// gets a new random question. 
+							db.ref("questions").once("value", getRandomQuestion);
+							// need to start question timer from here
+							runTimer(3);
+						}
 
 					// If other player has not joined yet
 					} else if (currObj[otherPlayer].state === "inactive") {
@@ -800,6 +804,31 @@ function unfreezePage() {
 	$("#check-code").show();
 }
 
+
+// Displays the player and opponent names and avatars
+function displayPlayers() {
+	db.ref('current').once("value", function(snapshot) {
+		var curr = snapshot.val()[currPlayer].username;
+		var other = snapshot.val()[otherPlayer].username;
+		var currAv = snapshot.val()[currPlayer].avatar;
+		var oppAv = snapshot.val()[otherPlayer].avatar;
+
+		var currText = $("<p>").text(curr);
+		var currImg = $("<img>").attr("src",currAv);
+		var oppText = $("<p>").text(other);
+		var oppImg = $("<img>").attr("src", oppAv)
+
+		$("#player-avatar").empty();
+		$("#opponent-avatar").empty();
+		$("#player-name-display").empty();
+		$("#opponent-name-display").empty();
+
+		$("#player-avatar").append(currImg);
+		$("#opponent-avatar").append(oppImg);
+		$("#player-name-display").append(currText);
+		$("#opponent-name-display").append(oppText);
+	}) 
+}
 
 
 
