@@ -303,15 +303,6 @@ $("#sign-out").on("click", function(event){
 
 
 //###########################################################################
-
-//need to get out username and return to terry
-
-//github authentication
-
-//on disconnect even 
-
-
-
 // End of Kyles Log In Code
 
 //Function to clear elements values
@@ -901,6 +892,35 @@ function hidePlayers() {
 	$("#opponent-avatar").empty();
 	$("#player-name-display").empty();
 	$("#opponent-name-display").empty();
+}
+
+function giphyPop(type) {
+
+	//$("#add-gifs-divs").empty();
+
+	var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+    type + "&api_key=TH0GEBfezZR36QstPFbKKOPXMAeBGylD&limit=10";
+
+    var source = "";
+
+	$.ajax({
+		url: queryURL,
+		method: "GET"
+	}).done(function(response){
+
+		source = response.data.images.fixed_height.url;
+
+
+		$("#add-gif-div").append($("<img>", {
+			src: source,
+			alt: passfailwin,
+		 	class: "passfailwin-gif"
+		 }));
+
+		}
+
+	})
+
 }
 
 
