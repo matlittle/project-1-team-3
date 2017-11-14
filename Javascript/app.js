@@ -109,7 +109,7 @@ var loginHandler = {
 			var errorCode = error.code;
 			var errorMessage = error.message;
 			if(errorCode == 'auth/wrong-password'){
-				alertModal("wrong password");
+				alertModal("Wrong password");
 				$('#password-input').val("");
 			}
 
