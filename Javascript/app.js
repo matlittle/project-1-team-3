@@ -333,7 +333,7 @@ function handleCurrentObjChange() {
 		// This resolves the issue of a player refreshing the page. 
 		setTimeout( function() {
 			ref.once("value", function(snapshot) {
-				if (snapshot.val() === beginVal) {
+				if (snapshot.val() === beginVal && currObj.activeQuestion === false) {
 					// If both states are active, and current player is player 1
 					if (currPlayer === "player1" &&
 					currObj.player1.state === "active" &&
@@ -483,9 +483,10 @@ function setCurrentFBQuestion(qNum) {
 /* Function that will listen for changes to current question, and grab that question from Firebase when it does change. */
 function getNewQuestion(snapshot) {
 	var qNum = snapshot.val();
+	console.log("getting question");
 
 	if (qNum !== "") {
-		db.ref(`gameState/${qNum}`).once("value", function(snapshot) {
+		db.ref(`questions/${qNum}`).once("value", function(snapshot) {
 			currQuestion = snapshot.val();
 		});
 	}
@@ -502,11 +503,14 @@ function displayCurrentQuestion() {
 	var endFunc = "\n}"
 
 	var textArea = $("#current-player textarea");
-	$(textArea).text(startFunc + endFunc);
+	$(textArea).val(startFunc + endFunc);
 
 	// Position cursor in correct spot
 	textArea.selectionStart = startFunc.length;
 	textArea.selectionEnd = startFunc.length;
+
+	// Set active question to true
+	db.ref("current/activeQuestion").set(true);
 }
 
 
@@ -745,7 +749,7 @@ function runTimer(n) {
 		} else {
 			clearTimeout(timerInt);
 
-			displayCurrentQuestion();
+			startRound();
 		}
 	}, 1000);
 }
@@ -753,6 +757,15 @@ function runTimer(n) {
 // Displays a message in the question area
 function displayMsg(str) {
 	$("#question-text").html(str)
+}
+
+
+// Function to start the round
+function startRound() {
+	displayCurrentQuestion();
+
+	startInterval();
+	listenForCodeUpdates();
 }
 
 
