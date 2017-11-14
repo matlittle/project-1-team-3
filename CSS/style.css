@@ -107,6 +107,15 @@ h5 > p {
 	margin: 0;
 }
 
+::selection {
+	background-color: #c1e6bc;
+	color: black;
+}
+
+textarea {
+	tab-size: 4;
+}
+
 #check-code {
 	display: block;
 	margin: 5px auto 0;
