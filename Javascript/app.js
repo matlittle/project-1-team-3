@@ -206,7 +206,7 @@ var loginHandler = {
 			state: "active",
 			uid: uid, 
 			code: "",
-			avatar: `https://robohash.org/${username}.png?size=200x200`,
+			avatar: `https://robohash.org/${username}.png?size=100x100`,
 			username: username
 		});
 
@@ -755,8 +755,23 @@ function displayMsg(str) {
 }
 
 // Displays the player and opponent names and avatars
-function displayPlayers(p1, p2) {
-	db.ref()
+function displayPlayers() {
+	db.ref('current').once("value", function(snapshot) {
+		var curr = snapshot.val()[currPlayer].username;
+		var other = snapshot.val()[otherPlayer].username;
+		var currAv = snapshot.val()[currPlayer].avatar;
+		var oppAv = snapshot.val()[otherPlayer].avatar;
+
+		var currText = $("<p>").text(curr);
+		var currImg = $("<img>").attr("src",currAv);
+		var oppText = $("<p>").text(other);
+		var oppImg = $("<img>").attr("src", oppAv)
+
+		$("#player-avatar").append(currImg);
+		$("#opponent-avatar").append(oppImg);
+		$("#player-name-display").append(currText);
+		$("#opponent-name-display").append(oppText);
+	}) 
 }
 
 

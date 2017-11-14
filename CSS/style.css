@@ -37,12 +37,12 @@ body, html {
 }
 
 #header-row {
-	height: 10%;
+	height: 7%;
 	text-align: center;
 }
 
 #question-row {
-	height: 20%;
+	height: 12%;
 }
 
 #question-text {
@@ -81,8 +81,26 @@ body, html {
 	font-size: 1.2em;
 }
 
-#player-name-display, #opponent-name-display {
-	text-align: center;
+#player-avatar, #opponent-avatar {
+	text-align: right;
+	padding: 0;
+}
+
+#player-name-display, #opponent-name-display, {
+	margin: 0;
+	padding: 0 0 0 30px;
+	height: 100px;
+}
+
+.username-div {
+	padding-left: 50px;
+}
+
+h5 {
+	margin: 0;
+	padding: 0;
+	height: 100px;
+	line-height: 120px;
 }
 
 #check-code {
