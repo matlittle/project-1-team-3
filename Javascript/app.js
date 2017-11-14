@@ -344,8 +344,6 @@ function handleCurrentObjChange() {
 						if (currPlayer === "player1") {
 							// gets a new random question. 
 							db.ref("questions").once("value", getRandomQuestion);
-							// need to start question timer from here
-							runTimer(3);
 						}
 
 					// If other player has not joined yet
@@ -495,6 +493,8 @@ function getNewQuestion(snapshot) {
 	if (qNum !== "") {
 		db.ref(`questions/${qNum}`).once("value", function(snapshot) {
 			currQuestion = snapshot.val();
+		}).then(function() {
+			runTimer(3);
 		});
 	}
 }
