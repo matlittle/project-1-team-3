@@ -770,7 +770,7 @@ function showWinner(snapshot) {
 function incrementScore() {
 	var uid = loginHandler.userID, oldScore;
 	db.ref(`users/${uid}/score`).once("value", function(snapshot) {
-		oldScore = snapshot.val();
+		oldScore = parseInt(snapshot.val());
 	}).then(function() {
 		db.ref(`users/${uid}/score`).set(oldScore + 1);
 	});
