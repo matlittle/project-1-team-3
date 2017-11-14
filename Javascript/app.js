@@ -103,11 +103,15 @@ var loginHandler = {
 	signout: function(){
 
 		firebase.auth().signOut().then(function() {
+
 			db.ref(`current/${currPlayer}/code`).set("");
 			$("#current-player textarea").val("");
 			activeQuestion = false;
 			currQuestion = "";
 			$("#question-text").text("");
+
+			hidePlayers();
+
 		}).catch(function(error) {
 			// An error happened.
 		});
@@ -358,6 +362,8 @@ function handleCurrentObjChange() {
 					db.ref("current/activeQuestion").set(false);
 					db.ref(`current/${otherPlayer}/code`).set("");
 					$(".code-textarea").val("");
+
+					hidePlayers();
 
 					displayMsg("Waiting for other player");
 				}
@@ -871,16 +877,20 @@ function displayPlayers() {
 		var oppText = $("<p>").text(other);
 		var oppImg = $("<img>").attr("src", oppAv)
 
-		$("#player-avatar").empty();
-		$("#opponent-avatar").empty();
-		$("#player-name-display").empty();
-		$("#opponent-name-display").empty();
+		hidePlayers();
 
 		$("#player-avatar").append(currImg);
 		$("#opponent-avatar").append(oppImg);
 		$("#player-name-display").append(currText);
 		$("#opponent-name-display").append(oppText);
-	}) 
+	});
+}
+
+function hidePlayers() {
+	$("#player-avatar").empty();
+	$("#opponent-avatar").empty();
+	$("#player-name-display").empty();
+	$("#opponent-name-display").empty();
 }
 
 
