@@ -1,3 +1,4 @@
+// Some questions are based on exercises found at www.w3resource.com/javascript-exercises
 
 // Question 1: Write a function, reverseString, that takes a string, str. Return that string in reverse order. 
 function reverseString(str) {
@@ -125,23 +126,7 @@ console.log(checkPrime(11)); // true
 console.log(checkPrime(57)); // false
 
 
-// Question 10: Write a function, swapNumber, that takes two numbers, num1 and num2. Swap the position of the numbers. Example: 5, 93 would return 93, 5.
-function swapNumber(num1, num2) {
-	var x = num1,
-		y = num2,
-		z;
-	z = x;
-	x = y;
-	y = z;
-	return (x + " " + y);
-}
-
-console.log(swapNumber(5, 93)); // 93 5
-console.log(swapNumber(25, 3)); // 3 25
-console.log(swapNumber(110, 2)); // 2 110
-
-
-// Question 11: Write a function, countDigit, that takes one number, num. Return the number of digits in the number. 
+// Question 10: Write a function, countDigit, that takes one number, num. Return the number of digits in the number. 
 function countDigit(num) {
 	return num.toString().length;
 }
@@ -151,7 +136,7 @@ console.log(countDigit(45678)); // 5
 console.log(countDigit(123456)); // 6
 
 
-//Question 12: Write a function, gcd, that takes two numbers, num1 and num2. Return the gcd (greatest common denominator). 
+// Question 11: Write a function, gcd, that takes two numbers, num1 and num2. Return the gcd (greatest common denominator). 
 function gcd(num1, num2) {
   var x = 0;
   while (num1 !== 0) {
@@ -160,10 +145,61 @@ function gcd(num1, num2) {
     num1 = x;
   }
   return num2;
-};
+}
 
 console.log(gcd(24, 12)); // 12
 console.log(gcd(53, 2)); // 1
 console.log(gcd(3, 15)); // 3
+
+
+// Question 12: Write a function, volumeBox, that takes three numbers, num1, num2, num3, as dimensions of a box. Return the volume.
+function volumeBox(length, width, height) {
+	return length * width * height;
+}
+console.log(volumeBox(3, 4, 5)); // 60
+console.log(volumeBox(2, 3, 9)); // 54
+console.log(volumeBox(1, 2, 3)); // 6
+
+
+// Question 13: Write a function, isEven, that takes a number, num. Return true if the number is even.
+function isEven(num) {
+	if(num % 2 === 0) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+console.log(isEven(10)); // true
+console.log(isEven(5)); // false
+console.log(isEven(23)); // false
+
+
+// Question 14: Write a function, circleArea, that takes a number, num, as the radius of a circle. Return the area of the circle to 2 decimal places.
+function circleArea(num) {
+	var area = Math.PI * num * num;
+	return area.toFixed(2);
+}
+
+console.log(circleArea(3)); // 28.27
+console.log(circleArea(10)); // 314.16
+console.log(circleArea(21)); // 1385.44
+
+
+// Question 15: Write a function, factorial, that takes a number, num. Return the factorial of that number. 
+function factorial(num) {
+	if ((num === 0) || (num ===1)) {
+		return 1;
+	}
+	else {
+		return (num * factorial(num - 1));
+	}
+}
+
+console.log(factorial(4)); // 24
+console.log(factorial(8)); // 40320
+console.log(factorial(10)); // 3628800
+
 
 
