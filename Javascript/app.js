@@ -20,6 +20,7 @@ var currPlayer = "";
 var otherPlayer = "";
 
 var currQuestion = "";
+var activeQuestion = "";
 
 // Handles when a player state changes
 db.ref("current/player1/state").on("value", handleCurrentObjChange);
@@ -28,6 +29,8 @@ db.ref("current/player2/state").on("value", handleCurrentObjChange);
 db.ref("current/question").on("value", getNewQuestion);
 // Listens for a winner
 db.ref("current/winner").on("value", showWinner);
+// Listen for a new question
+db.ref("current/activeQuestion").on("value", listenForNewQuestion);
 
 // Handle code check button click
 $("#check-code").click(handleCodeSubmission);
@@ -173,12 +176,14 @@ var loginHandler = {
         		loginHandler.reactivate("player1")
 
         		setLocalPlayers("player1");
+
         	} else if (p2.uid === uid){
         		loginHandler.currPlayer = "player2";
         		loginHandler.persistence();
         		loginHandler.reactivate("player2")
 
         		setLocalPlayers("player2");
+
 			} else {
 
 				if (p1.state === 'inactive'){
@@ -346,14 +351,33 @@ function handleCurrentObjChange() {
 						// show a waiting for other player message
 						displayMsg("Waiting for other player");
 					}
-				} else if (currObj.activeQuestion === true) {
-					displayCurrentQuestion();
 				}
 			});
 		}, 1 * 1000);
 	});
 }
 
+
+// Function to start timer if new question posted.
+function listenForNewQuestion(snapshot) {
+	var bool = snapshot.val();
+
+	if(currQuestion === "") {
+		setTimeout(function() {
+			listenForNewQuestion(snapshot);
+		}, 100);
+		return;
+	}
+
+	if(bool && activeQuestion === "") {
+		displayPlayers();
+		startRound();
+	} else if (bool && !activeQuestion) {
+		runTimer(3);
+	}
+
+	activeQuestion = bool;
+}
 
 // Capture User Input Section 
 
@@ -476,6 +500,8 @@ function resetQuestions() {
 /* Write a function that will be passed a question number. Set the Firebase current question to that question number.  */
 function setCurrentFBQuestion(qNum) {
 	db.ref("current/question").set(qNum);
+	// Set active question to true
+	db.ref("current/activeQuestion").set(true);
 }
 
 
@@ -488,9 +514,6 @@ function getNewQuestion(snapshot) {
 	if (qNum !== "") {
 		db.ref(`questions/${qNum}`).once("value", function(snapshot) {
 			currQuestion = snapshot.val();
-		}).then(function() {
-			console.log("Thenable");
-			runTimer(3);
 		});
 	}
 }
@@ -511,9 +534,6 @@ function displayCurrentQuestion() {
 	// Position cursor in correct spot
 	textArea.selectionStart = startFunc.length;
 	textArea.selectionEnd = startFunc.length;
-
-	// Set active question to true
-	db.ref("current/activeQuestion").set(true);
 }
 
 
@@ -789,14 +809,14 @@ function startRound() {
 
 // Function to freeze page when game is over
 function freezePage() {
-	$("#current-player textarea").attr("readonly", "true");
+	$("#current-player textarea").attr("readonly", true);
 	$("#check-code").hide();
 }
 
 
 // Unfreeze the page on new round
 function unfreezePage() {
-	$("#current-player textarea").attr("readonly", "false");
+	$("#current-player textarea").attr("readonly", false);
 	$("#check-code").show();
 }
 
