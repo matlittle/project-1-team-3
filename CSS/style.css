@@ -136,6 +136,17 @@ textarea {
 }
 
 
+/* Error modal styles */
+.full-btn {
+	margin-top: 20px;
+	background-color: black;
+	border-color: red;
+}
+
+.full-btn:focus {
+	outline: none;
+}
+
 /* width of the input for our user input */
 .form-control {
 	width: 400px;
@@ -189,7 +200,8 @@ textarea {
 
 
 /* STYLES FOR ERROR MESSAGES */
-.err-msg, .alert-modal {
+.err-msg, 
+.alert-modal {
     position: absolute;
     top: 0;
     left: 0;
@@ -204,13 +216,17 @@ textarea {
     max-height: 80%;
 }
 
-.err-btn {
+.err-btn, 
+.full-btn,
+.alert-btn {
 	margin-top: 20px;
 	background-color: black;
 	border-color: red;
 }
 
-.err-btn:focus {
+.err-btn:focus, 
+.full-btn:focus,
+.alert-btn:focus {
 	outline: none;
 }
 

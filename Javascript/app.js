@@ -10,7 +10,6 @@ var config = {
 firebase.initializeApp(config);
 
 
-
 $(".modal").show();
 freezePage();
 $("#content").show();
@@ -39,6 +38,20 @@ $("#check-code").click(handleCodeSubmission);
 // Handle enter press in password fields
 $("#password-input").keydown(handleEnterLogin);
 $("#new-password-input-verify").keydown(handleEnterNewUser);
+
+// Check for a full game
+function checkFullGame() {
+	db.ref('current').once('value').then(function(snapshot) {
+	
+		player1state = (snapshot.child('player1').child('state').val());
+		player2state = (snapshot.child('player2').child('state').val());
+
+		if (player1state === 'active' && player2state === 'active'){
+			fullGameModal("Game is full at the moment\nPlease try again later")
+	    }
+	});
+}
+checkFullGame();
 
 
 var loginHandler = {
@@ -848,6 +861,24 @@ function closeAlert(event) {
 	event.preventDefault();
 
 	$( $(this).parent() ).remove();
+}
+
+// alert modal when game is full
+function fullGameModal(str) {
+	var modalDiv = $("<div class='alert-modal'>");
+	var alertMsg = $("<p class='alert-text'>").text(str);
+
+	var okBtn = $("<input type='button' class='full-btn' value='Try Again'>")
+
+	$("#modal-content").append( $(modalDiv).append(alertMsg, okBtn) );
+	$(".modal").css("display", "block");
+	$("#modal-content").css("display", "block");
+
+	$(".full-btn").click(function(e) {
+		$( $(this).parent() ).remove();
+		checkFullGame();
+	});
+
 }
 
 // Creates a timer to fire the game initialization when both players have joined
