@@ -415,13 +415,14 @@ function pushChanges(str) {
 // Listener and updater for other player's code
 function listenForCodeUpdates() {
 	db.ref(`/current/${otherPlayer}/code`).on("value", function(data) {
+		console.log(data);
 		updateOtherPlayer(data.val());
 	});
 }
 
 // Function to update other player
 function updateOtherPlayer(str) {
-	$("#other-player textarea").text(str);
+	$("#other-player textarea").val(str);
 }
 
 
