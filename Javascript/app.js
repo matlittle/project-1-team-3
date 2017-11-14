@@ -811,7 +811,12 @@ function closeAlert(event) {
 function runTimer(n) {
 	var timerInt = setInterval( function() {
 		if (n > 0) {
-			displayMsg(`New question in ${n} seconds!`);
+			if (n === 1) {
+				displayMsg(`New question in ${n} second!`);
+			} else {
+				displayMsg(`New question in ${n} seconds!`);
+			}
+			
 			n--;
 		} else {
 			clearTimeout(timerInt);
