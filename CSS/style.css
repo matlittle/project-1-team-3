@@ -81,6 +81,10 @@ body, html {
 	font-size: 1.2em;
 }
 
+#player-name-display, #opponent-name-display {
+	text-align: center;
+}
+
 #check-code {
 	display: block;
 	margin: 5px auto 0;

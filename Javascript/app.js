@@ -719,7 +719,10 @@ function displayMsg(str) {
 	$("#question-text").html(str)
 }
 
-
+// Displays the player and opponent names and avatars
+function displayPlayers(p1, p2) {
+	db.ref()
+}
 
 
 
