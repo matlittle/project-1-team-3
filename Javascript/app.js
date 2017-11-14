@@ -727,6 +727,8 @@ function showWinner(snapshot) {
 			$(container).show();
 
 			freezePage();
+
+			setTimeout(startNewRound, 10 * 1000);
 		});
 	}
 }
@@ -810,6 +812,29 @@ function startRound() {
 	listenForCodeUpdates();
 }
 
+
+// Function to start new round after one finishes
+function startNewRound() {
+	$("#winner-div").remove();
+
+	db.ref("current/winner").set("")
+	.then(function() {
+		db.ref("current/activeQuestion").set(false)
+		.then(function() {
+			db.ref("current").once("value", function() {
+				var p1 = snapshot.val().player1;
+				var p2 = snapshot.val().player2;
+				if (p1.state === "active" && p2.state === "active") {
+					if (currPlayer === "player1") {
+						db.ref("questions").once("value", getRandomQuestion);
+					}
+				}
+			});
+		});
+	});
+
+	
+}
 
 // Function to freeze page when game is over
 function freezePage() {
