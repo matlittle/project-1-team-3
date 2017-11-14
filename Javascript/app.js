@@ -13,9 +13,10 @@ firebase.initializeApp(config);
 
 $(".modal").show();
 freezePage();
+$("#content").show();
 
 
-var db = firebase.database();
+const db = firebase.database();
 var currPlayer = "";
 var otherPlayer = "";
 
@@ -102,7 +103,15 @@ var loginHandler = {
 	signout: function(){
 
 		firebase.auth().signOut().then(function() {
-			
+
+			db.ref(`current/${currPlayer}/code`).set("");
+			$("#current-player textarea").val("");
+			activeQuestion = false;
+			currQuestion = "";
+			$("#question-text").text("");
+
+			hidePlayers();
+
 		}).catch(function(error) {
 			// An error happened.
 		});
@@ -171,18 +180,18 @@ var loginHandler = {
 
 			if (p1.uid === uid){
 				//if a player is already assigned
-        		loginHandler.currPlayer = "player1";
-        		loginHandler.persistence();
-        		loginHandler.reactivate("player1")
+				loginHandler.currPlayer = "player1";
+				loginHandler.persistence();
+				loginHandler.reactivate("player1")
 
-        		setLocalPlayers("player1");
+				setLocalPlayers("player1");
 
-        	} else if (p2.uid === uid){
-        		loginHandler.currPlayer = "player2";
-        		loginHandler.persistence();
-        		loginHandler.reactivate("player2")
+			} else if (p2.uid === uid){
+				loginHandler.currPlayer = "player2";
+				loginHandler.persistence();
+				loginHandler.reactivate("player2")
 
-        		setLocalPlayers("player2");
+				setLocalPlayers("player2");
 
 			} else {
 
@@ -190,14 +199,14 @@ var loginHandler = {
 					loginHandler.currPlayer = "player1";
 					
 					loginHandler.deactivate("player1");
-          			loginHandler.persistence();
+					loginHandler.persistence();
 					
 					loginHandler.setActivePlayer('player1', uid, localUsername)
 				} else if (p2.state === "inactive"){
 					loginHandler.currPlayer = "player2";
 
 					loginHandler.deactivate("player2");
-          			loginHandler.persistence();
+					loginHandler.persistence();
 
 					loginHandler.setActivePlayer('player2', uid, localUsername)
 				}
@@ -234,7 +243,7 @@ var loginHandler = {
 
 	persistence: function(){
 
-	    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(function() {
+		firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(function() {
 
 			loginHandler.deactivate(loginHandler.currPlayer);
 			// Existing and future Auth states are now persisted in the current
@@ -243,29 +252,23 @@ var loginHandler = {
 			// ...
 			// New sign-in will be persisted with session persistence.
 			return firebase.auth().signInWithEmailAndPassword(email, password);
-	    })
-	    .catch(function(error) {
+		})
+		.catch(function(error) {
 			// Handle Errors here.
 			var errorCode = error.code;
 			var errorMessage = error.message;
-	    });
-  	},
+		});
+	},
 
-  	deactivate: function(player){
-
-		var ref = db.ref(`current/${player}/state`);
-
-		ref.onDisconnect().set("inactive");
-	      
+	deactivate: function(player){
+		var stRef = db.ref(`current/${player}/state`);
+		stRef.onDisconnect().set("inactive"); 
 	},
 
 
 	reactivate: function(player){
-
 		var ref = db.ref(`current/${player}/state`);
-
 		ref.set("active");
-	      
 	}
 
 }
@@ -326,7 +329,7 @@ function handleCurrentObjChange() {
 
 		if (otherPlayer === "") return; 
 
-		var beginVal = currObj[otherPlayer].state;
+		var beginState = currObj[otherPlayer].state;
 
 		var ref = db.ref(`current/${otherPlayer}/state`);
 
@@ -334,7 +337,11 @@ function handleCurrentObjChange() {
 		// This resolves the issue of a player refreshing the page. 
 		setTimeout( function() {
 			ref.once("value", function(snapshot) {
-				if (snapshot.val() === beginVal && currObj.activeQuestion === false) {
+				if (snapshot.val() !== beginState) {
+					return;
+				}
+
+				if (currObj.activeQuestion === false) {
 					// If both states are active
 					if ( currObj.player1.state === "active" &&
 					currObj.player2.state === "active") {
@@ -351,9 +358,17 @@ function handleCurrentObjChange() {
 						// show a waiting for other player message
 						displayMsg("Waiting for other player");
 					}
+				} else if (beginState === "inactive") {
+					db.ref("current/activeQuestion").set(false);
+					db.ref(`current/${otherPlayer}/code`).set("");
+					$(".code-textarea").val("");
+
+					hidePlayers();
+
+					displayMsg("Waiting for other player");
 				}
 			});
-		}, 1 * 1000);
+		}, 3 * 1000);
 	});
 }
 
@@ -362,7 +377,7 @@ function handleCurrentObjChange() {
 function listenForNewQuestion(snapshot) {
 	var bool = snapshot.val();
 
-	if(currQuestion === "") {
+	if(currQuestion === "" || currPlayer === "") {
 		setTimeout(function() {
 			listenForNewQuestion(snapshot);
 		}, 100);
@@ -412,7 +427,6 @@ function updateOtherPlayer(str) {
 
 /* Function to set local current and other player */
 function setLocalPlayers(str) {
-	console.log("Setting local");
 	if (str === "player1") {
 		currPlayer = str;
 		otherPlayer = "player2"
@@ -704,12 +718,17 @@ function codeFailed(err) {
 function showWinner(snapshot) {
 	var winner = snapshot.val();
 
-	
-
 	if (winner !== "") {
 		db.ref(`current/${winner}/username`).once("value", function(snapshot) {
+			if (winner === currPlayer) {
+				var name = "You";
+				incrementScore();
+			} else {
+				var name = snapshot.val();
+			}
+
 			var container = $("<div id='winner-div'>").css("display", "none");;
-			var text = $("<h2>").text(`${snapshot.val()} won!`);
+			var text = $("<h2>").text(`${name} won!`);
 
 			$("#code-row").append( $(container).append(text) );
 
@@ -723,8 +742,19 @@ function showWinner(snapshot) {
 			$(container).show();
 
 			freezePage();
+
+			setTimeout(startNewRound, 10 * 1000);
 		});
 	}
+}
+
+function incrementScore() {
+	var uid = loginHandler.userID, oldScore;
+	db.ref(`users/${uid}/score`).once("value", function(snapshot) {
+		oldScore = snapshot.val();
+	}).then(function() {
+		db.ref(`users/${uid}/score`).set(oldScore + 1);
+	});
 }
 
 
@@ -793,7 +823,7 @@ function runTimer(n) {
 
 // Displays a message in the question area
 function displayMsg(str) {
-	$("#question-text").html(str)
+	$("#question-text").text(str);
 }
 
 
@@ -806,6 +836,29 @@ function startRound() {
 	listenForCodeUpdates();
 }
 
+
+// Function to start new round after one finishes
+function startNewRound() {
+	$("#winner-div").remove();
+
+	db.ref("current/winner").set("")
+	.then(function() {
+		db.ref("current/activeQuestion").set(false)
+		.then(function() {
+			db.ref("current").once("value", function() {
+				var p1 = snapshot.val().player1;
+				var p2 = snapshot.val().player2;
+				if (p1.state === "active" && p2.state === "active") {
+					if (currPlayer === "player1") {
+						db.ref("questions").once("value", getRandomQuestion);
+					}
+				}
+			});
+		});
+	});
+
+	
+}
 
 // Function to freeze page when game is over
 function freezePage() {
@@ -834,16 +887,20 @@ function displayPlayers() {
 		var oppText = $("<p>").text(other);
 		var oppImg = $("<img>").attr("src", oppAv)
 
-		$("#player-avatar").empty();
-		$("#opponent-avatar").empty();
-		$("#player-name-display").empty();
-		$("#opponent-name-display").empty();
+		hidePlayers();
 
 		$("#player-avatar").append(currImg);
 		$("#opponent-avatar").append(oppImg);
 		$("#player-name-display").append(currText);
 		$("#opponent-name-display").append(oppText);
-	}) 
+	});
+}
+
+function hidePlayers() {
+	$("#player-avatar").empty();
+	$("#opponent-avatar").empty();
+	$("#player-name-display").empty();
+	$("#opponent-name-display").empty();
 }
 
 

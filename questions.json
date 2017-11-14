@@ -9,15 +9,15 @@
 		},
 		"tests": [{
 			"params": ["Testing 123"],
-			"passVal": ["321 gnitseT"]
+			"passVal": "321 gnitseT"
 		},
 		{
 			"params": ["0123456789"],
-			"passVal": ["9876543210"]
+			"passVal": "9876543210"
 		},
 		{
 			"params": ["Hello World!"],
-			"passVal": ["!dlroW olleH"]
+			"passVal": "!dlroW olleH"
 		}]
 	},
 	"_02": {
@@ -89,15 +89,15 @@
 		},
 		"tests": [{
 			"params": ["Houston"],
-			"passVal": ["Hnoostu"]
+			"passVal": "Hnoostu"
 		},
 		{
 			"params": ["apple"],
-			"passVal": ["aelpp"]
+			"passVal": "aelpp"
 		},
 		{
 			"params": ["turkey"],
-			"passVal": ["ekrtuy"]
+			"passVal": "ekrtuy"
 		}]
 	},
 	"_06": {
@@ -109,15 +109,15 @@
 		},
 		"tests": [{
 			"params": ["Good Morning"],
-			"passVal": ["gOOD mORNING"]
+			"passVal": "gOOD mORNING"
 		},
 		{
 			"params": ["December"],
-			"passVal": ["dECEMBER"]
+			"passVal": "dECEMBER"
 		},
 		{
 			"params": ["McDonald"],
-			"passVal": ["mCdONALD"]
+			"passVal": "mCdONALD"
 		}]
 	},
 	"_07": {
