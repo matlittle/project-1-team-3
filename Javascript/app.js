@@ -10,13 +10,12 @@ var config = {
 firebase.initializeApp(config);
 
 
-
 $(".modal").show();
 freezePage();
 $("#content").show();
 
 
-var db = firebase.database();
+const db = firebase.database();
 var currPlayer = "";
 var otherPlayer = "";
 
@@ -35,6 +34,24 @@ db.ref("current/activeQuestion").on("value", listenForNewQuestion);
 
 // Handle code check button click
 $("#check-code").click(handleCodeSubmission);
+
+// Handle enter press in password fields
+$("#password-input").keydown(handleEnterLogin);
+$("#new-password-input-verify").keydown(handleEnterNewUser);
+
+// Check for a full game
+function checkFullGame() {
+	db.ref('current').once('value').then(function(snapshot) {
+	
+		player1state = (snapshot.child('player1').child('state').val());
+		player2state = (snapshot.child('player2').child('state').val());
+
+		if (player1state === 'active' && player2state === 'active'){
+			fullGameModal("Game is full at the moment\nPlease try again later")
+	    }
+	});
+}
+checkFullGame();
 
 
 var loginHandler = {
@@ -92,7 +109,7 @@ var loginHandler = {
 			var errorCode = error.code;
 			var errorMessage = error.message;
 			if(errorCode == 'auth/wrong-password'){
-				alertModal("wrong password");
+				alertModal("Wrong password");
 				$('#password-input').val("");
 			}
 
@@ -157,13 +174,11 @@ var loginHandler = {
 	//pushes user profile to database
 	pushUserProfile: function(){ 
 		//https://stackoverflow.com/questions/42885707/using-push-method-to-create-new-child-location-without-unique-key
-		console.log("Creating profile");
 		db.ref('users').child(this.userID).set({
 			username: loginHandler.chosenName,
 			score: "", //latestScore
 			stats: "" //currentStats
 		}).then(function() {
-			console.log("Setting status after profile creation");
 			loginHandler.setPlayerStatus();
 		});
 	},
@@ -303,21 +318,26 @@ $("#sign-out").on("click", function(event){
 
 
 //###########################################################################
-
-//need to get out username and return to terry
-
-//github authentication
-
-//on disconnect even 
-
-
-
 // End of Kyles Log In Code
 
 //Function to clear elements values
 function clearEls() {
 	for (var i = 0; i < arguments.length; i++) {
 		$(arguments[i]).val("");
+	}
+}
+
+
+//Functions to handle enter presses when logging in
+function handleEnterLogin(e) {
+	if(e.keyCode === 13) {
+		$("#login-btn").click();
+	}
+}
+
+function handleEnterNewUser(e) {
+	if(e.keyCode === 13) {
+		$("#submit-newuser-btn").click();
 	}
 }
 
@@ -377,7 +397,7 @@ function handleCurrentObjChange() {
 function listenForNewQuestion(snapshot) {
 	var bool = snapshot.val();
 
-	if(currQuestion === "" && currPlayer === "") {
+	if(currQuestion === "" || currPlayer === "") {
 		setTimeout(function() {
 			listenForNewQuestion(snapshot);
 		}, 100);
@@ -421,7 +441,7 @@ function listenForCodeUpdates() {
 
 // Function to update other player
 function updateOtherPlayer(str) {
-	$("#other-player textarea").text(str);
+	$("#other-player textarea").val(str);
 }
 
 
@@ -523,7 +543,6 @@ function setCurrentFBQuestion(qNum) {
 /* Function that will listen for changes to current question, and grab that question from Firebase when it does change. */
 function getNewQuestion(snapshot) {
 	var qNum = snapshot.val();
-	console.log("getting question");
 
 	if (qNum !== "") {
 		db.ref(`questions/${qNum}`).once("value", function(snapshot) {
@@ -569,7 +588,6 @@ INPUT EVALUATION FUNCTION
 function checkUserCode(str, question, passFunc, failFunc) {
 
 	if (typeof (Worker) === undefined) {		// check if browser supports web workers 
-		alert('No webworker supported');
 		return false;
 	}
 	/* Initialize Variables */
@@ -643,21 +661,21 @@ function checkUserCode(str, question, passFunc, failFunc) {
 			}
 		} else {
 			stopWorker(worker);
-			failed = true;
 
-			var obj = {
-				message: `Expected result: ${test.passVal}.  Result received: ${e.data}`
+			if(!failed) {
+				failed = true;
+				var obj = {
+					message: `Expected result: ${test.passVal}. Result received: ${e.data}`
+				}
+				failFunc(obj);
 			}
-
-			failFunc(obj);
 		}
 	}
 
 	/* Build full function string for testing */
 	function buildFunctionString(test, question) {
 		var f = question.function;
-		//var args = buildArgList(f.args);
-		var params = buildArgList(test.params);
+		var params = buildParamList(test.params);
 
 		var fullStr = `${str} postMessage( ${f.name}(${params}) ); `;
 
@@ -685,11 +703,31 @@ function buildArgList(a) {
 	return list;
 }
 
+function buildParamList(a) {
+	var list = "";
+
+	a.forEach(function(arg){
+		if(list.length === 0) {
+			if( typeof arg === 'string') {
+				list += `'${arg}'`;
+			} else {
+				list += arg;
+			}
+		} else {
+			if( typeof arg === 'string') {
+				list += `, '${arg}'`;
+			} else {
+				list += `, ${arg}`;
+			}
+		}
+	});
+
+	return list;
+}
+
 
 /* Function which will run if the user code passes the tests */
 function codePassed() {
-	console.log("Code passed");
-
 	db.ref("current/winner").set(currPlayer);
 }
 
@@ -737,6 +775,12 @@ function showWinner(snapshot) {
 					"color": "red",
 					"border-color": "red"
 				});
+
+				// show loser gif
+				giphyPop("loser");
+			} else {
+				// show winner gif
+				giphyPop("won");
 			}
 
 			$(container).show();
@@ -750,9 +794,9 @@ function showWinner(snapshot) {
 
 function incrementScore() {
 	var uid = loginHandler.userID, oldScore;
-	db.ref(`users/${uid}/score`).once("value", function() {
-		oldScore = snapshot.val();
-	})then(function() {
+	db.ref(`users/${uid}/score`).once("value", function(snapshot) {
+		oldScore = parseInt(snapshot.val());
+	}).then(function() {
 		db.ref(`users/${uid}/score`).set(oldScore + 1);
 	});
 }
@@ -807,6 +851,24 @@ function closeAlert(event) {
 	$( $(this).parent() ).remove();
 }
 
+// alert modal when game is full
+function fullGameModal(str) {
+	var modalDiv = $("<div class='alert-modal'>");
+	var alertMsg = $("<p class='alert-text'>").text(str);
+
+	var okBtn = $("<input type='button' class='full-btn' value='Try Again'>")
+
+	$("#modal-content").append( $(modalDiv).append(alertMsg, okBtn) );
+	$(".modal").css("display", "block");
+	$("#modal-content").css("display", "block");
+
+	$(".full-btn").click(function(e) {
+		$( $(this).parent() ).remove();
+		checkFullGame();
+	});
+
+}
+
 // Creates a timer to fire the game initialization when both players have joined
 function runTimer(n) {
 	var timerInt = setInterval( function() {
@@ -850,7 +912,7 @@ function startNewRound() {
 	.then(function() {
 		db.ref("current/activeQuestion").set(false)
 		.then(function() {
-			db.ref("current").once("value", function() {
+			db.ref("current").once("value", function(snapshot) {
 				var p1 = snapshot.val().player1;
 				var p2 = snapshot.val().player2;
 				if (p1.state === "active" && p2.state === "active") {
@@ -906,6 +968,32 @@ function hidePlayers() {
 	$("#opponent-avatar").empty();
 	$("#player-name-display").empty();
 	$("#opponent-name-display").empty();
+}
+
+function giphyPop(type) {
+
+	//$("#add-gifs-divs").empty();
+
+	var queryURL = "https://api.giphy.com/v1/gifs/random?tag=" +
+    type + "&api_key=TH0GEBfezZR36QstPFbKKOPXMAeBGylD&rating=g";
+
+    var source = "";
+
+	$.ajax({
+		url: queryURL,
+		method: "GET"
+	}).done(function(response){
+
+		source = response.data.image_original_url;
+
+		$("#winner-div").append($("<img>", {//need to add this div to html
+			src: source,
+			alt: "lose-win-gif",
+		 	class: "passfailwin-gif"
+		 }));
+
+	})
+
 }
 
 

@@ -3,13 +3,13 @@
 
 ### Project Name ###
 
-Code Wars
+Holmgang
 
 
 
 ### Project Description ###
 
-This project will be a multiplayer game, where two people race to create a function that solves a given problem.
+This project will be a multiplayer game (taken from the medieval Scandinavian term for dueling), where two people race to create a function that solves a given problem.
 
 Create a page with two different text areas. Allow two users to log in, one for each text area. 
 
@@ -17,10 +17,10 @@ Prompt the users with a challenge function, such as the "Fizz-Buzz" problem. Bot
 
 Both users will be able to see the other's code in real time. The first player to successfully complete the function wins. 
 
-We will keep track of score, and have a leadboard on the website. Users will have to create accounts, complete with user authentication.  
+We will keep track of score. Users will have to create accounts, complete with user authentication.  
 
 
 ###APIs to be used ###
 
-JSHint
-MediaWiki API
+Giphy
+
