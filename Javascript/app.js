@@ -406,13 +406,14 @@ function pushChanges(str) {
 // Listener and updater for other player's code
 function listenForCodeUpdates() {
 	db.ref(`/current/${otherPlayer}/code`).on("value", function(data) {
+		console.log(data);
 		updateOtherPlayer(data.val());
 	});
 }
 
 // Function to update other player
 function updateOtherPlayer(str) {
-	$("#other-player textarea").text(str);
+	$("#other-player textarea").val(str);
 }
 
 
@@ -647,10 +648,11 @@ function checkUserCode(str, question, passFunc, failFunc) {
 	/* Build full function string for testing */
 	function buildFunctionString(test, question) {
 		var f = question.function;
-		//var args = buildArgList(f.args);
-		var params = buildArgList(test.params);
+		var params = buildParamList(test.params);
 
 		var fullStr = `${str} postMessage( ${f.name}(${params}) ); `;
+
+		console.log("fullStr: ", fullStr);
 
 		// Change for now, since text area will have full function
 		/*var fullStr = `function ${f.name}(${args}) { \n ${str} \n }  `+
@@ -672,6 +674,32 @@ function buildArgList(a) {
 			list += `, ${arg}`;
 		}
 	});
+
+	console.log("Arg List: ", list);
+
+	return list;
+}
+
+function buildParamList(a) {
+	var list = "";
+
+	a.forEach(function(arg){
+		if(list.length === 0) {
+			if( typeof arg === 'string') {
+				list += `'${arg}'`;
+			} else {
+				list += arg;
+			}
+		} else {
+			if( typeof arg === 'string') {
+				list += `, '${arg}'`;
+			} else {
+				list += `, ${arg}`;
+			}
+		}
+	});
+
+	console.log("List: ", list);
 
 	return list;
 }
@@ -836,7 +864,7 @@ function startNewRound() {
 	.then(function() {
 		db.ref("current/activeQuestion").set(false)
 		.then(function() {
-			db.ref("current").once("value", function() {
+			db.ref("current").once("value", function(snapshot) {
 				var p1 = snapshot.val().player1;
 				var p2 = snapshot.val().player2;
 				if (p1.state === "active" && p2.state === "active") {
