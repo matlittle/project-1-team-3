@@ -756,6 +756,12 @@ function showWinner(snapshot) {
 					"color": "red",
 					"border-color": "red"
 				});
+
+				// show loser gif
+				giphyPop("loser");
+			} else {
+				// show winner gif
+				giphyPop("winner");
 			}
 
 			$(container).show();
@@ -926,8 +932,8 @@ function giphyPop(type) {
 
 	//$("#add-gifs-divs").empty();
 
-	var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-    type + "&api_key=TH0GEBfezZR36QstPFbKKOPXMAeBGylD&limit=1";
+	var queryURL = "https://api.giphy.com/v1/gifs/random?tag=" +
+    type + "&api_key=TH0GEBfezZR36QstPFbKKOPXMAeBGylD&rating=g";
 
     var source = "";
 
@@ -936,12 +942,9 @@ function giphyPop(type) {
 		method: "GET"
 	}).done(function(response){
 
-		source = response.data[0].images.fixed_height.url;
+		source = response.data.image_original_url;
 
-		console.log(source);
-
-
-		$(".add-gif-div").append($("<img>", {//need to add this div to html
+		$("#winner-div").append($("<img>", {//need to add this div to html
 			src: source,
 			alt: "lose-win-gif",
 		 	class: "passfailwin-gif"
