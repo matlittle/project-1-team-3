@@ -107,6 +107,7 @@ var loginHandler = {
 			$("#current-player textarea").val("");
 			activeQuestion = false;
 			currQuestion = "";
+			$("#question-text").text("");
 		}).catch(function(error) {
 			// An error happened.
 		});
@@ -806,7 +807,7 @@ function runTimer(n) {
 
 // Displays a message in the question area
 function displayMsg(str) {
-	$("#question-text").html(str)
+	$("#question-text").text(str);
 }
 
 
