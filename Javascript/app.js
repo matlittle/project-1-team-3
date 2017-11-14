@@ -704,12 +704,16 @@ function codeFailed(err) {
 function showWinner(snapshot) {
 	var winner = snapshot.val();
 
-	
-
 	if (winner !== "") {
 		db.ref(`current/${winner}/username`).once("value", function(snapshot) {
+			if (winner === currPlayer) {
+				var name = "You"
+			} else {
+				var name = snapshot.val();
+			}
+
 			var container = $("<div id='winner-div'>").css("display", "none");;
-			var text = $("<h2>").text(`${snapshot.val()} won!`);
+			var text = $("<h2>").text(`${name} won!`);
 
 			$("#code-row").append( $(container).append(text) );
 
