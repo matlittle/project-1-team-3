@@ -146,9 +146,24 @@ h5 > p {
 }
 
 
+/* Winner DIV styles*/
+#winner-div {
+	position: absolute;
+	margin: 10% 25%;
+	display: block;
+	width: 50%;
+	height: 200px;
+	text-align: center;
+	background: black;
+	border: 3px solid;
+}
 
+#winner-div > h2 {
+	line-height: 200px;
+	margin: 0;
+}
 
-/* GAME WON POPUP STYLES*/
+/* */
 .display-final-page {
 	font-size: 30px;
 	text-align: center;

@@ -12,6 +12,7 @@ firebase.initializeApp(config);
 
 
 $(".modal").show();
+freezePage();
 
 
 var db = firebase.database();
@@ -333,20 +334,27 @@ function handleCurrentObjChange() {
 		// This resolves the issue of a player refreshing the page. 
 		setTimeout( function() {
 			ref.once("value", function(snapshot) {
-				if (snapshot.val() === beginVal) {
-					// If both states are active, and current player is player 1
-					if (currPlayer === "player1" &&
-					currObj.player1.state === "active" &&
+				if (snapshot.val() === beginVal && currObj.activeQuestion === false) {
+					// If both states are active
+					if ( currObj.player1.state === "active" &&
 					currObj.player2.state === "active") {
-						// gets a new random question. 
-						db.ref("questions").once("value", getRandomQuestion);
-						// need to start question timer from here
+						
+						displayPlayers();
+
+						if (currPlayer === "player1") {
+							// gets a new random question. 
+							db.ref("questions").once("value", getRandomQuestion);
+							// need to start question timer from here
+							runTimer(3);
+						}
 
 					// If other player has not joined yet
 					} else if (currObj[otherPlayer].state === "inactive") {
 						// show a waiting for other player message
 						displayMsg("Waiting for other player");
 					}
+				} else if (currObj.activeQuestion === true) {
+					displayCurrentQuestion();
 				}
 			});
 		}, 1 * 1000);
@@ -482,9 +490,10 @@ function setCurrentFBQuestion(qNum) {
 /* Function that will listen for changes to current question, and grab that question from Firebase when it does change. */
 function getNewQuestion(snapshot) {
 	var qNum = snapshot.val();
+	console.log("getting question");
 
 	if (qNum !== "") {
-		db.ref(`gameState/${qNum}`).once("value", function(snapshot) {
+		db.ref(`questions/${qNum}`).once("value", function(snapshot) {
 			currQuestion = snapshot.val();
 		});
 	}
@@ -501,11 +510,14 @@ function displayCurrentQuestion() {
 	var endFunc = "\n}"
 
 	var textArea = $("#current-player textarea");
-	$(textArea).text(startFunc + endFunc);
+	$(textArea).val(startFunc + endFunc);
 
 	// Position cursor in correct spot
 	textArea.selectionStart = startFunc.length;
 	textArea.selectionEnd = startFunc.length;
+
+	// Set active question to true
+	db.ref("current/activeQuestion").set(true);
 }
 
 
@@ -648,7 +660,7 @@ function buildArgList(a) {
 function codePassed() {
 	console.log("Code passed");
 
-	db.ref("current/winner").setWithPriority(currPlayer, 2);
+	db.ref("gameState/winner").set(currPlayer);
 }
 
 
@@ -676,12 +688,26 @@ function codeFailed(err) {
 function showWinner(snapshot) {
 	var winner = snapshot.val();
 
+	
+
 	if (winner !== "") {
-		if (winner === currPlayer) {
-			console.log("you won");
-		} else {
-			console.log("other player won");
-		}
+		db.ref(`current/${winner}/username`).once("value", function(snapshot) {
+			var container = $("<div id='winner-div'>").css("display", "none");;
+			var text = $("<h2>").text(`${snapshot.val()} won!`);
+
+			$("#code-row").append( $(container).append(text) );
+
+			if (winner !== currPlayer) {
+				$(container).css({
+					"color": "red",
+					"border-color": "red"
+				});
+			}
+
+			$(container).show();
+
+			freezePage();
+		});
 	}
 }
 
@@ -744,7 +770,7 @@ function runTimer(n) {
 		} else {
 			clearTimeout(timerInt);
 
-			displayCurrentQuestion();
+			startRound();
 		}
 	}, 1000);
 }
@@ -753,6 +779,31 @@ function runTimer(n) {
 function displayMsg(str) {
 	$("#question-text").html(str)
 }
+
+
+// Function to start the round
+function startRound() {
+	unfreezePage();
+	displayCurrentQuestion();
+
+	startInterval();
+	listenForCodeUpdates();
+}
+
+
+// Function to freeze page when game is over
+function freezePage() {
+	$("#current-player textarea").attr("readonly", "true");
+	$("#check-code").hide();
+}
+
+
+// Unfreeze the page on new round
+function unfreezePage() {
+	$("#current-player textarea").attr("readonly", "false");
+	$("#check-code").show();
+}
+
 
 // Displays the player and opponent names and avatars
 function displayPlayers() {
@@ -778,6 +829,7 @@ function displayPlayers() {
 		$("#opponent-name-display").append(oppText);
 	}) 
 }
+
 
 
 
