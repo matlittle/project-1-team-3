@@ -13,6 +13,7 @@ firebase.initializeApp(config);
 
 $(".modal").show();
 freezePage();
+$("#content").show();
 
 
 var db = firebase.database();

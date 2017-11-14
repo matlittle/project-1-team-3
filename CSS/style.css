@@ -15,6 +15,10 @@ body, html {
 	background-color: black;
 }
 
+#content {
+	display: none;
+}
+
 /*first page user log in */
 #login-modal,
 #new-user-modal {
