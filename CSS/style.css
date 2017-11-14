@@ -1,9 +1,3 @@
-/* Linking the fonts for the page */
-/*@font-face {
-	font-family: 'Overpass Mono', monospace;
-	src: url("images/computer_7.ttf");
-}*/
-
 body, html {
 	font-family: 'Overpass Mono', monospace;
 	background-color: black;
