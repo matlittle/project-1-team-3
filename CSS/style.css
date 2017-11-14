@@ -160,6 +160,14 @@ textarea {
 	color: #80c576;
 }
 
+.btn:hover {
+	background-color: #80c576;
+	border-color: #80c576;
+	outline: none;
+	color: black;
+	font-weight: 900;
+}
+
 
 /* Winner DIV styles*/
 #winner-div {
